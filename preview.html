@@ -5,2162 +5,1106 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Candy Era — Sweet Treats for Everyone!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════════
-   CANDY ERA — DARK LUXURY REDESIGN
-   Design System: Candy Noir
-═══════════════════════════════════════════════════════ */
+/* ─── TOKENS ─────────────────────────────────────── */
 :root {
-  --black:    #090909;
-  --dark:     #111111;
-  --dark2:    #1a1a1a;
-  --dark3:    #222222;
-  --green:    #78a938;
-  --green-glow: rgba(120,169,56,.35);
-  --green-lt: #9dcc54;
-  --pink:     #ff3e8a;
-  --yellow:   #ffd700;
-  --orange:   #ff6b35;
-  --white:    #ffffff;
-  --off-white:#f5f5f0;
-  --muted:    rgba(255,255,255,.55);
-  --font-d:   'Fredoka One', cursive;
-  --font-b:   'DM Sans', sans-serif;
-  --ease:     cubic-bezier(0.22, 1, 0.36, 1);
-  --t:        0.4s var(--ease);
-  --t-fast:   0.2s var(--ease);
-  --radius:   20px;
-  --radius-sm:10px;
-  --pill:     999px;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-
-body {
-  font-family: var(--font-b);
-  background: var(--black);
-  color: var(--white);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  cursor: none;
-}
-
-/* Custom Cursor */
-.cursor {
-  width: 12px; height: 12px;
-  background: var(--green);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%,-50%);
-  transition: width .2s, height .2s, background .2s, opacity .2s;
-  mix-blend-mode: difference;
-}
-.cursor-ring {
-  width: 40px; height: 40px;
-  border: 1.5px solid var(--green);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%,-50%);
-  transition: width .3s var(--ease), height .3s var(--ease), border-color .3s, opacity .3s;
-  opacity: 0.6;
-}
-body:hover .cursor { opacity: 1; }
-.cursor.hover { width: 24px; height: 24px; background: var(--green-lt); }
-.cursor-ring.hover { width: 64px; height: 64px; border-color: var(--green-lt); opacity: .3; }
-
-/* Scroll Progress */
-#progress {
-  position: fixed; top: 0; left: 0;
-  height: 3px; width: 0;
-  background: linear-gradient(90deg, var(--green), var(--green-lt), var(--yellow));
-  z-index: 9999;
-  border-radius: 0 2px 2px 0;
-  transition: width 0.08s linear;
-}
-
-/* ── HEADER ─────────────────────────────────────── */
-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 5%;
-  transition: background .4s, padding .4s, box-shadow .4s;
-}
-header.sticky {
-  background: rgba(9,9,9,.92);
-  backdrop-filter: blur(20px);
-  padding: 14px 5%;
-  box-shadow: 0 1px 0 rgba(255,255,255,.06);
-}
-.logo img {
-  height: 60px;
-  filter: brightness(1);
-  transition: transform var(--t-fast);
-}
-.logo:hover img { transform: scale(1.05) rotate(-2deg); }
-
-nav ul { display: flex; gap: 4px; list-style: none; align-items: center; }
-nav a {
-  font-family: var(--font-d);
-  font-size: 16px;
-  color: rgba(255,255,255,.8);
-  padding: 8px 16px;
-  border-radius: var(--pill);
-  transition: color var(--t-fast), background var(--t-fast);
-  text-decoration: none;
-  letter-spacing: .03em;
-}
-nav a:hover, nav a.active {
-  color: var(--green-lt);
-  background: rgba(120,169,56,.12);
-}
-
-.nav-cart {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--font-d);
-  font-size: 15px;
-  color: var(--white);
-  padding: 10px 20px;
-  border-radius: var(--pill);
-  border: 1.5px solid rgba(255,255,255,.15);
-  cursor: none;
-  transition: border-color var(--t-fast), background var(--t-fast);
-}
-.nav-cart:hover {
-  border-color: var(--green);
-  background: rgba(120,169,56,.1);
-}
-.cart-badge {
-  background: var(--green);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  font-family: var(--font-b);
-  padding: 2px 7px;
-  border-radius: var(--pill);
-}
-
-/* ── HERO ────────────────────────────────────────── */
-.hero {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  position: relative;
-  overflow: hidden;
-  padding: 120px 5% 80px;
-}
-
-/* Animated background grid */
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(120,169,56,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120,169,56,.07) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridMove 20s linear infinite;
-}
-@keyframes gridMove {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(60px); }
-}
-
-/* Radial glow */
-.hero::after {
-  content: '';
-  position: absolute;
-  top: 20%; left: 55%;
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(120,169,56,.18) 0%, transparent 70%);
-  border-radius: 50%;
-  animation: pulseGlow 4s ease-in-out infinite alternate;
-}
-@keyframes pulseGlow {
-  from { transform: scale(1) translate(0,0); opacity: .8; }
-  to   { transform: scale(1.1) translate(20px,-20px); opacity: 1; }
-}
-
-.hero-content { position: relative; z-index: 2; max-width: 640px; }
-
-.hero-tag {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(120,169,56,.15);
-  border: 1px solid rgba(120,169,56,.3);
-  color: var(--green-lt);
-  font-family: var(--font-b);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  padding: 8px 18px;
-  border-radius: var(--pill);
-  margin-bottom: 28px;
-  backdrop-filter: blur(8px);
-}
-.hero-tag::before {
-  content: '';
-  width: 7px; height: 7px;
-  background: var(--green-lt);
-  border-radius: 50%;
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink {
-  0%,100% { opacity: 1; }
-  50%      { opacity: 0.2; }
-}
-
-.hero h1 {
-  font-family: var(--font-d);
-  font-size: clamp(52px, 8vw, 100px);
-  line-height: 1.0;
-  letter-spacing: -.02em;
-  margin-bottom: 24px;
-}
-.hero h1 .line { display: block; overflow: hidden; }
-.hero h1 .word {
-  display: inline-block;
-  animation: slideUp .8s var(--ease) both;
-}
-.hero h1 .word:nth-child(2) { animation-delay: .1s; }
-.hero h1 .accent { color: var(--green-lt); }
-
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
-}
-
-.hero p {
-  font-size: 18px;
-  color: var(--muted);
-  line-height: 1.7;
-  max-width: 480px;
-  margin-bottom: 40px;
-  animation: fadeIn .9s .4s var(--ease) both;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.hero-ctas {
-  display: flex; gap: 16px; flex-wrap: wrap;
-  animation: fadeIn .9s .55s var(--ease) both;
-}
-
-.btn {
-  font-family: var(--font-d);
-  font-size: 16px;
-  letter-spacing: .04em;
-  padding: 16px 36px;
-  border-radius: var(--pill);
-  border: none;
-  cursor: none;
-  text-decoration: none;
-  display: inline-flex; align-items: center; gap: 10px;
-  transition: transform var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
-  position: relative;
-  overflow: hidden;
-}
-.btn::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,.15), transparent);
-  opacity: 0;
-  transition: opacity var(--t-fast);
-}
-.btn:hover::after { opacity: 1; }
-.btn:hover { transform: translateY(-3px); }
-
-.btn-primary {
-  background: var(--green);
-  color: #fff;
-  box-shadow: 0 8px 32px rgba(120,169,56,.4);
-}
-.btn-primary:hover { box-shadow: 0 16px 48px rgba(120,169,56,.6); }
-
-.btn-outline {
-  background: transparent;
-  color: var(--white);
-  border: 1.5px solid rgba(255,255,255,.25);
-}
-.btn-outline:hover {
-  border-color: var(--green);
-  color: var(--green-lt);
-  background: rgba(120,169,56,.08);
-}
-
-/* Hero right — floating product cards */
-.hero-visual {
-  position: absolute;
-  right: 4%; top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 180px 180px;
-  grid-template-rows: 200px 200px;
-  gap: 16px;
-  animation: fadeIn 1s .3s var(--ease) both;
-}
-
-.hero-card {
-  background: var(--dark2);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: transform var(--t), box-shadow var(--t);
-  position: relative;
-}
-.hero-card:nth-child(1) { margin-top: 40px; }
-.hero-card:nth-child(3) { margin-top: -40px; grid-column: span 2; height: 140px; }
-.hero-card img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transition: transform var(--t);
-}
-.hero-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
-.hero-card:hover img { transform: scale(1.06); }
-
-/* Floating badge on hero card */
-.hero-card-badge {
-  position: absolute; bottom: 10px; left: 10px;
-  background: rgba(9,9,9,.85);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(120,169,56,.3);
-  color: var(--green-lt);
-  font-size: 11px; font-weight: 600;
-  font-family: var(--font-b);
-  padding: 4px 10px;
-  border-radius: var(--pill);
-}
-
-/* ── STATS STRIP ──────────────────────────────────── */
-.stats {
-  background: var(--dark2);
-  border-top: 1px solid rgba(255,255,255,.06);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  padding: 32px 5%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-}
-.stat-item {
-  text-align: center;
-  padding: 16px;
-  border-right: 1px solid rgba(255,255,255,.06);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity .6s var(--ease), transform .6s var(--ease);
-}
-.stat-item:last-child { border-right: none; }
-.stat-item.visible { opacity: 1; transform: translateY(0); }
-
-.stat-num {
-  font-family: var(--font-d);
-  font-size: 48px;
-  color: var(--green-lt);
-  line-height: 1;
-  display: block;
-}
-.stat-label {
-  font-size: 13px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  margin-top: 6px;
-}
-
-/* ── SECTION COMMON ───────────────────────────────── */
-section { padding: 100px 5%; }
-.section-tag {
-  font-family: var(--font-b);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--green-lt);
-  margin-bottom: 16px;
-  display: flex; align-items: center; gap: 10px;
-}
-.section-tag::before {
-  content: '';
-  width: 24px; height: 2px;
-  background: var(--green);
-  border-radius: 2px;
-  display: inline-block;
-}
-.section-title {
-  font-family: var(--font-d);
-  font-size: clamp(36px, 5vw, 64px);
-  line-height: 1.05;
-  letter-spacing: -.02em;
-}
-.section-sub {
-  font-size: 17px;
-  color: var(--muted);
-  line-height: 1.7;
-  max-width: 540px;
-  margin-top: 16px;
-}
-
-/* Reveal animation */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease);
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: .1s; }
-.reveal-delay-2 { transition-delay: .2s; }
-.reveal-delay-3 { transition-delay: .3s; }
-.reveal-delay-4 { transition-delay: .4s; }
-
-/* ── WHAT WE DO ────────────────────────────────────── */
-.what {
-  background: var(--dark);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.what-features {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 40px;
-}
-.feature-card {
-  background: var(--dark2);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: var(--radius);
-  padding: 24px;
-  transition: transform var(--t), border-color var(--t), box-shadow var(--t);
-  cursor: none;
-}
-.feature-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(120,169,56,.3);
-  box-shadow: 0 20px 60px rgba(0,0,0,.3), 0 0 0 1px rgba(120,169,56,.1);
-}
-.feature-icon {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-.feature-card h4 {
-  font-family: var(--font-d);
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: var(--white);
-}
-.feature-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
-/* What we do visual side */
-.what-visual {
-  position: relative;
-  height: 500px;
-}
-.what-img-main {
-  position: absolute;
-  top: 0; right: 0;
-  width: 78%; height: 78%;
-  object-fit: cover;
-  border-radius: var(--radius);
-  box-shadow: 0 40px 80px rgba(0,0,0,.5);
-}
-.what-img-accent {
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 55%; height: 55%;
-  object-fit: cover;
-  border-radius: var(--radius);
-  box-shadow: 0 20px 60px rgba(0,0,0,.4);
-  border: 3px solid var(--dark);
-}
-.what-badge {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--green);
-  border-radius: var(--radius-sm);
-  padding: 16px 20px;
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(120,169,56,.5);
-  z-index: 3;
-}
-.what-badge span {
-  font-family: var(--font-d);
-  font-size: 32px;
-  display: block;
-  color: #fff;
-}
-.what-badge small {
-  font-size: 12px;
-  color: rgba(255,255,255,.8);
-  letter-spacing: .06em;
-}
-
-/* ── CATEGORIES ────────────────────────────────────── */
-.categories { background: var(--black); }
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-top: 48px;
-}
-.cat-card {
-  border-radius: var(--radius);
-  overflow: hidden;
-  position: relative;
-  height: 280px;
-  cursor: none;
-  transition: transform var(--t), box-shadow var(--t);
-}
-.cat-card:hover { transform: scale(1.03); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
-
-.cat-card:nth-child(1) { background: linear-gradient(135deg, #1a2d0d, #2d4f17); }
-.cat-card:nth-child(2) { background: linear-gradient(135deg, #1a0d1a, #3d1a3d); }
-.cat-card:nth-child(3) { background: linear-gradient(135deg, #1a1a0d, #3d3d17); }
-.cat-card:nth-child(4) { background: linear-gradient(135deg, #1a0a0a, #3d1a1a); }
-
-.cat-card-img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.35;
-  transition: opacity var(--t), transform var(--t);
-}
-.cat-card:hover .cat-card-img { opacity: 0.5; transform: scale(1.08); }
-
-.cat-card-body {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 24px;
-  background: linear-gradient(to top, rgba(0,0,0,.8) 0%, transparent 60%);
-}
-.cat-badge {
-  display: inline-block;
-  font-family: var(--font-b);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: var(--pill);
-  margin-bottom: 10px;
-  width: fit-content;
-}
-.cat-card:nth-child(1) .cat-badge { background: rgba(120,169,56,.25); color: var(--green-lt); border: 1px solid rgba(120,169,56,.3); }
-.cat-card:nth-child(2) .cat-badge { background: rgba(255,62,138,.2); color: var(--pink); border: 1px solid rgba(255,62,138,.3); }
-.cat-card:nth-child(3) .cat-badge { background: rgba(255,215,0,.2); color: var(--yellow); border: 1px solid rgba(255,215,0,.3); }
-.cat-card:nth-child(4) .cat-badge { background: rgba(255,107,53,.2); color: var(--orange); border: 1px solid rgba(255,107,53,.3); }
-
-.cat-card h3 {
-  font-family: var(--font-d);
-  font-size: 26px;
-  color: var(--white);
-  margin-bottom: 4px;
-}
-.cat-card p { font-size: 13px; color: rgba(255,255,255,.6); }
-
-.cat-arrow {
-  position: absolute; top: 20px; right: 20px;
-  width: 40px; height: 40px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
-}
-.cat-card:hover .cat-arrow {
-  background: var(--green);
-  border-color: var(--green);
-  transform: rotate(45deg);
-}
-
-/* ── PRODUCTS SECTION ─────────────────────────────── */
-.products { background: var(--dark); }
-
-.products-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 48px;
-  flex-wrap: wrap; gap: 20px;
-}
-
-/* Filter tabs */
-.filter-tabs {
-  display: flex; gap: 8px; flex-wrap: wrap;
-}
-.filter-tab {
-  font-family: var(--font-d);
-  font-size: 14px;
-  padding: 10px 22px;
-  border-radius: var(--pill);
-  border: 1.5px solid rgba(255,255,255,.1);
-  background: transparent;
-  color: rgba(255,255,255,.6);
-  cursor: none;
-  transition: all var(--t-fast);
-}
-.filter-tab:hover { border-color: rgba(120,169,56,.4); color: var(--green-lt); }
-.filter-tab.active {
-  background: var(--green);
-  border-color: var(--green);
-  color: #fff;
-  box-shadow: 0 4px 20px rgba(120,169,56,.4);
-}
-
-/* Product Grid */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-/* Product Card — flip card */
-.product-card {
-  height: 380px;
-  perspective: 1000px;
-  cursor: none;
-}
-.product-card-inner {
-  position: relative;
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  transition: transform .6s var(--ease);
-}
-.product-card:hover .product-card-inner { transform: rotateY(180deg); }
-
-.product-front,
-.product-back {
-  position: absolute; inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-/* Front */
-.product-front {
-  background: var(--dark2);
-  border: 1px solid rgba(255,255,255,.07);
-  display: flex; flex-direction: column;
-}
-.product-front img {
-  width: 100%; height: 220px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-.product-front-body { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-.product-cat-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--green-lt);
-  margin-bottom: 8px;
-}
-.product-front h3 {
-  font-family: var(--font-d);
-  font-size: 20px;
-  color: var(--white);
-  line-height: 1.2;
-}
-.product-price {
-  font-size: 16px;
-  color: var(--green-lt);
-  font-weight: 600;
-  margin-top: 10px;
-}
-.product-price span { font-size: 13px; color: var(--muted); font-weight: 400; }
-
-/* Back */
-.product-back {
-  background: linear-gradient(135deg, var(--dark2), var(--dark3));
-  border: 1px solid rgba(120,169,56,.2);
-  transform: rotateY(180deg);
-  display: flex; flex-direction: column;
-  padding: 28px;
-  justify-content: space-between;
-}
-.product-back h3 {
-  font-family: var(--font-d);
-  font-size: 22px;
-  color: var(--white);
-  margin-bottom: 12px;
-}
-.product-back-id {
-  display: inline-block;
-  font-family: var(--font-b);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--green-lt);
-  background: rgba(120,169,56,.15);
-  border: 1px solid rgba(120,169,56,.25);
-  padding: 3px 10px;
-  border-radius: var(--pill);
-  margin-bottom: 16px;
-}
-.product-specs { list-style: none; }
-.product-specs li {
-  display: flex; justify-content: space-between;
-  font-size: 14px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  color: rgba(255,255,255,.8);
-}
-.product-specs li:last-child { border-bottom: none; }
-.product-specs li span { color: var(--white); font-weight: 600; }
-
-.btn-add {
-  font-family: var(--font-d);
-  font-size: 15px;
-  padding: 14px;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: var(--green);
-  color: #fff;
-  cursor: none;
-  width: 100%;
-  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  margin-top: 16px;
-}
-.btn-add:hover {
-  background: var(--green-lt);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(120,169,56,.4);
-}
-
-/* Hidden product cards (for filtering) */
-.product-card.hidden {
-  display: none;
-}
-
-/* ── GUMMIES FEATURE SECTION ───────────────────────── */
-.gummies {
-  background: var(--black);
-  position: relative;
-  overflow: hidden;
-}
-.gummies::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -20%;
-  width: 80%; height: 200%;
-  background: radial-gradient(ellipse, rgba(120,169,56,.08) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.gummies-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-.gummies-cards {
-  display: flex; flex-direction: column; gap: 16px;
-}
-.gummy-card {
-  background: var(--dark2);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: var(--radius);
-  padding: 24px;
-  display: flex; align-items: center; gap: 20px;
-  transition: transform var(--t), border-color var(--t), box-shadow var(--t);
-  cursor: none;
-}
-.gummy-card:hover {
-  transform: translateX(6px);
-  border-color: rgba(120,169,56,.3);
-  box-shadow: -4px 0 0 var(--green), 0 20px 60px rgba(0,0,0,.3);
-}
-.gummy-card img {
-  width: 90px; height: 90px;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
-}
-.gummy-info h4 {
-  font-family: var(--font-d);
-  font-size: 20px;
-  margin-bottom: 6px;
-}
-.gummy-info p { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
-.gummy-price { font-size: 22px; color: var(--green-lt); font-weight: 700; font-family: var(--font-d); }
-.gummy-per { font-size: 12px; color: var(--muted); font-family: var(--font-b); font-weight: 400; }
-
-/* ── PREMIUM BRANDS ────────────────────────────────── */
-.premium {
-  background: var(--dark);
-}
-.premium-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-top: 48px;
-}
-.premium-card {
-  background: var(--dark2);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: var(--radius);
-  padding: 36px;
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  transition: transform var(--t), border-color var(--t), box-shadow var(--t);
-  cursor: none;
-  position: relative;
-  overflow: hidden;
-}
-.premium-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--green), var(--green-lt));
-  transform: scaleX(0); transform-origin: left;
-  transition: transform var(--t);
-}
-.premium-card:hover::before { transform: scaleX(1); }
-.premium-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(120,169,56,.2);
-  box-shadow: 0 24px 60px rgba(0,0,0,.4);
-}
-.premium-card img {
-  width: 100px; height: 100px;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
-}
-.premium-info h3 {
-  font-family: var(--font-d);
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-.premium-info .sku {
-  font-size: 12px;
-  color: var(--green-lt);
-  letter-spacing: .08em;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-.premium-info p { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
-.premium-price { font-size: 28px; color: var(--green-lt); font-family: var(--font-d); }
-
-/* ── HELLO KITTY ──────────────────────────────────── */
-.hk-section {
-  background: var(--black);
-  overflow: hidden;
-}
-.hk-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-}
-.hk-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.hk-card {
-  background: var(--dark2);
-  border: 1px solid rgba(255,62,138,.15);
-  border-radius: var(--radius);
-  padding: 24px;
-  text-align: center;
-  transition: transform var(--t), border-color var(--t), box-shadow var(--t);
-  cursor: none;
-}
-.hk-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  border-color: rgba(255,62,138,.4);
-  box-shadow: 0 20px 60px rgba(255,62,138,.15);
-}
-.hk-card img {
-  width: 100%; height: 140px;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
-  margin-bottom: 16px;
-}
-.hk-card h4 {
-  font-family: var(--font-d);
-  font-size: 18px;
-  margin-bottom: 6px;
-}
-.hk-card .hk-price { color: var(--pink); font-size: 22px; font-family: var(--font-d); }
-.hk-card .hk-detail { font-size: 12px; color: var(--muted); margin-top: 4px; }
-
-/* ── CTA BANNER ────────────────────────────────────── */
-.cta-banner {
-  background: linear-gradient(135deg, #0d1f06 0%, #1a3a0a 50%, #0d1f06 100%);
-  border-top: 1px solid rgba(120,169,56,.15);
-  border-bottom: 1px solid rgba(120,169,56,.15);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  padding: 100px 5%;
-}
-.cta-banner::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, rgba(120,169,56,.15) 0%, transparent 70%);
-}
-.cta-banner h2 {
-  font-family: var(--font-d);
-  font-size: clamp(40px, 6vw, 80px);
-  margin-bottom: 20px;
-  position: relative;
-}
-.cta-banner p {
-  font-size: 18px;
-  color: var(--muted);
-  max-width: 500px;
-  margin: 0 auto 40px;
-  position: relative;
-}
-.cta-banner .btn { position: relative; }
-
-/* ── DISPLAY TABLE ─────────────────────────────────── */
-.display-feature {
-  background: var(--dark);
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-.display-img {
-  border-radius: var(--radius);
-  width: 100%; height: 420px;
-  object-fit: cover;
-  box-shadow: 0 40px 80px rgba(0,0,0,.5);
-}
-.display-info { }
-.display-price { font-size: 52px; color: var(--green-lt); font-family: var(--font-d); margin: 20px 0 10px; }
-.display-detail { font-size: 15px; color: var(--muted); line-height: 1.7; }
-
-/* ── FOOTER ────────────────────────────────────────── */
-footer {
-  background: var(--dark);
-  border-top: 1px solid rgba(255,255,255,.06);
-  padding: 72px 5% 32px;
-}
-.footer-top {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr;
-  gap: 48px;
-  margin-bottom: 60px;
-}
-.footer-brand img { height: 55px; margin-bottom: 20px; filter: brightness(1); }
-.footer-brand p { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 260px; }
-.footer-col h5 {
-  font-family: var(--font-d);
-  font-size: 16px;
-  letter-spacing: .04em;
-  margin-bottom: 20px;
-  color: var(--white);
-}
-.footer-col ul { list-style: none; }
-.footer-col li { margin-bottom: 10px; }
-.footer-col a {
-  font-size: 14px;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color var(--t-fast);
-  cursor: none;
-}
-.footer-col a:hover { color: var(--green-lt); }
-
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,.06);
-  padding-top: 28px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 16px;
-}
-.footer-bottom p { font-size: 13px; color: rgba(255,255,255,.35); }
-
-/* Social icons */
-.social-links { display: flex; gap: 12px; }
-.social-link {
-  width: 38px; height: 38px;
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-  color: var(--muted);
-  text-decoration: none;
-  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
-  cursor: none;
-}
-.social-link:hover {
-  border-color: var(--green);
-  color: var(--green-lt);
-  background: rgba(120,169,56,.1);
-}
-
-/* ── 360° VIEWER MODAL ────────────────────────────────── */
-.viewer-overlay {
-  display: none;
-  position: fixed; inset: 0; z-index: 99999;
-  background: rgba(0,0,0,.88);
-  backdrop-filter: blur(20px);
-  align-items: center; justify-content: center;
-  padding: 20px;
-}
-.viewer-overlay.open { display: flex; animation: fadeOverlay .3s ease; }
-@keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
-
-.viewer-box {
-  background: var(--dark2);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 28px;
-  width: 100%; max-width: 680px;
-  overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0,0,0,.7);
-  animation: slideViewer .35s var(--ease);
-}
-@keyframes slideViewer {
-  from { transform: translateY(30px) scale(.96); opacity: 0; }
-  to   { transform: translateY(0)     scale(1);   opacity: 1; }
-}
-
-.viewer-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(255,255,255,.07);
-}
-.viewer-title { font-family: var(--font-d); font-size: 20px; }
-.viewer-close {
-  width: 36px; height: 36px;
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--white);
-  font-size: 20px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: none;
-  transition: background var(--t-fast), border-color var(--t-fast);
-}
-.viewer-close:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.3); }
-
-/* 360° stage */
-.viewer-stage {
-  position: relative;
-  height: 380px;
-  background: radial-gradient(ellipse at center, #1e1e1e 0%, var(--dark2) 100%);
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  cursor: ew-resize;
-  user-select: none;
-}
-.viewer-stage::after {
-  content: 'Drag to rotate';
-  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-  font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: rgba(255,255,255,.4);
-  pointer-events: none;
-}
-
-/* Ground reflection */
-.viewer-stage::before {
-  content: '';
-  position: absolute; bottom: 0; left: 10%; right: 10%;
-  height: 60px;
-  background: radial-gradient(ellipse, rgba(120,169,56,.2) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.viewer-img-wrap {
-  width: 300px; height: 300px;
-  display: flex; align-items: center; justify-content: center;
-  transform-style: preserve-3d;
-  transition: none;
-}
-.viewer-img-wrap img {
-  max-width: 280px; max-height: 280px;
-  object-fit: contain;
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,.6)) brightness(1.08) contrast(1.06) saturate(1.15);
-  pointer-events: none;
-  border-radius: 12px;
-}
-
-/* Spin indicator ring */
-.viewer-ring {
-  position: absolute;
-  bottom: 50px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 5px;
-}
-.viewer-ring span {
-  width: 32px; height: 3px;
-  border-radius: 2px;
-  background: rgba(255,255,255,.15);
-  transition: background .2s;
-}
-.viewer-ring span.active { background: var(--green); }
-
-/* 360 badge on product cards */
-.btn-360 {
-  position: absolute;
-  top: 12px; right: 12px;
-  background: rgba(9,9,9,.75);
-  border: 1px solid rgba(120,169,56,.4);
-  color: var(--green-lt);
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .1em;
-  padding: 4px 10px;
-  border-radius: var(--pill);
-  cursor: none;
-  backdrop-filter: blur(8px);
-  z-index: 5;
-  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
-}
-.btn-360:hover {
-  background: var(--green);
-  border-color: var(--green);
-  color: #fff;
-}
-
-/* Image enhancement on product fronts */
-.product-front img {
-  filter: brightness(1.05) contrast(1.08) saturate(1.2) !important;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
-.product-front img:hover { filter: brightness(1.1) contrast(1.1) saturate(1.3) !important; }
-
-/* Enhanced image quality for gummy cards */
-.gummy-card img {
-  filter: brightness(1.06) contrast(1.1) saturate(1.25);
-  image-rendering: -webkit-optimize-contrast;
-}
-
-/* Enhanced hero cards */
-.hero-card img {
-  filter: brightness(1.05) contrast(1.08) saturate(1.15);
-}
-
-/* ── RESPONSIVE ─────────────────────────────────────── */
-@media (max-width: 1100px) {
-  .hero-visual { display: none; }
-  .what, .gummies-layout, .hk-layout, .display-feature { grid-template-columns: 1fr; }
-  .what-visual { height: 340px; }
-  .categories-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-top { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 768px) {
-  section { padding: 64px 5%; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .stat-item:nth-child(2) { border-right: none; }
-  .categories-grid { grid-template-columns: 1fr 1fr; }
-  .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-  .premium-grid, .hk-cards { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; }
-  .hero-ctas { flex-direction: column; }
-  .products-header { flex-direction: column; align-items: flex-start; }
-  nav ul { gap: 2px; }
-  nav a { padding: 6px 12px; font-size: 14px; }
-}
-@media (max-width: 480px) {
-  .categories-grid { grid-template-columns: 1fr; }
-  .what-features { grid-template-columns: 1fr; }
-  .stats { grid-template-columns: 1fr 1fr; }
-  body { cursor: auto; }
-  .cursor, .cursor-ring { display: none; }
+  --green:   #78a938;
+  --green-d: #5c8728;
+  --green-l: #e8f4d6;
+  --pink:    #ff4d8b;
+  --pink-l:  #fff0f5;
+  --yellow:  #ffd84d;
+  --orange:  #ff8c42;
+  --cream:   #fdf8f0;
+  --white:   #ffffff;
+  --dark:    #1a1a1a;
+  --gray:    #6b7280;
+  --border:  #ececec;
+  --font-d:  'Fredoka One', cursive;
+  --font-b:  'DM Sans', sans-serif;
+  --r:       16px;
+  --r-sm:    10px;
+  --r-pill:  999px;
+  --ease:    cubic-bezier(0.22,1,0.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--white);color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+
+/* ─── PROGRESS BAR ───────────────────────────────── */
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--green),var(--yellow),var(--pink));z-index:9999;transition:width .08s linear;border-radius:0 2px 2px 0}
+
+/* ─── HEADER ─────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:1000;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .3s;
+}
+header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+.hdr-inner{max-width:1280px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:72px}
+
+.logo img{height:52px;object-fit:contain}
+.logo-fallback{font-family:var(--font-d);font-size:26px;color:var(--green)}
+
+nav{display:flex;align-items:center;gap:4px}
+.nav-link{font-family:var(--font-d);font-size:16px;color:var(--dark);padding:8px 16px;border-radius:var(--r-pill);transition:color .18s,background .18s}
+.nav-link:hover{color:var(--green);background:var(--green-l)}
+.nav-link.active{color:var(--green)}
+
+.btn-shop{font-family:var(--font-d);font-size:15px;background:var(--green);color:#fff;padding:10px 24px;border-radius:var(--r-pill);display:flex;align-items:center;gap:8px;transition:background .18s,transform .18s,box-shadow .18s;box-shadow:0 4px 16px rgba(120,169,56,.3)}
+.btn-shop:hover{background:var(--green-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(120,169,56,.4)}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.hamburger span{width:22px;height:2px;background:var(--dark);border-radius:2px;transition:transform .3s,opacity .3s}
+.mobile-nav{display:none}
+
+/* ─── HERO ───────────────────────────────────────── */
+.hero{
+  background:linear-gradient(135deg,var(--cream) 0%,#fef9f0 60%,var(--green-l) 100%);
+  padding:80px 5% 0;
+  overflow:hidden;
+  position:relative;
+}
+.hero::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(120,169,56,.12) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.hero-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;min-height:560px}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green-l);color:var(--green-d);
+  font-family:var(--font-b);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 16px;border-radius:var(--r-pill);margin-bottom:24px;
+  border:1px solid rgba(120,169,56,.25);
+}
+.hero-tag::before{content:'🍬'}
+
+.hero h1{font-family:var(--font-d);font-size:clamp(44px,5.5vw,76px);line-height:1.05;letter-spacing:-.01em;color:var(--dark);margin-bottom:20px}
+.hero h1 .hl{color:var(--green)}
+.hero-sub{font-size:18px;color:var(--gray);line-height:1.7;max-width:460px;margin-bottom:36px}
+
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{font-family:var(--font-d);font-size:16px;background:var(--green);color:#fff;padding:15px 32px;border-radius:var(--r-pill);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:background .18s,transform .18s,box-shadow .18s;box-shadow:0 6px 24px rgba(120,169,56,.35)}
+.btn-primary:hover{background:var(--green-d);transform:translateY(-2px);box-shadow:0 12px 32px rgba(120,169,56,.45)}
+.btn-secondary{font-family:var(--font-d);font-size:16px;background:var(--white);color:var(--dark);padding:15px 32px;border-radius:var(--r-pill);border:2px solid var(--border);cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:border-color .18s,color .18s,transform .18s}
+.btn-secondary:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
+
+/* Hero image side */
+.hero-imgs{position:relative;height:500px;padding-bottom:40px}
+.hero-img-main{
+  position:absolute;top:0;right:0;
+  width:72%;height:80%;
+  object-fit:cover;
+  border-radius:24px 24px 24px 60px;
+  box-shadow:0 32px 80px rgba(0,0,0,.15);
+  filter:brightness(1.04) contrast(1.06) saturate(1.15);
+}
+.hero-img-accent{
+  position:absolute;bottom:0;left:0;
+  width:52%;height:55%;
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 16px 48px rgba(0,0,0,.12);
+  border:4px solid var(--white);
+  filter:brightness(1.05) contrast(1.08) saturate(1.2);
+}
+.hero-badge{
+  position:absolute;bottom:56px;right:12%;
+  background:var(--white);
+  border-radius:var(--r);
+  padding:14px 20px;
+  box-shadow:0 8px 32px rgba(0,0,0,.12);
+  display:flex;align-items:center;gap:12px;
+  z-index:2;
+}
+.hero-badge-icon{font-size:28px}
+.hero-badge-text{font-family:var(--font-d);font-size:14px;color:var(--dark);line-height:1.3}
+.hero-badge-text strong{color:var(--green);font-size:18px;display:block}
+
+/* ─── STATS ──────────────────────────────────────── */
+.stats{background:var(--green);padding:36px 5%}
+.stats-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center}
+.stat-item{padding:12px 20px;border-right:1px solid rgba(255,255,255,.2)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:var(--font-d);font-size:44px;color:#fff;display:block;line-height:1}
+.stat-label{font-size:13px;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+/* ─── SECTION COMMON ─────────────────────────────── */
+section{padding:88px 5%}
+.inner{max-width:1280px;margin:0 auto}
+.sec-label{font-family:var(--font-b);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.sec-label::before{content:'';width:20px;height:2px;background:var(--green);border-radius:2px}
+.sec-title{font-family:var(--font-d);font-size:clamp(32px,4vw,56px);line-height:1.08;letter-spacing:-.01em;color:var(--dark)}
+.sec-sub{font-size:17px;color:var(--gray);line-height:1.7;max-width:520px;margin-top:14px}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
+.reveal.on{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* ─── WHAT WE DO ─────────────────────────────────── */
+.what{background:var(--cream)}
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.what-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.feat{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+.feat:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.08);border-color:rgba(120,169,56,.3)}
+.feat-icon{font-size:28px;margin-bottom:10px}
+.feat h4{font-family:var(--font-d);font-size:17px;color:var(--dark);margin-bottom:6px}
+.feat p{font-size:13px;color:var(--gray);line-height:1.65}
+
+.what-right{position:relative;height:460px}
+.wi-a{position:absolute;top:0;right:0;width:75%;height:78%;object-fit:cover;border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,.12);filter:brightness(1.04) contrast(1.07) saturate(1.15)}
+.wi-b{position:absolute;bottom:0;left:0;width:52%;height:50%;object-fit:cover;border-radius:16px;border:4px solid var(--white);box-shadow:0 12px 36px rgba(0,0,0,.1);filter:brightness(1.05) contrast(1.08) saturate(1.2)}
+.wi-pill{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--green);color:#fff;
+  font-family:var(--font-d);font-size:13px;
+  padding:12px 20px;border-radius:var(--r);
+  box-shadow:0 8px 28px rgba(120,169,56,.45);
+  white-space:nowrap;text-align:center;
+  z-index:3;
+}
+.wi-pill b{font-size:28px;display:block}
+
+/* ─── CATEGORIES ─────────────────────────────────── */
+.cats{background:var(--white)}
+.cats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
+.cat-card{
+  border-radius:var(--r);overflow:hidden;
+  position:relative;height:300px;
+  cursor:pointer;
+  transition:transform .35s var(--ease),box-shadow .35s;
+}
+.cat-card:hover{transform:translateY(-6px);box-shadow:0 24px 64px rgba(0,0,0,.15)}
+.cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);filter:brightness(1.02) contrast(1.06) saturate(1.18)}
+.cat-card:hover img{transform:scale(1.06)}
+.cat-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,10,10,.72) 0%,rgba(10,10,10,.1) 55%,transparent 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:22px;
+}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:var(--r-pill);width:fit-content;margin-bottom:8px;backdrop-filter:blur(6px)}
+.cat-card:nth-child(1) .cat-tag{background:rgba(120,169,56,.3);color:#b2e47a;border:1px solid rgba(120,169,56,.4)}
+.cat-card:nth-child(2) .cat-tag{background:rgba(255,77,139,.25);color:#ffb3d1;border:1px solid rgba(255,77,139,.35)}
+.cat-card:nth-child(3) .cat-tag{background:rgba(255,212,77,.25);color:#ffe88a;border:1px solid rgba(255,212,77,.35)}
+.cat-card:nth-child(4) .cat-tag{background:rgba(255,140,66,.25);color:#ffbb8a;border:1px solid rgba(255,140,66,.35)}
+.cat-name{font-family:var(--font-d);font-size:22px;color:#fff;line-height:1.2}
+.cat-count{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
+
+/* ─── PRODUCTS ───────────────────────────────────── */
+.products{background:var(--cream)}
+.prod-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:20px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filt{font-family:var(--font-d);font-size:14px;padding:9px 20px;border-radius:var(--r-pill);border:2px solid var(--border);background:var(--white);color:var(--gray);cursor:pointer;transition:all .2s}
+.filt:hover{border-color:var(--green);color:var(--green)}
+.filt.on{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 4px 16px rgba(120,169,56,.3)}
+
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
+
+/* Product card */
+.pcard{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .35s var(--ease),box-shadow .35s,border-color .35s;
+  position:relative;
+}
+.pcard:hover{transform:translateY(-6px);box-shadow:0 20px 56px rgba(0,0,0,.1);border-color:rgba(120,169,56,.25)}
+
+.pcard-img-wrap{position:relative;overflow:hidden;height:220px}
+.pcard-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s var(--ease);
+  filter:brightness(1.04) contrast(1.07) saturate(1.18);
+}
+.pcard:hover .pcard-img-wrap img{transform:scale(1.05)}
+
+/* 360° badge */
+.badge-360{
+  position:absolute;top:12px;left:12px;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+  border:1px solid var(--border);
+  color:var(--green-d);font-size:11px;font-weight:700;letter-spacing:.06em;
+  padding:4px 10px;border-radius:var(--r-pill);
+  cursor:pointer;
+  transition:background .18s,color .18s,border-color .18s;
+  z-index:2;
+}
+.badge-360:hover{background:var(--green);color:#fff;border-color:var(--green)}
+
+.sku-badge{
+  position:absolute;top:12px;right:12px;
+  background:rgba(0,0,0,.55);color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:.08em;
+  padding:3px 9px;border-radius:var(--r-pill);
+  backdrop-filter:blur(4px);
+}
+
+.pcard-body{padding:18px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.pcard-cat{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.pcard-name{font-family:var(--font-d);font-size:19px;color:var(--dark);line-height:1.2;margin-top:4px}
+.pcard-price{font-size:16px;font-weight:600;color:var(--green-d)}
+.pcard-price span{font-size:13px;font-weight:400;color:var(--gray)}
+
+.pcard-specs{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.pcard-spec{font-size:11px;background:var(--cream);color:var(--gray);border-radius:var(--r-pill);padding:4px 10px;border:1px solid var(--border)}
+
+.pcard-btn{
+  font-family:var(--font-d);font-size:14px;
+  background:var(--green);color:#fff;
+  border:none;border-radius:var(--r-pill);
+  padding:11px 20px;cursor:pointer;
+  text-align:center;width:100%;
+  transition:background .18s,transform .18s,box-shadow .18s;
+  box-shadow:0 4px 16px rgba(120,169,56,.25);
+  text-decoration:none;display:block;
+}
+.pcard-btn:hover{background:var(--green-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(120,169,56,.4)}
+
+/* ─── GUMMIES ─────────────────────────────────────── */
+.gummies{background:var(--white)}
+.gummies-inner{display:grid;grid-template-columns:1fr 1.1fr;gap:72px;align-items:center}
+
+.gum-cards{display:flex;flex-direction:column;gap:16px}
+.gum-card{
+  background:var(--cream);border:1px solid var(--border);border-radius:var(--r);
+  padding:20px;display:flex;align-items:center;gap:18px;
+  transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;
+  cursor:pointer;
+}
+.gum-card:hover{transform:translateX(6px);box-shadow:0 12px 36px rgba(0,0,0,.08);border-color:rgba(120,169,56,.3)}
+.gum-card img{width:80px;height:80px;object-fit:cover;border-radius:var(--r-sm);flex-shrink:0;filter:brightness(1.06) contrast(1.1) saturate(1.25)}
+.gum-info h4{font-family:var(--font-d);font-size:18px;color:var(--dark);margin-bottom:4px}
+.gum-info p{font-size:13px;color:var(--gray);margin-bottom:8px}
+.gum-price{font-family:var(--font-d);font-size:20px;color:var(--green-d)}
+.gum-price small{font-family:var(--font-b);font-size:12px;color:var(--gray);font-weight:400}
+
+/* ─── PREMIUM BRANDS ─────────────────────────────── */
+.premium{background:var(--cream)}
+.prem-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
+.prem-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r);
+  padding:30px;display:flex;align-items:center;gap:24px;
+  transition:transform .35s var(--ease),box-shadow .35s,border-color .35s;
+  position:relative;overflow:hidden;
+}
+.prem-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--yellow));transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.prem-card:hover::after{transform:scaleX(1)}
+.prem-card:hover{transform:translateY(-4px);box-shadow:0 20px 56px rgba(0,0,0,.1);border-color:rgba(120,169,56,.2)}
+.prem-card img{width:88px;height:88px;object-fit:cover;border-radius:var(--r-sm);flex-shrink:0;filter:brightness(1.05) contrast(1.08) saturate(1.2)}
+.prem-sku{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--green);text-transform:uppercase;margin-bottom:6px}
+.prem-name{font-family:var(--font-d);font-size:19px;color:var(--dark);margin-bottom:6px}
+.prem-detail{font-size:13px;color:var(--gray);margin-bottom:10px;line-height:1.55}
+.prem-price{font-family:var(--font-d);font-size:24px;color:var(--green-d)}
+
+/* ─── DISPLAY TABLE ──────────────────────────────── */
+.display-sec{background:var(--green)}
+.display-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:center;max-width:1280px;margin:0 auto}
+.display-sec img{border-radius:var(--r);width:100%;max-height:420px;object-fit:cover;box-shadow:0 32px 80px rgba(0,0,0,.2);filter:brightness(1.04) contrast(1.06) saturate(1.12)}
+.display-content .sec-label{color:rgba(255,255,255,.8)}
+.display-content .sec-label::before{background:rgba(255,255,255,.6)}
+.display-content .sec-title{color:#fff}
+.display-content .sec-sub{color:rgba(255,255,255,.8);max-width:100%}
+.display-price{font-family:var(--font-d);font-size:52px;color:#fff;margin:16px 0 8px;line-height:1}
+.display-detail{font-size:15px;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:28px}
+.btn-white{font-family:var(--font-d);font-size:16px;background:#fff;color:var(--green-d);padding:14px 32px;border-radius:var(--r-pill);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:transform .18s,box-shadow .18s;box-shadow:0 6px 24px rgba(0,0,0,.15);text-decoration:none}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.2)}
+
+/* ─── CTA ────────────────────────────────────────── */
+.cta-sec{background:var(--cream);text-align:center}
+.cta-sec h2{font-family:var(--font-d);font-size:clamp(36px,5vw,64px);color:var(--dark);margin-bottom:16px}
+.cta-sec h2 span{color:var(--green)}
+.cta-sec p{font-size:18px;color:var(--gray);max-width:480px;margin:0 auto 36px;line-height:1.7}
+
+/* ─── 360° MODAL ─────────────────────────────────── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(12px);z-index:9990;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex;animation:mfade .25s ease}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:24px;width:100%;max-width:620px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.2);animation:mslide .3s var(--ease)}
+@keyframes mslide{from{transform:translateY(24px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
+.modal-ttl{font-family:var(--font-d);font-size:20px;color:var(--dark)}
+.modal-close{width:36px;height:36px;border:1px solid var(--border);border-radius:50%;background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s,border-color .18s}
+.modal-close:hover{background:var(--cream);border-color:var(--green)}
+
+.modal-stage{
+  position:relative;height:360px;
+  background:linear-gradient(135deg,var(--cream),#f0f7e6);
+  display:flex;align-items:center;justify-content:center;
+  cursor:ew-resize;user-select:none;overflow:hidden;
+}
+.modal-stage::before{
+  content:'Drag to rotate ↔';
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(0,0,0,.35);pointer-events:none;
+}
+/* Ground shadow */
+.modal-stage::after{content:'';position:absolute;bottom:32px;left:20%;right:20%;height:20px;background:radial-gradient(ellipse,rgba(0,0,0,.12) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+
+.modal-wrap{width:280px;height:280px;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d}
+.modal-wrap img{max-width:260px;max-height:260px;object-fit:contain;pointer-events:none;filter:brightness(1.08) contrast(1.1) saturate(1.2) drop-shadow(0 16px 32px rgba(0,0,0,.15));border-radius:12px}
+
+/* Ring indicator */
+.modal-ring{display:flex;gap:5px;justify-content:center;padding:16px 24px;border-top:1px solid var(--border);background:var(--white)}
+.modal-ring span{flex:1;height:3px;background:var(--border);border-radius:2px;transition:background .15s}
+.modal-ring span.a{background:var(--green)}
+
+/* ─── FOOTER ─────────────────────────────────────── */
+footer{background:var(--dark);color:rgba(255,255,255,.7);padding:64px 5% 28px}
+.foot-inner{max-width:1280px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:52px}
+.foot-brand img{height:52px;margin-bottom:18px;filter:brightness(1.1)}
+.foot-brand p{font-size:14px;line-height:1.7;max-width:240px;color:rgba(255,255,255,.55)}
+footer h5{font-family:var(--font-d);font-size:16px;color:#fff;margin-bottom:18px;letter-spacing:.02em}
+footer ul{list-style:none}
+footer li{margin-bottom:10px}
+footer a{font-size:14px;color:rgba(255,255,255,.55);transition:color .18s}
+footer a:hover{color:var(--green-l)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-bottom p{font-size:13px;color:rgba(255,255,255,.3)}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media(max-width:1100px){
+  .hero-inner,.what-grid,.gummies-inner,.display-inner{grid-template-columns:1fr}
+  .hero-imgs{height:300px;margin-top:24px}
+  .hero-img-main{width:80%;height:100%;border-radius:20px}
+  .hero-img-accent{display:none}
+  .hero-badge{bottom:12px;right:5%}
+  .what-right{height:320px}
+  .cats-grid{grid-template-columns:repeat(2,1fr)}
+  .prem-grid{grid-template-columns:1fr}
+  .foot-top{grid-template-columns:1fr 1fr;gap:32px}
+}
+@media(max-width:768px){
+  section{padding:60px 5%}
+  .hdr-inner{height:60px}
+  nav{display:none}
+  .hamburger{display:flex}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .stat-item:nth-child(2){border-right:none}
+  .prod-head{flex-direction:column;align-items:flex-start}
+  .prod-grid{grid-template-columns:repeat(2,1fr)}
+  .prem-card{flex-direction:column;align-items:flex-start}
+  .foot-top{grid-template-columns:1fr}
+  .hero-ctas{flex-direction:column}
+}
+@media(max-width:480px){
+  .cats-grid,.prod-grid{grid-template-columns:1fr}
+  .what-cards{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- Custom Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- Progress bar -->
+<div id="bar"></div>
 
-<!-- Scroll Progress -->
-<div id="progress"></div>
-
-<!-- ══════ HEADER ══════ -->
-<header id="header">
-  <a href="/" class="logo">
-    <img src="https://candyeraus.com/wp-content/uploads/2024/11/file-4.png"
-         alt="Candy Era" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-family:var(--font-d);font-size:24px;color:#78a938\'>Candy Era</span>'">
-  </a>
-  <nav>
-    <ul>
-      <li><a href="#what">What We Do</a></li>
-      <li><a href="#categories">Categories</a></li>
-      <li><a href="#products">Shop</a></li>
-      <li><a href="https://candyeraus.com/shop/" class="nav-cart">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Order Now
-        <span class="cart-badge">0</span>
-      </a></li>
-    </ul>
-  </nav>
+<!-- ══ HEADER ══════════════════════════════════════ -->
+<header id="hdr">
+  <div class="hdr-inner">
+    <a href="/" class="logo">
+      <img src="https://candyeraus.com/wp-content/uploads/2024/11/file-4.png" alt="Candy Era"
+           onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=logo-fallback>🍬 Candy Era</span>')">
+    </a>
+    <nav>
+      <a href="#what" class="nav-link">What We Do</a>
+      <a href="#categories" class="nav-link">Categories</a>
+      <a href="#products" class="nav-link">Shop</a>
+    </nav>
+    <a href="https://candyeraus.com/shop/" class="btn-shop">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Order Now
+    </a>
+    <button class="hamburger" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
 
-<!-- ══════ HERO ══════ -->
+<!-- ══ HERO ════════════════════════════════════════ -->
 <section class="hero" id="home">
-  <div class="hero-content">
-    <div class="hero-tag">Sweet Treats for Everyone!</div>
-    <h1>
-      <span class="line"><span class="word">Candy</span></span>
-      <span class="line"><span class="word accent">Era</span></span>
-      <span class="line"><span class="word">Australia</span></span>
-    </h1>
-    <p>Your wholesale partner for premium candy, novelty toys, and sweet displays. Serving retailers across Australia with the best selection and prices.</p>
-    <div class="hero-ctas">
-      <a href="#products" class="btn btn-primary">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-        Browse Catalogue
-      </a>
-      <a href="#what" class="btn btn-outline">What We Do →</a>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Sweet Treats for Everyone!</div>
+      <h1>Australia's #1<br><span class="hl">Wholesale Candy</span><br>Supplier</h1>
+      <p class="hero-sub">From bulk gummies to novelty toys and branded display tables — everything your store needs, at wholesale prices.</p>
+      <div class="hero-ctas">
+        <a href="#products" class="btn-primary">Browse Catalogue →</a>
+        <a href="#what" class="btn-secondary">What We Do</a>
+      </div>
     </div>
-  </div>
-
-  <!-- Floating product preview cards -->
-  <div class="hero-visual">
-    <div class="hero-card">
-      <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="ERAB Toys"
+    <div class="hero-imgs reveal d1">
+      <img class="hero-img-main"
+           src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Featured Product"
            onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-      <div class="hero-card-badge">ERAB46</div>
-    </div>
-    <div class="hero-card">
-      <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Drum Bear"
-           onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-      <div class="hero-card-badge">ERAB47</div>
-    </div>
-    <div class="hero-card">
-      <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy">
-      <div class="hero-card-badge">22 lbs / box</div>
+      <img class="hero-img-accent"
+           src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy Candy">
+      <div class="hero-badge">
+        <div class="hero-badge-icon">📦</div>
+        <div class="hero-badge-text"><strong>30+</strong>Products in stock</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ══════ STATS ══════ -->
-<div class="stats" id="stats">
-  <div class="stat-item">
-    <span class="stat-num" data-target="30">0</span>
-    <div class="stat-label">ERAB Products</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-target="4">0</span>
-    <div class="stat-label">Categories</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-target="22">0</span>
-    <div class="stat-label">Lbs Per Gummy Box</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-target="144">0</span>
-    <div class="stat-label">Units Per Case</div>
+<!-- ══ STATS ═══════════════════════════════════════ -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num" data-t="30">0</span>
+      <div class="stat-label">Products</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-t="4">0</span>
+      <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-t="22">0</span>
+      <div class="stat-label">Lbs per Gummy Box</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-t="144">0</span>
+      <div class="stat-label">Units per Case</div>
+    </div>
   </div>
 </div>
 
-<!-- ══════ WHAT WE DO ══════ -->
+<!-- ══ WHAT WE DO ══════════════════════════════════ -->
 <section class="what" id="what">
-  <div class="reveal">
-    <div class="section-tag">What We Do</div>
-    <h2 class="section-title">Wholesale Candy &<br>Novelty Toys</h2>
-    <p class="section-sub">We supply candy stores, convenience shops, and retailers across Australia with bulk candy, novelty toys, and branded sweet products at competitive wholesale prices.</p>
-
-    <div class="what-features">
-      <div class="feature-card reveal reveal-delay-1">
-        <div class="feature-icon">🍬</div>
-        <h4>Bulk Candy</h4>
-        <p>Premium gummy candy in 22-lb boxes. Sold by weight with multiple flavour options.</p>
-      </div>
-      <div class="feature-card reveal reveal-delay-2">
-        <div class="feature-icon">🚗</div>
-        <h4>Novelty Toys</h4>
-        <p>ERAB series — display-ready toys sold by the display (12 pcs) or full case (144 pcs).</p>
-      </div>
-      <div class="feature-card reveal reveal-delay-3">
-        <div class="feature-icon">🏪</div>
-        <h4>Display Solutions</h4>
-        <p>Full lollipop display tables and counter displays to maximise your sales floor.</p>
-      </div>
-      <div class="feature-card reveal reveal-delay-4">
-        <div class="feature-icon">✨</div>
-        <h4>Branded Products</h4>
-        <p>Kinder Joy, Ferrero, Hello Kitty licensed candy — premium brands your customers love.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="what-visual reveal reveal-delay-2">
-    <img class="what-img-main"
-         src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Product"
-         onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-    <img class="what-img-accent"
-         src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy">
-    <div class="what-badge">
-      <span>30+</span>
-      <small>SKUs Available</small>
-    </div>
-  </div>
-</section>
-
-<!-- ══════ CATEGORIES ══════ -->
-<section class="categories" id="categories">
-  <div class="section-tag reveal">Our Categories</div>
-  <h2 class="section-title reveal">Everything Sweet,<br>All in One Place</h2>
-  <div class="categories-grid">
-    <div class="cat-card reveal reveal-delay-1">
-      <img class="cat-card-img" src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="ERAB Toys">
-      <div class="cat-card-body">
-        <div class="cat-badge">Novelty Toys</div>
-        <h3>ERAB Series</h3>
-        <p>10+ items — Display &amp; Case</p>
-      </div>
-      <div class="cat-arrow">↗</div>
-    </div>
-    <div class="cat-card reveal reveal-delay-2">
-      <img class="cat-card-img" src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy Candy">
-      <div class="cat-card-body">
-        <div class="cat-badge">Bulk Gummy</div>
-        <h3>ERAA Gummies</h3>
-        <p>3 varieties — 22 lbs/box</p>
-      </div>
-      <div class="cat-arrow">↗</div>
-    </div>
-    <div class="cat-card reveal reveal-delay-3">
-      <img class="cat-card-img" src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Candy">
-      <div class="cat-card-body">
-        <div class="cat-badge">Licensed</div>
-        <h3>Hello Kitty</h3>
-        <p>Lollipops &amp; candy sets</p>
-      </div>
-      <div class="cat-arrow">↗</div>
-    </div>
-    <div class="cat-card reveal reveal-delay-4">
-      <img class="cat-card-img" src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Premium Brands">
-      <div class="cat-card-body">
-        <div class="cat-badge">Premium Brands</div>
-        <h3>Kinder &amp; Ferrero</h3>
-        <p>Top-shelf branded products</p>
-      </div>
-      <div class="cat-arrow">↗</div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════ PRODUCTS ══════ -->
-<section class="products" id="products">
-  <div class="products-header">
-    <div>
-      <div class="section-tag reveal">Full Catalogue</div>
-      <h2 class="section-title reveal">Shop by Product</h2>
-    </div>
-    <div class="filter-tabs reveal">
-      <button class="filter-tab active" data-filter="all">All</button>
-      <button class="filter-tab" data-filter="ERAB">ERAB Toys</button>
-      <button class="filter-tab" data-filter="ERAA">Gummies</button>
-      <button class="filter-tab" data-filter="HK">Hello Kitty</button>
-      <button class="filter-tab" data-filter="Premium">Premium</button>
-    </div>
-  </div>
-
-  <div class="products-grid" id="productsGrid">
-
-    <!-- ERAB Products -->
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front" style="position:relative">
-          <button class="btn-360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" data-name="Off Road Racing Tiger Cars">360°</button>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Off Road Racing Tiger Cars"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Off Road Racing Tiger Cars</h3>
-            </div>
-            <div class="product-price">$20.00 <span>Display · $240 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB46</div>
-            <h3>Off Road Racing Tiger Cars</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>12 PC</span></li>
-              <li>Case Qty <span>144 PC</span></li>
-              <li>Display Price <span>$20.00</span></li>
-              <li>Case Price <span>$240.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/product/off-road-racing-tiger-cars/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front" style="position:relative">
-          <button class="btn-360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" data-name="Dino Projector">360°</button>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Dino Projector"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Dino Projector</h3>
-            </div>
-            <div class="product-price">$30.00 <span>Display · $360 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB37</div>
-            <h3>Dino Projector</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>12 PC</span></li>
-              <li>Case Qty <span>144 PC</span></li>
-              <li>Display Price <span>$30.00</span></li>
-              <li>Case Price <span>$360.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front" style="position:relative">
-          <button class="btn-360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" data-name="Drum Bear">360°</button>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Drum Bear"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Drum Bear</h3>
-            </div>
-            <div class="product-price">$22.50 <span>Display · $270 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB47</div>
-            <h3>Drum Bear</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>12 PC</span></li>
-              <li>Case Qty <span>144 PC</span></li>
-              <li>Display Price <span>$22.50</span></li>
-              <li>Case Price <span>$270.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab26.png" alt="Dino Fan Tall"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Dino Fan Tall</h3>
-            </div>
-            <div class="product-price">$30.00 <span>Display · $180 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB26</div>
-            <h3>Dino Fan Tall</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>6 PC</span></li>
-              <li>Case Qty <span>72 PC</span></li>
-              <li>Display Price <span>$30.00</span></li>
-              <li>Case Price <span>$180.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Lightning Football"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Lightning Football</h3>
-            </div>
-            <div class="product-price">$30.00 <span>Display · $360 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB38</div>
-            <h3>Lightning Football</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>12 PC</span></li>
-              <li>Case Qty <span>144 PC</span></li>
-              <li>Display Price <span>$30.00</span></li>
-              <li>Case Price <span>$360.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Truck Toy"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Truck Toy</h3>
-            </div>
-            <div class="product-price">$40.00 <span>Display · $480 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB39</div>
-            <h3>Truck Toy</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>12 PC</span></li>
-              <li>Case Qty <span>144 PC</span></li>
-              <li>Display Price <span>$40.00</span></li>
-              <li>Case Price <span>$480.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Candy Car"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Candy Car</h3>
-            </div>
-            <div class="product-price">$20.00 <span>Display · $240 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB44</div>
-            <h3>Candy Car</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>12 PC</span></li>
-              <li>Case Qty <span>144 PC</span></li>
-              <li>Display Price <span>$20.00</span></li>
-              <li>Case Price <span>$240.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAB">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Tumbling Car"
-               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">ERAB Toys</div>
-              <h3>Tumbling Car</h3>
-            </div>
-            <div class="product-price">$20.00 <span>Display · $240 Case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAB42</div>
-            <h3>Tumbling Car</h3>
-            <ul class="product-specs">
-              <li>Display Qty <span>12 PC</span></li>
-              <li>Case Qty <span>144 PC</span></li>
-              <li>Display Price <span>$20.00</span></li>
-              <li>Case Price <span>$240.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- ERAA Gummies -->
-    <div class="product-card" data-cat="ERAA">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Earth Gummy">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">Bulk Gummy</div>
-              <h3>Earth Gummy (Grape/Blue)</h3>
-            </div>
-            <div class="product-price">$99.00 <span>/ 22 lbs box</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAA19</div>
-            <h3>Earth Gummy — Grape/Blue</h3>
-            <ul class="product-specs">
-              <li>Box Weight <span>22 lbs</span></li>
-              <li>Price per lb <span>$4.50</span></li>
-              <li>Box Price <span>$99.00</span></li>
-              <li>Flavour <span>Grape / Blue</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAA">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gyro Gummy">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">Bulk Gummy</div>
-              <h3>Gyro Gummy</h3>
-            </div>
-            <div class="product-price">$99.00 <span>/ 22 lbs box</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAA13</div>
-            <h3>Gyro Gummy</h3>
-            <ul class="product-specs">
-              <li>Box Weight <span>22 lbs</span></li>
-              <li>Price per lb <span>$4.50</span></li>
-              <li>Box Price <span>$99.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="ERAA">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Football Gummy">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">Bulk Gummy</div>
-              <h3>Football Gummy (Cheese/Yellow)</h3>
-            </div>
-            <div class="product-price">$99.00 <span>/ 22 lbs box</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">ERAA09</div>
-            <h3>Football Gummy — Cheese/Yellow</h3>
-            <ul class="product-specs">
-              <li>Box Weight <span>22 lbs</span></li>
-              <li>Price per lb <span>$4.50</span></li>
-              <li>Box Price <span>$99.00</span></li>
-              <li>Flavour <span>Cheese / Yellow</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Hello Kitty -->
-    <div class="product-card" data-cat="HK">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Candy Set">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">Hello Kitty</div>
-              <h3>Hello Kitty Candy Set</h3>
-            </div>
-            <div class="product-price">$60.00 <span>/ 24 pcs case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">HKS1</div>
-            <h3>Hello Kitty Candy Set</h3>
-            <ul class="product-specs">
-              <li>Case Qty <span>24 pcs</span></li>
-              <li>Per Unit <span>$2.50</span></li>
-              <li>Case Price <span>$60.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="HK">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Lollipop">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">Hello Kitty</div>
-              <h3>Hello Kitty Lollipop</h3>
-            </div>
-            <div class="product-price">$45.00 <span>/ 100 pcs case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">LOL16HK</div>
-            <h3>Hello Kitty Lollipop</h3>
-            <ul class="product-specs">
-              <li>Case Qty <span>100 pcs</span></li>
-              <li>Per Unit <span>$0.45</span></li>
-              <li>Case Price <span>$45.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Premium -->
-    <div class="product-card" data-cat="Premium">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Kinder Joy">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">Premium Brand</div>
-              <h3>Kinder Joy Holiday Mixed Display</h3>
-            </div>
-            <div class="product-price">$180.00 <span>/ 120 pcs</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">KYJ120</div>
-            <h3>Kinder Joy Holiday Mixed Display</h3>
-            <ul class="product-specs">
-              <li>Qty <span>120 pcs</span></li>
-              <li>Per Unit <span>$1.50</span></li>
-              <li>Case Price <span>$180.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card" data-cat="Premium">
-      <div class="product-card-inner">
-        <div class="product-front">
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Ferrero Nutella">
-          <div class="product-front-body">
-            <div>
-              <div class="product-cat-label">Premium Brand</div>
-              <h3>Ferrero Nutella &amp; Go</h3>
-            </div>
-            <div class="product-price">$192.00 <span>/ 96 pcs case</span></div>
-          </div>
-        </div>
-        <div class="product-back">
-          <div>
-            <div class="product-back-id">NUTBS</div>
-            <h3>Ferrero Nutella &amp; Go</h3>
-            <ul class="product-specs">
-              <li>Case Qty <span>96 pcs</span></li>
-              <li>Per Unit <span>$2.00</span></li>
-              <li>Case Price <span>$192.00</span></li>
-            </ul>
-          </div>
-          <a href="https://candyeraus.com/shop/" class="btn-add">Order Now →</a>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /products-grid -->
-</section>
-
-<!-- ══════ GUMMIES FEATURE ══════ -->
-<section class="gummies">
-  <div class="gummies-layout">
+  <div class="inner what-grid">
     <div class="reveal">
-      <div class="section-tag">Bulk Candy</div>
-      <h2 class="section-title">ERAA Gummy<br>Collection</h2>
-      <p class="section-sub">Premium bulk gummy candy, sold in 22-lb boxes at $4.50 per pound. Perfect for candy dispensers, pick-and-mix stations, and retail displays.</p>
-      <a href="https://candyeraus.com/product-category/eraa/" class="btn btn-primary" style="margin-top:32px; display:inline-flex;">
-        View All Gummies →
+      <div class="sec-label">What We Do</div>
+      <h2 class="sec-title">Wholesale Candy &amp;<br>Novelty Toys</h2>
+      <p class="sec-sub">We supply candy stores, convenience shops and retailers across Australia with bulk candy, novelty toys, and branded products — at competitive wholesale prices.</p>
+      <div class="what-cards">
+        <div class="feat reveal d1"><div class="feat-icon">🍬</div><h4>Bulk Candy</h4><p>Premium gummies in 22-lb boxes. Sold by weight with multiple flavours.</p></div>
+        <div class="feat reveal d2"><div class="feat-icon">🚗</div><h4>Novelty Toys</h4><p>ERAB series sold by display (12 pcs) or full case (144 pcs).</p></div>
+        <div class="feat reveal d3"><div class="feat-icon">🏪</div><h4>Display Solutions</h4><p>Full lollipop display tables and counter displays to maximise sales.</p></div>
+        <div class="feat reveal d4"><div class="feat-icon">⭐</div><h4>Branded Products</h4><p>Kinder Joy, Ferrero, Hello Kitty — brands your customers love.</p></div>
+      </div>
+    </div>
+    <div class="what-right reveal d2">
+      <img class="wi-a" src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="ERAB Product"
+           onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+      <img class="wi-b" src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy">
+      <div class="wi-pill"><b>30+</b>SKUs Available</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CATEGORIES ══════════════════════════════════ -->
+<section class="cats" id="categories">
+  <div class="inner">
+    <div class="sec-label reveal">Our Categories</div>
+    <h2 class="sec-title reveal">Everything Sweet,<br>All in One Place</h2>
+    <div class="cats-grid">
+      <a href="https://candyeraus.com/product-category/erab/" class="cat-card reveal d1">
+        <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="ERAB Toys"
+             onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        <div class="cat-overlay">
+          <div class="cat-tag">Novelty Toys</div>
+          <div class="cat-name">ERAB Series</div>
+          <div class="cat-count">10+ items</div>
+        </div>
+      </a>
+      <a href="https://candyeraus.com/shop/" class="cat-card reveal d2">
+        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy Candy">
+        <div class="cat-overlay">
+          <div class="cat-tag">Bulk Gummy</div>
+          <div class="cat-name">ERAA Gummies</div>
+          <div class="cat-count">3 varieties</div>
+        </div>
+      </a>
+      <a href="https://candyeraus.com/shop/" class="cat-card reveal d3">
+        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty">
+        <div class="cat-overlay">
+          <div class="cat-tag">Licensed</div>
+          <div class="cat-name">Hello Kitty</div>
+          <div class="cat-count">Lollipops &amp; candy sets</div>
+        </div>
+      </a>
+      <a href="https://candyeraus.com/shop/" class="cat-card reveal d4">
+        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Premium Brands">
+        <div class="cat-overlay">
+          <div class="cat-tag">Premium</div>
+          <div class="cat-name">Kinder &amp; Ferrero</div>
+          <div class="cat-count">Top-shelf brands</div>
+        </div>
       </a>
     </div>
-    <div class="gummies-cards reveal reveal-delay-2">
-      <div class="gummy-card">
+  </div>
+</section>
+
+<!-- ══ PRODUCTS ════════════════════════════════════ -->
+<section class="products" id="products">
+  <div class="inner">
+    <div class="prod-head">
+      <div>
+        <div class="sec-label reveal">Full Catalogue</div>
+        <h2 class="sec-title reveal">Shop by Product</h2>
+      </div>
+      <div class="filters reveal">
+        <button class="filt on" data-f="all">All</button>
+        <button class="filt" data-f="ERAB">ERAB Toys</button>
+        <button class="filt" data-f="ERAA">Gummies</button>
+        <button class="filt" data-f="HK">Hello Kitty</button>
+        <button class="filt" data-f="PREM">Premium</button>
+      </div>
+    </div>
+
+    <div class="prod-grid" id="grid">
+
+      <!-- ERAB -->
+      <div class="pcard reveal" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" data-name="Off Road Racing Tiger Cars">360°</button>
+          <span class="sku-badge">ERAB46</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Off Road Racing Tiger Cars"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Off Road Racing Tiger Cars</div>
+            <div class="pcard-price">$20.00 <span>Display &nbsp;|&nbsp; $240.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">12 pc display</span><span class="pcard-spec">144 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/product/off-road-racing-tiger-cars/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d1" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" data-name="Dino Projector">360°</button>
+          <span class="sku-badge">ERAB37</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Dino Projector"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Dino Projector</div>
+            <div class="pcard-price">$30.00 <span>Display &nbsp;|&nbsp; $360.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">12 pc display</span><span class="pcard-spec">144 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d2" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" data-name="Drum Bear">360°</button>
+          <span class="sku-badge">ERAB47</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Drum Bear"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Drum Bear</div>
+            <div class="pcard-price">$22.50 <span>Display &nbsp;|&nbsp; $270.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">12 pc display</span><span class="pcard-spec">144 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d3" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab26.png" data-name="Dino Fan Tall">360°</button>
+          <span class="sku-badge">ERAB26</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab26.png" alt="Dino Fan Tall"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Dino Fan Tall</div>
+            <div class="pcard-price">$30.00 <span>Display &nbsp;|&nbsp; $180.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">6 pc display</span><span class="pcard-spec">72 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" data-name="Lightning Football">360°</button>
+          <span class="sku-badge">ERAB38</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Lightning Football"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Lightning Football</div>
+            <div class="pcard-price">$30.00 <span>Display &nbsp;|&nbsp; $360.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">12 pc display</span><span class="pcard-spec">144 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d1" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" data-name="Truck Toy">360°</button>
+          <span class="sku-badge">ERAB39</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Truck Toy"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Truck Toy</div>
+            <div class="pcard-price">$40.00 <span>Display &nbsp;|&nbsp; $480.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">12 pc display</span><span class="pcard-spec">144 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d2" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" data-name="Candy Car">360°</button>
+          <span class="sku-badge">ERAB44</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Candy Car"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Candy Car</div>
+            <div class="pcard-price">$20.00 <span>Display &nbsp;|&nbsp; $240.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">12 pc display</span><span class="pcard-spec">144 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d3" data-c="ERAB">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" data-name="Tumbling Car">360°</button>
+          <span class="sku-badge">ERAB42</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Tumbling Car"
+               onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">ERAB Toys</div>
+            <div class="pcard-name">Tumbling Car</div>
+            <div class="pcard-price">$20.00 <span>Display &nbsp;|&nbsp; $240.00 Case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">12 pc display</span><span class="pcard-spec">144 pc case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <!-- ERAA Gummies -->
+      <div class="pcard reveal" data-c="ERAA">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Earth Gummy">360°</button>
+          <span class="sku-badge">ERAA19</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Earth Gummy">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">Bulk Gummy</div>
+            <div class="pcard-name">Earth Gummy (Grape/Blue)</div>
+            <div class="pcard-price">$99.00 <span>/ 22 lbs box</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">$4.50 / lb</span><span class="pcard-spec">22 lbs/box</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d1" data-c="ERAA">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Gyro Gummy">360°</button>
+          <span class="sku-badge">ERAA13</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gyro Gummy">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">Bulk Gummy</div>
+            <div class="pcard-name">Gyro Gummy</div>
+            <div class="pcard-price">$99.00 <span>/ 22 lbs box</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">$4.50 / lb</span><span class="pcard-spec">22 lbs/box</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d2" data-c="ERAA">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Football Gummy">360°</button>
+          <span class="sku-badge">ERAA09</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Football Gummy">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">Bulk Gummy</div>
+            <div class="pcard-name">Football Gummy (Cheese/Yellow)</div>
+            <div class="pcard-price">$99.00 <span>/ 22 lbs box</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">$4.50 / lb</span><span class="pcard-spec">22 lbs/box</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <!-- Hello Kitty -->
+      <div class="pcard reveal" data-c="HK">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Hello Kitty Candy Set">360°</button>
+          <span class="sku-badge">HKS1</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Candy Set">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">Hello Kitty</div>
+            <div class="pcard-name">Hello Kitty Candy Set</div>
+            <div class="pcard-price">$60.00 <span>/ 24 pcs case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">$2.50 / unit</span><span class="pcard-spec">24 pcs/case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d1" data-c="HK">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Hello Kitty Lollipop">360°</button>
+          <span class="sku-badge">LOL16HK</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Lollipop">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">Hello Kitty</div>
+            <div class="pcard-name">Hello Kitty Lollipop</div>
+            <div class="pcard-price">$45.00 <span>/ 100 pcs case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">$0.45 / unit</span><span class="pcard-spec">100 pcs/case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <!-- Premium -->
+      <div class="pcard reveal" data-c="PREM">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Kinder Joy Holiday Display">360°</button>
+          <span class="sku-badge">KYJ120</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Kinder Joy">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">Premium Brand</div>
+            <div class="pcard-name">Kinder Joy Holiday Mixed Display</div>
+            <div class="pcard-price">$180.00 <span>/ 120 pcs</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">$1.50 / unit</span><span class="pcard-spec">120 pcs</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+      <div class="pcard reveal d1" data-c="PREM">
+        <div class="pcard-img-wrap">
+          <button class="badge-360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Ferrero Nutella & Go">360°</button>
+          <span class="sku-badge">NUTBS</span>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Ferrero Nutella & Go">
+        </div>
+        <div class="pcard-body">
+          <div>
+            <div class="pcard-cat">Premium Brand</div>
+            <div class="pcard-name">Ferrero Nutella &amp; Go</div>
+            <div class="pcard-price">$192.00 <span>/ 96 pcs case</span></div>
+            <div class="pcard-specs"><span class="pcard-spec">$2.00 / unit</span><span class="pcard-spec">96 pcs/case</span></div>
+          </div>
+          <a href="https://candyeraus.com/shop/" class="pcard-btn">Order Now</a>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+  </div>
+</section>
+
+<!-- ══ GUMMIES FEATURE ═════════════════════════════ -->
+<section class="gummies" id="gummies">
+  <div class="inner gummies-inner">
+    <div class="reveal">
+      <div class="sec-label">Bulk Candy</div>
+      <h2 class="sec-title">ERAA Gummy<br>Collection</h2>
+      <p class="sec-sub">Premium bulk gummy candy in 22-lb boxes at $4.50 per pound. Perfect for candy dispensers, pick-and-mix stations, and retail displays.</p>
+      <a href="https://candyeraus.com/shop/" class="btn-primary" style="margin-top:28px;display:inline-flex">View All Gummies →</a>
+    </div>
+    <div class="gum-cards reveal d2">
+      <div class="gum-card">
         <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Earth Gummy">
-        <div class="gummy-info">
+        <div class="gum-info">
           <h4>Earth Gummy</h4>
-          <p>ERAA19 · Grape / Blue · 22 lbs/box</p>
-          <div class="gummy-price">$99.00 <span class="gummy-per">per box</span></div>
+          <p>ERAA19 &nbsp;·&nbsp; Grape / Blue &nbsp;·&nbsp; 22 lbs/box</p>
+          <div class="gum-price">$99.00 <small>/ box</small></div>
         </div>
       </div>
-      <div class="gummy-card">
+      <div class="gum-card">
         <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gyro Gummy">
-        <div class="gummy-info">
+        <div class="gum-info">
           <h4>Gyro Gummy</h4>
-          <p>ERAA13 · 22 lbs/box</p>
-          <div class="gummy-price">$99.00 <span class="gummy-per">per box</span></div>
+          <p>ERAA13 &nbsp;·&nbsp; 22 lbs/box</p>
+          <div class="gum-price">$99.00 <small>/ box</small></div>
         </div>
       </div>
-      <div class="gummy-card">
+      <div class="gum-card">
         <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Football Gummy">
-        <div class="gummy-info">
+        <div class="gum-info">
           <h4>Football Gummy</h4>
-          <p>ERAA09 · Cheese / Yellow · 22 lbs/box</p>
-          <div class="gummy-price">$99.00 <span class="gummy-per">per box</span></div>
+          <p>ERAA09 &nbsp;·&nbsp; Cheese / Yellow &nbsp;·&nbsp; 22 lbs/box</p>
+          <div class="gum-price">$99.00 <small>/ box</small></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════ DISPLAY TABLE FEATURE ══════ -->
-<section class="display-feature">
-  <img class="display-img reveal"
-       src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png"
-       alt="Lollipop Display Table">
-  <div class="reveal reveal-delay-2">
-    <div class="section-tag">Display Solutions</div>
-    <h2 class="section-title">Lollipop Round<br>Display Table</h2>
-    <div class="display-price">$600.00</div>
-    <p class="display-detail">Item #CD 01. A fully-stocked lollipop display table — ready for the shop floor. Maximise impulse purchases with a stunning visual centrepiece that sells itself.</p>
-    <a href="https://candyeraus.com/shop/" class="btn btn-primary" style="margin-top:32px; display:inline-flex;">
-      Enquire Now →
+<!-- ══ PREMIUM BRANDS ══════════════════════════════ -->
+<section class="premium">
+  <div class="inner">
+    <div class="sec-label reveal">Premium Brands</div>
+    <h2 class="sec-title reveal">Top-Shelf Products<br>Your Customers Love</h2>
+    <div class="prem-grid">
+      <div class="prem-card reveal d1">
+        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Kinder Joy">
+        <div>
+          <div class="prem-sku">KYJ120</div>
+          <div class="prem-name">Kinder Joy Holiday Mixed Display</div>
+          <div class="prem-detail">120 pieces · $1.50 per unit · Ready-to-display</div>
+          <div class="prem-price">$180.00</div>
+        </div>
+      </div>
+      <div class="prem-card reveal d2">
+        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Ferrero Nutella">
+        <div>
+          <div class="prem-sku">NUTBS</div>
+          <div class="prem-name">Ferrero Nutella &amp; Go</div>
+          <div class="prem-detail">96 pieces · $2.00 per unit · Case packed</div>
+          <div class="prem-price">$192.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DISPLAY TABLE ═══════════════════════════════ -->
+<section class="display-sec" style="padding:88px 5%">
+  <div class="display-inner">
+    <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Lollipop Display Table" class="reveal">
+    <div class="display-content reveal d2">
+      <div class="sec-label">Display Solutions</div>
+      <h2 class="sec-title">Lollipop Round<br>Display Table</h2>
+      <div class="display-price">$600.00</div>
+      <p class="display-detail">Item #CD 01. A fully-stocked lollipop display table — ready for the shop floor. Maximise impulse purchases with a stunning visual centrepiece.</p>
+      <a href="https://candyeraus.com/shop/" class="btn-white">Enquire Now →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ═════════════════════════════════════════ -->
+<section class="cta-sec">
+  <div class="inner">
+    <h2 class="reveal">Ready to Stock<br><span>Your Store?</span></h2>
+    <p class="reveal d1">Browse the full catalogue and place your wholesale order today. We ship Australia-wide.</p>
+    <a href="https://candyeraus.com/shop/" class="btn-primary reveal d2" style="display:inline-flex">
+      Shop the Full Catalogue →
     </a>
   </div>
 </section>
 
-<!-- ══════ CTA BANNER ══════ -->
-<section class="cta-banner">
-  <h2 class="reveal">Ready to Stock<br><span style="color:var(--green-lt)">Your Store?</span></h2>
-  <p class="reveal reveal-delay-1">Browse the full catalogue and place your wholesale order today. We ship Australia-wide.</p>
-  <a href="https://candyeraus.com/shop/" class="btn btn-primary reveal reveal-delay-2">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/></svg>
-    Shop the Full Catalogue
-  </a>
-</section>
-
-<!-- ══════ FOOTER ══════ -->
+<!-- ══ FOOTER ══════════════════════════════════════ -->
 <footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <img src="https://candyeraus.com/wp-content/uploads/2024/11/file-4.png" alt="Candy Era"
-           onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('afterbegin','<div style=\'font-family:var(--font-d);font-size:28px;color:#78a938;margin-bottom:20px\'>Candy Era</div>')">
-      <p>Sweet treats for everyone. Australia's wholesale candy and novelty toy supplier.</p>
-      <div class="social-links" style="margin-top:24px;">
-        <a href="#" class="social-link" title="Facebook">f</a>
-        <a href="#" class="social-link" title="Instagram">in</a>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="https://candyeraus.com/wp-content/uploads/2024/11/file-4.png" alt="Candy Era"
+             onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\'font-family:var(--font-d);font-size:24px;color:#9dcc54;margin-bottom:18px\'>🍬 Candy Era</div>')">
+        <p>Sweet treats for everyone. Australia's wholesale candy &amp; novelty toy supplier.</p>
+      </div>
+      <div>
+        <h5>Catalogue</h5>
+        <ul>
+          <li><a href="https://candyeraus.com/product-category/erab/">ERAB Toys</a></li>
+          <li><a href="https://candyeraus.com/shop/">ERAA Gummies</a></li>
+          <li><a href="https://candyeraus.com/shop/">Hello Kitty</a></li>
+          <li><a href="https://candyeraus.com/shop/">Kinder &amp; Ferrero</a></li>
+          <li><a href="https://candyeraus.com/shop/">Display Tables</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#what">What We Do</a></li>
+          <li><a href="https://candyeraus.com/shop/">Shop</a></li>
+          <li><a href="https://candyeraus.com/cart/">Cart</a></li>
+          <li><a href="https://candyeraus.com/checkout/">Checkout</a></li>
+          <li><a href="https://candyeraus.com/my-account/">My Account</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Order Info</h5>
+        <ul>
+          <li><a href="#">Wholesale Pricing</a></li>
+          <li><a href="#">Shipping Australia-wide</a></li>
+          <li><a href="#">Secure Checkout</a></li>
+          <li><a href="#">Stripe Payments</a></li>
+        </ul>
       </div>
     </div>
-    <div class="footer-col">
-      <h5>Catalogue</h5>
-      <ul>
-        <li><a href="https://candyeraus.com/product-category/erab/">ERAB Toys</a></li>
-        <li><a href="https://candyeraus.com/product-category/eraa/">ERAA Gummies</a></li>
-        <li><a href="https://candyeraus.com/shop/">Hello Kitty</a></li>
-        <li><a href="https://candyeraus.com/shop/">Kinder &amp; Ferrero</a></li>
-        <li><a href="https://candyeraus.com/shop/">Display Tables</a></li>
-      </ul>
+    <div class="foot-bottom">
+      <p>© 2025 Candy Era Australia — Sweet treats for everyone!</p>
+      <p>Powered by WooCommerce &amp; Stripe</p>
     </div>
-    <div class="footer-col">
-      <h5>Quick Links</h5>
-      <ul>
-        <li><a href="https://candyeraus.com/#what">What We Do</a></li>
-        <li><a href="https://candyeraus.com/shop/">Shop</a></li>
-        <li><a href="https://candyeraus.com/cart/">Cart</a></li>
-        <li><a href="https://candyeraus.com/checkout/">Checkout</a></li>
-        <li><a href="https://candyeraus.com/my-account/">My Account</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Order Info</h5>
-      <ul>
-        <li><a href="#">Minimum Orders</a></li>
-        <li><a href="#">Shipping Australia-wide</a></li>
-        <li><a href="#">Wholesale Pricing</a></li>
-        <li><a href="#">Secure Checkout</a></li>
-        <li><a href="https://candyeraus.com/shop/">Browse All Products</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2025 Candy Era Australia — Sweet treats for everyone!</p>
-    <p style="color:rgba(255,255,255,.25)">Powered by WooCommerce &amp; Stripe</p>
   </div>
 </footer>
 
-<!-- ══════ 360° VIEWER MODAL ══════ -->
-<div class="viewer-overlay" id="viewerOverlay">
-  <div class="viewer-box">
-    <div class="viewer-header">
-      <span class="viewer-title" id="viewerTitle">Product View</span>
-      <button class="viewer-close" id="viewerClose">✕</button>
+<!-- ══ 360° MODAL ══════════════════════════════════ -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-ttl" id="mttl">Product 360° View</span>
+      <button class="modal-close" id="mclose">✕</button>
     </div>
-    <div class="viewer-stage" id="viewerStage">
-      <div class="viewer-img-wrap" id="viewerImgWrap">
-        <img id="viewerImg" src="" alt="">
+    <div class="modal-stage" id="mstage">
+      <div class="modal-wrap" id="mwrap">
+        <img id="mimg" src="" alt="">
       </div>
-      <div class="viewer-ring" id="viewerRing">
-        <span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span>
-      </div>
+    </div>
+    <div class="modal-ring" id="mring">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
     </div>
   </div>
 </div>
 
 <script>
-(function() {
-  /* ── Cursor ── */
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursorRing');
-  let rx = 0, ry = 0, cx = 0, cy = 0;
-
-  document.addEventListener('mousemove', e => {
-    cx = e.clientX; cy = e.clientY;
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
-  });
-  function animateRing() {
-    rx += (cx - rx) * 0.12;
-    ry += (cy - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  document.querySelectorAll('a, button, .product-card, .cat-card, .feature-card, .gummy-card').forEach(el => {
-    el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
-    el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
-  });
-
-  /* ── Scroll Progress ── */
-  const bar = document.getElementById('progress');
-  const hdr = document.getElementById('header');
+(function(){
+  /* Progress bar */
+  const bar = document.getElementById('bar');
+  const hdr = document.getElementById('hdr');
   window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const total = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = (scrolled / total * 100) + '%';
-    hdr.classList.toggle('sticky', scrolled > 60);
-  }, { passive: true });
+    const s = window.scrollY, h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (s/h*100) + '%';
+    hdr.classList.toggle('scrolled', s > 50);
+  }, {passive:true});
 
-  /* ── Intersection Observer (reveal) ── */
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
+  /* Reveal */
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }});
+  }, {threshold:.1, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  /* ── Stats counter ── */
-  const statsIo = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('visible');
-      e.target.querySelectorAll('.stat-num').forEach(num => {
-        const target = +num.dataset.target;
-        let current = 0;
-        const step = target / 50;
+  /* Stats counter */
+  const sio = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if(!e.isIntersecting) return;
+      e.target.querySelectorAll('.stat-num').forEach(n => {
+        const t = +n.dataset.t; let c = 0;
+        const step = Math.max(t/60, 1);
         const timer = setInterval(() => {
-          current = Math.min(current + step, target);
-          num.textContent = Math.floor(current) + (target > 50 ? '+' : '');
-          if (current >= target) clearInterval(timer);
-        }, 30);
+          c = Math.min(c+step, t);
+          n.textContent = Math.floor(c) + (t >= 22 ? '+' : '');
+          if(c >= t) clearInterval(timer);
+        }, 24);
       });
-      statsIo.unobserve(e.target);
+      sio.unobserve(e.target);
     });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.stat-item').forEach(el => statsIo.observe(el));
+  }, {threshold:.6});
+  document.querySelectorAll('.stats-inner').forEach(el => sio.observe(el));
 
-  /* ── Product filter tabs ── */
-  const tabs  = document.querySelectorAll('.filter-tab');
-  const cards = document.querySelectorAll('.product-card');
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const filter = tab.dataset.filter;
-      cards.forEach(card => {
-        const match = filter === 'all' || card.dataset.cat === filter;
-        card.style.display = match ? '' : 'none';
-        if (match) {
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(20px)';
-          requestAnimationFrame(() => {
-            card.style.transition = 'opacity .4s ease, transform .4s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          });
-        }
-      });
+  /* Filter tabs */
+  const filts = document.querySelectorAll('.filt');
+  const cards = document.querySelectorAll('.pcard');
+  filts.forEach(f => f.addEventListener('click', () => {
+    filts.forEach(x => x.classList.remove('on'));
+    f.classList.add('on');
+    const v = f.dataset.f;
+    cards.forEach((c, i) => {
+      const show = v === 'all' || c.dataset.c === v;
+      c.style.display = show ? '' : 'none';
+      if(show){
+        c.style.opacity = 0;
+        c.style.transform = 'translateY(16px)';
+        setTimeout(() => {
+          c.style.transition = 'opacity .4s ease, transform .4s ease';
+          c.style.opacity = 1;
+          c.style.transform = 'translateY(0)';
+        }, i * 40);
+      }
     });
-  });
+  }));
 
-  /* ── Smooth anchor scroll ── */
+  /* Smooth anchors */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const t = document.querySelector(a.getAttribute('href'));
-      if (!t) return;
-      e.preventDefault();
-      const top = t.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
+      if(!t) return; e.preventDefault();
+      window.scrollTo({top: t.getBoundingClientRect().top + scrollY - 80, behavior:'smooth'});
     });
   });
 
-  /* ── Active nav link ── */
-  const sections = document.querySelectorAll('section[id], div[id]');
-  const navLinks  = document.querySelectorAll('nav a[href^="#"]');
-  const navIo = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        const link = document.querySelector(`nav a[href="#${e.target.id}"]`);
-        if (link) link.classList.add('active');
-      }
-    });
-  }, { threshold: 0.4 });
-  sections.forEach(s => navIo.observe(s));
+  /* 360° Viewer */
+  const modal = document.getElementById('modal');
+  const mimg  = document.getElementById('mimg');
+  const mttl  = document.getElementById('mttl');
+  const mwrap = document.getElementById('mwrap');
+  const mstage= document.getElementById('mstage');
+  const mring = document.getElementById('mring');
+  const dots  = mring.querySelectorAll('span');
+  let drag=false, sx=0, rotY=0, anim=null;
 
-  /* ── 360° Viewer ── */
-  const overlay  = document.getElementById('viewerOverlay');
-  const viewImg  = document.getElementById('viewerImg');
-  const viewTitle= document.getElementById('viewerTitle');
-  const imgWrap  = document.getElementById('viewerImgWrap');
-  const stage    = document.getElementById('viewerStage');
-  const ring     = document.getElementById('viewerRing');
-  const ringDots = ring.querySelectorAll('span');
-  const closeBtn = document.getElementById('viewerClose');
-
-  let isDragging = false, startX = 0, rotY = 0, rotX = 0, autoAnim = null;
-
-  function openViewer(imgSrc, name) {
-    viewImg.src = imgSrc;
-    viewTitle.textContent = name;
-    overlay.classList.add('open');
-    rotY = 0; rotX = 0;
-    imgWrap.style.transform = '';
-    document.body.style.overflow = 'hidden';
-    startAutoSpin();
+  function openModal(img, name){
+    mimg.src = img; mttl.textContent = name + ' — 360° View';
+    modal.classList.add('open');
+    document.body.style.overflow='hidden';
+    rotY=0; spin();
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.style.overflow='';
+    clearInterval(anim);
+  }
+  function setRot(deg){
+    mwrap.style.transform = `perspective(700px) rotateY(${deg}deg)`;
+    const idx = Math.floor(((deg%360+360)%360)/360*dots.length);
+    dots.forEach((d,i) => d.classList.toggle('a', i===idx));
+  }
+  function spin(){
+    clearInterval(anim);
+    let d = rotY;
+    anim = setInterval(() => { if(!drag){ d+=0.9; rotY=d; setRot(d); } }, 16);
   }
 
-  function closeViewer() {
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-    stopAutoSpin();
-  }
+  mstage.addEventListener('mousedown', e => { drag=true; sx=e.clientX; clearInterval(anim); });
+  mstage.addEventListener('touchstart', e => { drag=true; sx=e.touches[0].clientX; clearInterval(anim); }, {passive:true});
+  window.addEventListener('mousemove', e => { if(!drag) return; rotY+=(e.clientX-sx)*.7; sx=e.clientX; setRot(rotY); });
+  window.addEventListener('touchmove', e => { if(!drag) return; rotY+=(e.touches[0].clientX-sx)*.7; sx=e.touches[0].clientX; setRot(rotY); }, {passive:true});
+  window.addEventListener('mouseup', () => { if(drag){ drag=false; spin(); } });
+  window.addEventListener('touchend', () => { if(drag){ drag=false; spin(); } });
 
-  function startAutoSpin() {
-    let deg = 0;
-    autoAnim = setInterval(() => {
-      if (isDragging) return;
-      deg += 0.8;
-      const yRad = deg * Math.PI / 180;
-      imgWrap.style.transform = `
-        rotateY(${deg}deg)
-        perspective(600px)
-      `;
-      // Update ring indicator
-      const idx = Math.floor(((deg % 360) / 360) * ringDots.length);
-      ringDots.forEach((d,i) => d.classList.toggle('active', i === idx));
-    }, 16);
-  }
-
-  function stopAutoSpin() {
-    clearInterval(autoAnim);
-  }
-
-  // Drag to rotate
-  stage.addEventListener('mousedown', e => {
-    isDragging = true;
-    startX = e.clientX;
-    stopAutoSpin();
-    stage.style.cursor = 'grabbing';
+  document.querySelectorAll('.badge-360').forEach(b => {
+    b.addEventListener('click', e => { e.stopPropagation(); openModal(b.dataset.img, b.dataset.name); });
   });
-
-  stage.addEventListener('touchstart', e => {
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    stopAutoSpin();
-  }, { passive: true });
-
-  window.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    const dx = e.clientX - startX;
-    rotY += dx * 0.6;
-    startX = e.clientX;
-    imgWrap.style.transform = `rotateY(${rotY}deg) perspective(600px)`;
-    const norm = ((rotY % 360) + 360) % 360;
-    const idx = Math.floor((norm / 360) * ringDots.length);
-    ringDots.forEach((d,i) => d.classList.toggle('active', i === idx));
-  });
-
-  window.addEventListener('touchmove', e => {
-    if (!isDragging) return;
-    const dx = e.touches[0].clientX - startX;
-    rotY += dx * 0.6;
-    startX = e.touches[0].clientX;
-    imgWrap.style.transform = `rotateY(${rotY}deg) perspective(600px)`;
-  }, { passive: true });
-
-  function endDrag() {
-    if (!isDragging) return;
-    isDragging = false;
-    stage.style.cursor = 'ew-resize';
-    // Resume auto spin from current angle
-    let deg = rotY;
-    autoAnim = setInterval(() => {
-      deg += 0.8;
-      imgWrap.style.transform = `rotateY(${deg}deg) perspective(600px)`;
-      const idx = Math.floor(((deg % 360 + 360) % 360 / 360) * ringDots.length);
-      ringDots.forEach((d,i) => d.classList.toggle('active', i === idx));
-    }, 16);
-  }
-
-  window.addEventListener('mouseup', endDrag);
-  window.addEventListener('touchend', endDrag);
-
-  // Open on 360° button click
-  document.querySelectorAll('.btn-360').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      openViewer(btn.dataset.img, btn.dataset.name);
-    });
-  });
-
-  closeBtn.addEventListener('click', closeViewer);
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeViewer(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
+  document.getElementById('mclose').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 
 })();
 </script>
