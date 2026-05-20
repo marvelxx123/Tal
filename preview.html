@@ -6,28 +6,40 @@
 <title>Candy Era — Sweet Treats for Everyone!</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ══ TOKENS ══════════════════════════════════════════ */
-:root {
-  --lime:    #7BC42A;
-  --lime-lt: #E8F8CC;
-  --pink:    #FF2D9B;
-  --pink-lt: #FFE6F5;
-  --yellow:  #FFD600;
-  --yello-lt:#FFFBE0;
-  --orange:  #FF7A1A;
-  --purple:  #9B2FE2;
-  --sky:     #00B8F0;
-  --sky-lt:  #E0F7FF;
-  --teal:    #00C9A7;
-  --red:     #FF3355;
-  --white:   #FFFFFF;
-  --cream:   #FFFDF7;
-  --dark:    #1C1C2E;
-  --gray:    #6B7280;
-  --font-d:  'Fredoka One', cursive;
-  --font-b:  'DM Sans', sans-serif;
-  --ease:    cubic-bezier(0.34,1.56,0.64,1);
-  --ease2:   cubic-bezier(0.22,1,0.36,1);
+/* ── TOKENS ──────────────────────────────────────── */
+:root{
+  --lime:   #6DBF2A;
+  --lime2:  #55a01e;
+  --lime-l: #EAFBD0;
+  --pink:   #FF2D9B;
+  --pink2:  #d4007a;
+  --pink-l: #FFE5F5;
+  --sky:    #00B4F0;
+  --sky2:   #0090cc;
+  --sky-l:  #DCEEFF; /* changed from sky-tint to avoid confusion */
+  --ylw:    #FFD600;
+  --ylw2:   #e0bc00;
+  --ylw-l:  #FFFBD6;
+  --org:    #FF6B1A;
+  --org2:   #cc4f00;
+  --org-l:  #FFF0E6;
+  --pur:    #8B2FE2;
+  --pur2:   #6a1fbf;
+  --pur-l:  #F3EEFF;
+  --teal:   #00C49A;
+  --red:    #FF3355;
+  --dark:   #1C1C2E;
+  --gray:   #6B7280;
+  --bdr:    #1C1C2E;
+  --white:  #FFFFFF;
+  --cream:  #FFFDF5;
+  --font-d: 'Fredoka One',cursive;
+  --font-b: 'DM Sans',sans-serif;
+  --ease:   cubic-bezier(0.34,1.56,0.64,1);
+  --ease2:  cubic-bezier(0.22,1,0.36,1);
+  /* Pop shadow — offset solid border shadow */
+  --pop: 4px 4px 0 var(--bdr);
+  --pop-lg: 6px 6px 0 var(--bdr);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -35,534 +47,551 @@ html{scroll-behavior:smooth}
 body{font-family:var(--font-b);background:var(--white);color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 img{max-width:100%;height:auto;display:block}
 a{text-decoration:none;color:inherit}
+button{font-family:var(--font-b)}
 
-/* ══ PROGRESS BAR ════════════════════════════════════ */
+/* ── PROGRESS BAR ────────────────────────────────── */
 #bar{
   position:fixed;top:0;left:0;height:4px;width:0;z-index:99999;
-  background:linear-gradient(90deg,var(--lime),var(--yellow),var(--orange),var(--pink),var(--purple),var(--sky));
-  border-radius:0 3px 3px 0;
-  transition:width .08s linear;
+  background:linear-gradient(90deg,var(--lime),var(--ylw),var(--pink),var(--sky),var(--pur));
+  border-radius:0 3px 3px 0;transition:width .08s linear;
 }
 
-/* ══ FLOATING CANDY BACKGROUND ══════════════════════ */
-.candy-floats{
-  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+/* ── FLOATING CANDY BG ───────────────────────────── */
+.floats{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.fc{
+  position:absolute;font-size:22px;opacity:.12;
+  animation:fdrift linear infinite;
+  will-change:transform;
 }
-.candy-float{
-  position:absolute;font-size:28px;opacity:.18;
-  animation:floatDrift linear infinite;
-  filter:saturate(1.4);
-}
-@keyframes floatDrift{
-  0%   {transform:translateY(110vh) rotate(0deg);opacity:0}
-  5%   {opacity:.18}
-  95%  {opacity:.18}
-  100% {transform:translateY(-10vh) rotate(360deg);opacity:0}
+@keyframes fdrift{
+  0%  {transform:translateY(105vh) rotate(0deg);opacity:0}
+  4%  {opacity:.12}
+  96% {opacity:.12}
+  100%{transform:translateY(-8vh)  rotate(380deg);opacity:0}
 }
 
-/* ══ HEADER ══════════════════════════════════════════ */
+/* ── HEADER ──────────────────────────────────────── */
 header{
-  position:sticky;top:0;z-index:1000;
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(20px);
-  border-bottom:2px solid transparent;
-  transition:border-color .3s,box-shadow .3s;
+  position:sticky;top:0;z-index:999;
+  background:var(--white);
+  border-bottom:2.5px solid var(--bdr);
+  box-shadow:0 3px 0 var(--bdr);
+  transition:box-shadow .3s;
 }
-header.s{
-  border-bottom-color:var(--lime-lt);
-  box-shadow:0 4px 24px rgba(123,196,42,.12);
-}
-.hdr{max-width:1300px;margin:0 auto;padding:0 5%;height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-
-.logo img{height:52px;object-fit:contain}
-
-nav{display:flex;align-items:center;gap:2px}
+.hdr{max-width:1300px;margin:0 auto;padding:0 5%;height:70px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo img{height:50px;object-fit:contain;display:block}
+nav{display:flex;gap:2px;align-items:center}
 .nl{
-  font-family:var(--font-d);font-size:16px;color:var(--dark);
+  font-family:var(--font-d);font-size:15px;color:var(--dark);
   padding:8px 16px;border-radius:50px;
-  transition:color .2s,background .2s,transform .2s;
-  position:relative;
+  transition:background .15s,color .15s,transform .2s var(--ease);
 }
-.nl:hover{color:var(--lime);background:var(--lime-lt);transform:translateY(-2px)}
-.nl::after{
-  content:'';position:absolute;bottom:4px;left:50%;right:50%;
-  height:2px;background:var(--lime);border-radius:2px;
-  transition:left .2s var(--ease2),right .2s var(--ease2);
-}
-.nl:hover::after{left:16px;right:16px}
-
-.hdr-cart{
+.nl:hover{background:var(--lime-l);color:var(--lime2);transform:translateY(-2px)}
+.hbtn{
   font-family:var(--font-d);font-size:15px;
-  background:linear-gradient(135deg,var(--lime),var(--teal));
-  color:#fff;padding:10px 24px;border-radius:50px;
+  background:var(--lime);color:#fff;
+  padding:10px 24px;border-radius:50px;
+  border:2.5px solid var(--bdr);
+  box-shadow:3px 3px 0 var(--bdr);
   display:flex;align-items:center;gap:8px;
-  box-shadow:0 4px 16px rgba(123,196,42,.35);
   transition:transform .2s var(--ease),box-shadow .2s;
+  cursor:pointer;
 }
-.hdr-cart:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 8px 28px rgba(123,196,42,.5)}
+.hbtn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--bdr)}
+.hbtn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--bdr)}
 
-/* ══ HERO ════════════════════════════════════════════ */
+/* ── HERO ────────────────────────────────────────── */
 .hero{
-  position:relative;overflow:hidden;
-  background:var(--cream);
-  padding:90px 5% 0;
-  min-height:90vh;
-  display:flex;align-items:center;
+  background:var(--cream);padding:80px 5% 120px;
+  position:relative;overflow:hidden;z-index:1;
+  clip-path:polygon(0 0,100% 0,100% 88%,0 100%);
 }
+.hero-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
 
-/* Rainbow confetti dots bg */
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background-image:
-    radial-gradient(circle 6px at 8% 20%,  rgba(123,196,42,.25) 0%,transparent 100%),
-    radial-gradient(circle 8px at 92% 15%, rgba(255,45,155,.2) 0%,transparent 100%),
-    radial-gradient(circle 5px at 20% 80%, rgba(0,184,240,.2) 0%,transparent 100%),
-    radial-gradient(circle 7px at 80% 75%, rgba(255,214,0,.3) 0%,transparent 100%),
-    radial-gradient(circle 400px at 85% 40%,rgba(123,196,42,.06) 0%,transparent 70%),
-    radial-gradient(circle 300px at 10% 60%,rgba(255,45,155,.05) 0%,transparent 70%);
-  pointer-events:none;
-}
-
-.hero-inner{
-  max-width:1300px;margin:0 auto;width:100%;
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:48px;align-items:center;
-  position:relative;z-index:1;
-  padding-bottom:80px;
-}
-
-.hero-pill{
+/* Rainbow text badge */
+.hero-tag{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--lime-lt);color:var(--lime);
-  border:2px solid rgba(123,196,42,.3);
-  font-family:var(--font-b);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  padding:7px 18px;border-radius:50px;margin-bottom:20px;
+  background:var(--ylw-l);color:var(--ylw2);
+  border:2.5px solid var(--ylw2);
+  font-family:var(--font-b);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 16px;border-radius:50px;margin-bottom:20px;
+  box-shadow:2px 2px 0 var(--ylw2);
 }
-
 .hero h1{
-  font-family:var(--font-d);
-  font-size:clamp(48px,6vw,84px);
-  line-height:1.03;letter-spacing:-.01em;
-  color:var(--dark);margin-bottom:20px;
+  font-family:var(--font-d);font-size:clamp(46px,5.5vw,80px);
+  line-height:1.03;letter-spacing:-.01em;color:var(--dark);margin-bottom:18px;
 }
-.hero h1 .w1{color:var(--lime)}
-.hero h1 .w2{color:var(--pink)}
-.hero h1 .w3{color:var(--sky)}
-
-.hero p{font-size:18px;color:var(--gray);line-height:1.7;max-width:440px;margin-bottom:36px}
-
+.c1{color:var(--lime)}
+.c2{color:var(--pink)}
+.c3{color:var(--sky)}
+.hero p{font-size:17px;color:var(--gray);line-height:1.75;max-width:440px;margin-bottom:32px}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap}
-.btn-main{
-  font-family:var(--font-d);font-size:17px;
-  background:linear-gradient(135deg,var(--lime) 0%,var(--teal) 100%);
-  color:#fff;padding:16px 36px;border-radius:50px;border:none;cursor:pointer;
-  box-shadow:0 6px 24px rgba(123,196,42,.4);
-  transition:transform .25s var(--ease),box-shadow .25s;
-  display:inline-flex;align-items:center;gap:10px;
-  text-decoration:none;
-}
-.btn-main:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 14px 36px rgba(123,196,42,.5)}
-.btn-out{
-  font-family:var(--font-d);font-size:17px;
-  background:#fff;color:var(--dark);padding:16px 36px;border-radius:50px;
-  border:2.5px solid var(--dark);cursor:pointer;
-  transition:transform .25s var(--ease),border-color .2s,color .2s;
-  display:inline-flex;align-items:center;gap:10px;
-  text-decoration:none;
-}
-.btn-out:hover{transform:translateY(-4px) scale(1.04);border-color:var(--pink);color:var(--pink)}
 
-/* Hero visual side */
-.hero-visual{position:relative;height:520px}
-.hv-main{
+/* Pop buttons */
+.btn{
+  font-family:var(--font-d);font-size:16px;
+  padding:14px 32px;border-radius:50px;
+  border:2.5px solid var(--bdr);
+  box-shadow:var(--pop);
+  cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+  transition:transform .2s var(--ease),box-shadow .2s;
+  text-decoration:none;
+}
+.btn:hover{transform:translate(-2px,-3px);box-shadow:var(--pop-lg)}
+.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--bdr)}
+.btn-lime{background:var(--lime);color:#fff}
+.btn-lime:hover{background:var(--lime2)}
+.btn-ghost{background:var(--white);color:var(--dark)}
+
+/* Hero visual */
+.hero-right{position:relative;height:480px}
+.hero-img{
   position:absolute;top:0;right:0;
-  width:74%;height:82%;object-fit:cover;
-  border-radius:30px 30px 30px 70px;
-  box-shadow:0 32px 80px rgba(0,0,0,.13);
-  filter:brightness(1.04) contrast(1.07) saturate(1.2);
-  animation:imgFloat 5s ease-in-out infinite;
+  width:72%;height:78%;
+  border-radius:24px;
+  border:2.5px solid var(--bdr);
+  box-shadow:var(--pop-lg);
+  overflow:hidden;
+  animation:hfloat 4.5s ease-in-out infinite;
 }
-@keyframes imgFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-12px)}
-}
-.hv-sm{
-  position:absolute;bottom:10px;left:0;
-  width:50%;height:48%;object-fit:cover;
-  border-radius:20px;
-  border:5px solid #fff;
-  box-shadow:0 16px 48px rgba(0,0,0,.12);
-  filter:brightness(1.05) contrast(1.08) saturate(1.25);
-  animation:imgFloat 5s 1s ease-in-out infinite;
-}
+@keyframes hfloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-12px) rotate(1deg)}}
+.hero-img img{width:100%;height:100%;object-fit:cover;filter:brightness(1.05) contrast(1.07) saturate(1.2)}
 
-/* Floating candy badges around the image */
-.hv-badge{
-  position:absolute;background:#fff;border-radius:16px;
-  padding:10px 16px;box-shadow:0 8px 28px rgba(0,0,0,.12);
-  display:flex;align-items:center;gap:8px;z-index:3;
-  animation:badgeBounce 3s ease-in-out infinite;
+.hero-sm{
+  position:absolute;bottom:16px;left:0;
+  width:48%;height:46%;
+  border-radius:20px;border:2.5px solid var(--bdr);
+  box-shadow:var(--pop);overflow:hidden;
+  background:var(--ylw-l);
+  animation:hfloat 4.5s 1.5s ease-in-out infinite;
 }
-@keyframes badgeBounce{
-  0%,100%{transform:translateY(0) rotate(-2deg)}
-  50%{transform:translateY(-8px) rotate(2deg)}
-}
-.hv-b1{top:16%;left:2%;animation-delay:0s}
-.hv-b2{bottom:22%;right:2%;animation-delay:1.2s;border:2px solid var(--lime-lt)}
-.hv-badge span{font-family:var(--font-d);font-size:13px;color:var(--dark)}
-.hv-badge strong{color:var(--lime);display:block;font-size:18px}
+.hero-sm img{width:100%;height:100%;object-fit:cover;filter:brightness(1.05) contrast(1.08) saturate(1.25)}
 
-/* ══ WAVE DIVIDERS ═══════════════════════════════════ */
-.wave{display:block;width:100%;line-height:0;position:relative;z-index:1}
-.wave svg{display:block;width:100%}
+/* Floating badges */
+.hbadge{
+  position:absolute;background:var(--white);
+  border:2.5px solid var(--bdr);border-radius:14px;
+  padding:10px 16px;box-shadow:var(--pop);
+  display:flex;align-items:center;gap:10px;z-index:3;
+  animation:bbounce 3s ease-in-out infinite;
+}
+@keyframes bbounce{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+.hb1{top:12%;left:0;animation-delay:0s}
+.hb2{bottom:18%;right:2%;animation-delay:1.3s}
+.hbadge .icon{font-size:24px}
+.hbadge .txt strong{display:block;font-family:var(--font-d);font-size:18px;color:var(--lime)}
+.hbadge .txt span{font-size:12px;color:var(--gray)}
 
-/* ══ STATS BAND ══════════════════════════════════════ */
-.stats-band{
-  background:linear-gradient(135deg,var(--lime) 0%,var(--teal) 100%);
-  padding:32px 5%;position:relative;z-index:1;
+/* ── STATS BAND ──────────────────────────────────── */
+.stats{
+  background:var(--lime);
+  border-top:2.5px solid var(--bdr);
+  border-bottom:2.5px solid var(--bdr);
+  padding:28px 5%;
+  position:relative;z-index:2;margin-top:-2px;
 }
-.stats-inner{
-  max-width:1300px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  text-align:center;
-}
-.si{padding:10px 16px;border-right:1px solid rgba(255,255,255,.25)}
+.s-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.si{padding:8px 16px;border-right:2px solid rgba(0,0,0,.2)}
 .si:last-child{border:none}
-.sn{font-family:var(--font-d);font-size:48px;color:#fff;display:block;line-height:1}
-.sl{font-size:12px;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.sn{font-family:var(--font-d);font-size:46px;color:#fff;display:block;line-height:1}
+.sl{font-size:12px;color:rgba(255,255,255,.9);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;font-weight:600}
 
-/* ══ SHARED SECTION STYLES ════════════════════════════ */
-section{padding:90px 5%;position:relative;z-index:1}
-.inner{max-width:1300px;margin:0 auto}
-.st{font-family:var(--font-b);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.st::before{content:'';width:18px;height:3px;border-radius:2px;display:inline-block}
-.h2{font-family:var(--font-d);font-size:clamp(34px,4vw,58px);line-height:1.06;letter-spacing:-.01em;color:var(--dark)}
-.sub{font-size:17px;color:var(--gray);line-height:1.7;max-width:520px;margin-top:12px}
+/* ── SECTION TRANSITIONS (clip-path zig-zag) ──────── */
+/* Every section transition uses clip-path on the NEXT section
+   so the previous color "peeks" from behind */
+.sec{position:relative;z-index:1}
+.sec-cream{background:var(--cream)}
+.sec-ylw  {background:var(--ylw-l)}
+.sec-pink {background:var(--pink-l)}
+.sec-white{background:var(--white)}
+.sec-sky  {background:var(--sky-l)}   /* renamed from sec-sky-l */
+.sec-pur  {background:var(--pur-l)}
+.sec-org  {background:var(--org-l)}
+.sec-lime {background:var(--lime)}
+.sec-dark {background:var(--dark)}
 
-/* Reveal animation */
-.rv{opacity:0;transform:translateY(40px);transition:opacity .6s var(--ease2),transform .6s var(--ease2)}
-.rv.on{opacity:1;transform:translateY(0)}
+/* Diagonal cuts between sections */
+.cut-down { clip-path:polygon(0 0,100% 0,100% 92%,0 100%);padding-bottom:80px;margin-bottom:-1px }
+.cut-up   { clip-path:polygon(0 4%,100% 0,100% 100%,0 100%);padding-top:80px;margin-top:-1px }
+.cut-both { clip-path:polygon(0 4%,100% 0,100% 92%,0 100%);padding-top:80px;padding-bottom:80px }
+
+/* ── SECTION COMMON ─────────────────────────────────*/
+.inner{max-width:1300px;margin:0 auto;padding:88px 5%}
+.inner.sm{padding-top:72px;padding-bottom:72px}
+.stag{font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.stag::before{content:'';width:16px;height:3px;border-radius:2px;display:inline-block}
+.h2{font-family:var(--font-d);font-size:clamp(34px,4vw,56px);line-height:1.06;color:var(--dark)}
+.sub{font-size:17px;color:var(--gray);line-height:1.7;max-width:500px;margin-top:12px}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .6s var(--ease2),transform .6s var(--ease2)}
+.rv.on{opacity:1;transform:none}
 .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
 
-/* ══ WHAT WE DO ══════════════════════════════════════ */
-.what{background:var(--white)}
-.what .st{color:var(--lime)}
-.what .st::before{background:var(--lime)}
+/* ── WHAT WE DO ────────────────────────────────────── */
 .what-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
-
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
 .feat{
-  padding:24px;border-radius:20px;border:2px solid transparent;
-  transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;
+  padding:22px;border-radius:18px;
+  border:2.5px solid var(--bdr);box-shadow:var(--pop);
+  transition:transform .25s var(--ease),box-shadow .25s;
   cursor:default;
 }
-.feat:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 44px rgba(0,0,0,.08)}
-.feat:nth-child(1){background:var(--lime-lt);border-color:rgba(123,196,42,.3)}
-.feat:nth-child(2){background:var(--pink-lt);border-color:rgba(255,45,155,.2)}
-.feat:nth-child(3){background:var(--sky-lt);border-color:rgba(0,184,240,.25)}
-.feat:nth-child(4){background:var(--yello-lt);border-color:rgba(255,214,0,.35)}
-.feat:hover:nth-child(1){border-color:var(--lime)}
-.feat:hover:nth-child(2){border-color:var(--pink)}
-.feat:hover:nth-child(3){border-color:var(--sky)}
-.feat:hover:nth-child(4){border-color:var(--yellow)}
-.fi{font-size:30px;margin-bottom:10px}
-.feat h4{font-family:var(--font-d);font-size:17px;color:var(--dark);margin-bottom:6px}
+.feat:hover{transform:translate(-2px,-3px);box-shadow:var(--pop-lg)}
+.feat:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--bdr)}
+.feat:nth-child(1){background:var(--lime-l)}
+.feat:nth-child(2){background:var(--pink-l)}
+.feat:nth-child(3){background:var(--sky-l)}   /* fixed variable */
+.feat:nth-child(4){background:var(--ylw-l)}
+.fi{font-size:26px;margin-bottom:10px}
+.feat h4{font-family:var(--font-d);font-size:16px;color:var(--dark);margin-bottom:5px}
 .feat p{font-size:13px;color:var(--gray);line-height:1.6}
 
+/* What We Do right column */
 .what-right{position:relative;height:460px}
-.wr-a{position:absolute;top:0;right:0;width:76%;height:80%;object-fit:cover;border-radius:28px;box-shadow:0 28px 64px rgba(0,0,0,.12);filter:brightness(1.05) contrast(1.07) saturate(1.2)}
-.wr-b{position:absolute;bottom:0;left:0;width:52%;height:50%;object-fit:cover;border-radius:20px;border:5px solid #fff;box-shadow:0 14px 40px rgba(0,0,0,.1);filter:brightness(1.05) contrast(1.08) saturate(1.25)}
-.wr-pill{
+.wa{
+  position:absolute;top:0;right:0;width:75%;height:79%;
+  border-radius:24px;border:2.5px solid var(--bdr);
+  box-shadow:var(--pop-lg);overflow:hidden;
+}
+.wa img{width:100%;height:100%;object-fit:cover;filter:brightness(1.04) contrast(1.07) saturate(1.2)}
+.wb{
+  position:absolute;bottom:0;left:0;width:52%;height:50%;
+  border-radius:18px;border:2.5px solid var(--bdr);
+  box-shadow:var(--pop);overflow:hidden;background:var(--ylw-l);
+}
+.wb img{width:100%;height:100%;object-fit:cover;filter:brightness(1.05) saturate(1.3)}
+.wpill{
   position:absolute;top:47%;left:47%;transform:translate(-50%,-50%);
-  background:linear-gradient(135deg,var(--lime),var(--teal));
-  color:#fff;font-family:var(--font-d);font-size:13px;
-  padding:14px 22px;border-radius:16px;text-align:center;
-  box-shadow:0 10px 32px rgba(123,196,42,.5);z-index:3;white-space:nowrap;
+  background:var(--lime);color:#fff;
+  font-family:var(--font-d);font-size:13px;
+  padding:14px 20px;border-radius:16px;
+  border:2.5px solid var(--bdr);
+  box-shadow:var(--pop);text-align:center;white-space:nowrap;z-index:3;
 }
-.wr-pill b{font-size:30px;display:block}
+.wpill b{font-size:28px;display:block}
 
-/* ══ CATEGORIES ══════════════════════════════════════ */
-.cats{background:var(--cream)}
-.cats .st{color:var(--pink)}
-.cats .st::before{background:var(--pink)}
-.cats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px}
+/* ── CATEGORIES ────────────────────────────────────── */
+.cats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
 .cc{
-  border-radius:24px;overflow:hidden;
-  position:relative;height:300px;cursor:pointer;
-  transition:transform .35s var(--ease),box-shadow .35s;
+  border-radius:22px;overflow:visible;position:relative;cursor:pointer;
+  transition:transform .3s var(--ease),box-shadow .3s;
 }
-.cc:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 24px 64px rgba(0,0,0,.15)}
-.cc img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease2);filter:brightness(1.04) contrast(1.08) saturate(1.25)}
-.cc:hover img{transform:scale(1.08)}
+.cc:hover{transform:translate(-3px,-5px)}
+.cc-inner{
+  border-radius:22px;overflow:hidden;height:286px;position:relative;
+  border:2.5px solid var(--bdr);
+}
+.cc:nth-child(1){box-shadow:5px 5px 0 var(--lime2)}.cc:hover:nth-child(1){box-shadow:8px 8px 0 var(--lime2)}
+.cc:nth-child(2){box-shadow:5px 5px 0 var(--pink2)}.cc:hover:nth-child(2){box-shadow:8px 8px 0 var(--pink2)}
+.cc:nth-child(3){box-shadow:5px 5px 0 var(--ylw2)}.cc:hover:nth-child(3){box-shadow:8px 8px 0 var(--ylw2)}
+.cc:nth-child(4){box-shadow:5px 5px 0 var(--sky2)}.cc:hover:nth-child(4){box-shadow:8px 8px 0 var(--sky2)}
 
-/* Category color overlays */
-.cc:nth-child(1){box-shadow:0 4px 20px rgba(123,196,42,.2)}
-.cc:nth-child(2){box-shadow:0 4px 20px rgba(255,45,155,.2)}
-.cc:nth-child(3){box-shadow:0 4px 20px rgba(255,214,0,.2)}
-.cc:nth-child(4){box-shadow:0 4px 20px rgba(0,184,240,.2)}
-
+.cc img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease2);filter:brightness(1.05) contrast(1.07) saturate(1.2)}
+.cc:hover img{transform:scale(1.05)}
 .cov{
   position:absolute;inset:0;
-  display:flex;flex-direction:column;justify-content:flex-end;padding:22px;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:20px;
+  background:linear-gradient(to top,rgba(0,0,0,.72) 0%,transparent 55%);
 }
-.cc:nth-child(1) .cov{background:linear-gradient(to top,rgba(30,90,0,.75) 0%,transparent 55%)}
-.cc:nth-child(2) .cov{background:linear-gradient(to top,rgba(100,0,60,.75) 0%,transparent 55%)}
-.cc:nth-child(3) .cov{background:linear-gradient(to top,rgba(90,70,0,.7) 0%,transparent 55%)}
-.cc:nth-child(4) .cov{background:linear-gradient(to top,rgba(0,50,100,.7) 0%,transparent 55%)}
-
 .ctag{
-  font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:4px 12px;border-radius:50px;width:fit-content;margin-bottom:8px;backdrop-filter:blur(6px);
+  font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 10px;border-radius:50px;width:fit-content;margin-bottom:7px;
+  border:1.5px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(4px);
 }
-.cc:nth-child(1) .ctag{background:rgba(123,196,42,.35);color:#b6f05a;border:1px solid rgba(123,196,42,.5)}
-.cc:nth-child(2) .ctag{background:rgba(255,45,155,.3);color:#ffaad5;border:1px solid rgba(255,45,155,.45)}
-.cc:nth-child(3) .ctag{background:rgba(255,214,0,.3);color:#fff176;border:1px solid rgba(255,214,0,.45)}
-.cc:nth-child(4) .ctag{background:rgba(0,184,240,.3);color:#a0e8ff;border:1px solid rgba(0,184,240,.45)}
-.cn{font-family:var(--font-d);font-size:24px;color:#fff;line-height:1.2}
-.cnt{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
-.carrow{
-  position:absolute;top:16px;right:16px;
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-  backdrop-filter:blur(8px);transition:transform .25s var(--ease),background .2s;
+.cn{font-family:var(--font-d);font-size:22px;color:#fff;line-height:1.2}
+.cnt{font-size:12px;color:rgba(255,255,255,.7);margin-top:2px}
+
+/* Pop label on hover */
+.cc-arrow{
+  position:absolute;top:14px;right:14px;z-index:2;
+  background:#fff;border:2px solid var(--bdr);border-radius:50%;
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;
+  transition:transform .25s var(--ease),background .2s;
+  box-shadow:2px 2px 0 var(--bdr);
 }
-.cc:nth-child(1) .carrow{background:rgba(123,196,42,.3);color:#b6f05a}
-.cc:nth-child(2) .carrow{background:rgba(255,45,155,.3);color:#ffaad5}
-.cc:nth-child(3) .carrow{background:rgba(255,214,0,.3);color:#fff176}
-.cc:nth-child(4) .carrow{background:rgba(0,184,240,.3);color:#a0e8ff}
-.cc:hover .carrow{transform:rotate(45deg) scale(1.15)}
+.cc:hover .cc-arrow{transform:rotate(45deg) scale(1.1);background:var(--ylw)}
 
-/* ══ PRODUCTS ════════════════════════════════════════ */
-.products{background:var(--white)}
-.products .st{color:var(--purple)}
-.products .st::before{background:var(--purple)}
-.ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:20px}
+/* ── IMAGE PLACEHOLDER (when real img fails) ──────── */
+.img-ph{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;
+  font-size:40px;
+}
+.img-ph span{font-family:var(--font-d);font-size:12px;opacity:.7;text-align:center}
 
+/* Category image fallback backgrounds */
+.cc:nth-child(1) .img-ph{background:linear-gradient(135deg,#c8f07a,#90d930)}
+.cc:nth-child(2) .img-ph{background:linear-gradient(135deg,#ffb3d9,#ff6abb)}
+.cc:nth-child(3) .img-ph{background:linear-gradient(135deg,#fff176,#ffd600)}
+.cc:nth-child(4) .img-ph{background:linear-gradient(135deg,#a0e4ff,#40c4ff)}
+
+/* ── PRODUCTS ──────────────────────────────────────── */
+.ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:18px}
 .ftabs{display:flex;gap:8px;flex-wrap:wrap}
 .ft{
   font-family:var(--font-d);font-size:14px;padding:9px 20px;border-radius:50px;
-  border:2.5px solid #e5e7eb;background:#fff;color:var(--gray);
-  cursor:pointer;transition:all .2s var(--ease);
+  border:2.5px solid var(--bdr);background:var(--white);color:var(--dark);
+  cursor:pointer;box-shadow:2px 2px 0 var(--bdr);
+  transition:transform .2s var(--ease),box-shadow .2s,background .15s;
 }
-.ft:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-2px)}
-.ft.on{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 4px 18px rgba(155,47,226,.35);transform:translateY(-2px)}
+.ft:hover{transform:translate(-1px,-2px);box-shadow:3px 3px 0 var(--bdr)}
+.ft.on{background:var(--dark);color:#fff;transform:translate(-1px,-2px);box-shadow:3px 3px 0 rgba(0,0,0,.4)}
 
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:22px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(264px,1fr));gap:20px}
 
-/* Product card */
+/* ── PRODUCT CARD (flat + pop) ─────────────────────── */
 .pc{
-  background:#fff;border-radius:22px;overflow:hidden;
-  display:flex;flex-direction:column;
-  border:2px solid #f0f0f0;
-  transition:transform .35s var(--ease),box-shadow .35s,border-color .35s;
-  position:relative;
+  background:var(--white);border-radius:22px;
+  border:2.5px solid var(--bdr);
+  display:flex;flex-direction:column;position:relative;
+  transition:transform .3s var(--ease),box-shadow .3s;
+  overflow:hidden;
 }
-.pc:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 24px 60px rgba(0,0,0,.1)}
+/* Category pop shadows */
+.pc[data-c="ERAB"]{box-shadow:5px 5px 0 var(--lime2)}
+.pc[data-c="ERAA"]{box-shadow:5px 5px 0 var(--sky2)}
+.pc[data-c="HK"]  {box-shadow:5px 5px 0 var(--pink2)}
+.pc[data-c="PREM"]{box-shadow:5px 5px 0 var(--org2)}
 
-/* Color-coded top stripe per category */
-.pc[data-c="ERAB"]{border-top:4px solid var(--lime)}
-.pc[data-c="ERAA"]{border-top:4px solid var(--sky)}
-.pc[data-c="HK"]  {border-top:4px solid var(--pink)}
-.pc[data-c="PREM"]{border-top:4px solid var(--orange)}
-.pc[data-c="ERAB"]:hover{border-color:var(--lime);box-shadow:0 24px 60px rgba(123,196,42,.15)}
-.pc[data-c="ERAA"]:hover{border-color:var(--sky); box-shadow:0 24px 60px rgba(0,184,240,.15)}
-.pc[data-c="HK"]:hover  {border-color:var(--pink);box-shadow:0 24px 60px rgba(255,45,155,.15)}
-.pc[data-c="PREM"]:hover{border-color:var(--orange);box-shadow:0 24px 60px rgba(255,122,26,.15)}
+.pc:hover{transform:translate(-3px,-4px)}
+.pc[data-c="ERAB"]:hover{box-shadow:8px 8px 0 var(--lime2)}
+.pc[data-c="ERAA"]:hover{box-shadow:8px 8px 0 var(--sky2)}
+.pc[data-c="HK"]:hover  {box-shadow:8px 8px 0 var(--pink2)}
+.pc[data-c="PREM"]:hover{box-shadow:8px 8px 0 var(--org2)}
 
-.pc-img{position:relative;overflow:hidden;height:220px;background:var(--cream)}
-.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease2);filter:brightness(1.04) contrast(1.08) saturate(1.18)}
-.pc:hover .pc-img img{transform:scale(1.06)}
+/* Coloured top band */
+.pc[data-c="ERAB"]::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--lime)}
+.pc[data-c="ERAA"]::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--sky)}
+.pc[data-c="HK"]::before  {content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--pink)}
+.pc[data-c="PREM"]::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--org)}
 
+/* Image area */
+.pc-img{position:relative;height:210px;overflow:hidden;background:var(--cream)}
+.pc[data-c="ERAB"] .pc-img{background:var(--lime-l)}
+.pc[data-c="ERAA"] .pc-img{background:var(--sky-l)}
+.pc[data-c="HK"]   .pc-img{background:var(--pink-l)}
+.pc[data-c="PREM"] .pc-img{background:var(--org-l)}
+
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease2);filter:brightness(1.04) contrast(1.08) saturate(1.2)}
+.pc:hover .pc-img img{transform:scale(1.05)}
+
+/* Placeholder shown when image missing */
+.pc-img .ph-wrap{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;
+  position:absolute;inset:0;
+}
+.pc-img .ph-icon{font-size:52px}
+.pc-img .ph-sku{font-family:var(--font-d);font-size:12px;color:var(--gray);letter-spacing:.06em}
+
+/* 360 badge */
 .b360{
-  position:absolute;top:12px;left:12px;z-index:2;
-  font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:.06em;
-  padding:5px 11px;border-radius:50px;cursor:pointer;
-  border:none;transition:transform .2s var(--ease),box-shadow .2s;
+  position:absolute;top:10px;left:10px;z-index:3;
+  font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:.07em;
+  padding:4px 10px;border-radius:50px;cursor:pointer;
+  border:2px solid var(--bdr);box-shadow:2px 2px 0 var(--bdr);
+  background:#fff;color:var(--dark);
+  transition:transform .2s var(--ease),box-shadow .2s,background .15s;
 }
-.pc[data-c="ERAB"] .b360{background:rgba(123,196,42,.15);color:var(--lime);border:1.5px solid rgba(123,196,42,.4)}
-.pc[data-c="ERAA"] .b360{background:rgba(0,184,240,.12);color:var(--sky);  border:1.5px solid rgba(0,184,240,.3)}
-.pc[data-c="HK"]   .b360{background:rgba(255,45,155,.12);color:var(--pink);border:1.5px solid rgba(255,45,155,.3)}
-.pc[data-c="PREM"] .b360{background:rgba(255,122,26,.12);color:var(--orange);border:1.5px solid rgba(255,122,26,.3)}
-.b360:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(0,0,0,.12)}
-
-.sku{
-  position:absolute;top:12px;right:12px;
-  background:rgba(28,28,46,.65);color:#fff;
+.b360:hover{background:var(--ylw);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--bdr)}
+.sku-tag{
+  position:absolute;top:10px;right:10px;z-index:3;
+  background:var(--dark);color:#fff;
   font-size:10px;font-weight:600;letter-spacing:.08em;
-  padding:3px 9px;border-radius:50px;backdrop-filter:blur(4px);
+  padding:3px 9px;border-radius:50px;
 }
 
-.pc-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:12px}
+.pc-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:10px}
 .pc-cat{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.pc[data-c="ERAB"] .pc-cat{color:var(--lime)}
-.pc[data-c="ERAA"] .pc-cat{color:var(--sky)}
-.pc[data-c="HK"]   .pc-cat{color:var(--pink)}
-.pc[data-c="PREM"] .pc-cat{color:var(--orange)}
-.pc-name{font-family:var(--font-d);font-size:19px;color:var(--dark);line-height:1.2}
-.pc-price{font-size:16px;font-weight:600}
-.pc[data-c="ERAB"] .pc-price{color:var(--lime)}
-.pc[data-c="ERAA"] .pc-price{color:var(--sky)}
-.pc[data-c="HK"]   .pc-price{color:var(--pink)}
-.pc[data-c="PREM"] .pc-price{color:var(--orange)}
-.pc-price span{font-size:13px;font-weight:400;color:var(--gray)}
-
-.pc-tags{display:flex;flex-wrap:wrap;gap:6px}
-.pc-tag{font-size:11px;background:#f5f5f5;color:var(--gray);border-radius:50px;padding:4px 10px;border:1.5px solid #ebebeb}
-
+.pc[data-c="ERAB"] .pc-cat{color:var(--lime2)}
+.pc[data-c="ERAA"] .pc-cat{color:var(--sky2)}
+.pc[data-c="HK"]   .pc-cat{color:var(--pink2)}
+.pc[data-c="PREM"] .pc-cat{color:var(--org2)}
+.pc-name{font-family:var(--font-d);font-size:18px;color:var(--dark);line-height:1.2}
+.pc-price{font-size:15px;font-weight:600}
+.pc[data-c="ERAB"] .pc-price{color:var(--lime2)}
+.pc[data-c="ERAA"] .pc-price{color:var(--sky2)}
+.pc[data-c="HK"]   .pc-price{color:var(--pink2)}
+.pc[data-c="PREM"] .pc-price{color:var(--org2)}
+.pc-price span{font-size:12px;font-weight:400;color:var(--gray)}
+.pc-specs{display:flex;flex-wrap:wrap;gap:5px}
+.pc-spec{
+  font-size:11px;background:var(--cream);color:var(--gray);
+  border-radius:50px;padding:3px 10px;
+  border:1.5px solid rgba(0,0,0,.1);
+}
 .pc-btn{
   font-family:var(--font-d);font-size:14px;
-  color:#fff;border:none;border-radius:50px;padding:12px;cursor:pointer;
-  text-align:center;width:100%;
-  transition:transform .2s var(--ease),box-shadow .2s,filter .2s;
+  color:#fff;border:2.5px solid var(--bdr);border-radius:50px;
+  padding:11px;cursor:pointer;text-align:center;width:100%;
+  transition:transform .2s var(--ease),box-shadow .2s;
   text-decoration:none;display:block;
+  box-shadow:3px 3px 0 var(--bdr);
 }
-.pc[data-c="ERAB"] .pc-btn{background:linear-gradient(135deg,var(--lime),var(--teal));box-shadow:0 4px 16px rgba(123,196,42,.3)}
-.pc[data-c="ERAA"] .pc-btn{background:linear-gradient(135deg,var(--sky),#007ac4);box-shadow:0 4px 16px rgba(0,184,240,.3)}
-.pc[data-c="HK"]   .pc-btn{background:linear-gradient(135deg,var(--pink),var(--purple));box-shadow:0 4px 16px rgba(255,45,155,.3)}
-.pc[data-c="PREM"] .pc-btn{background:linear-gradient(135deg,var(--orange),var(--red));box-shadow:0 4px 16px rgba(255,122,26,.3)}
-.pc-btn:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.1)}
+.pc-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--bdr)}
+.pc-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--bdr)}
+.pc[data-c="ERAB"] .pc-btn{background:var(--lime)}
+.pc[data-c="ERAA"] .pc-btn{background:var(--sky)}
+.pc[data-c="HK"]   .pc-btn{background:var(--pink)}
+.pc[data-c="PREM"] .pc-btn{background:var(--org)}
 
-/* ══ GUMMIES ════════════════════════════════════════ */
-.gummies{background:var(--sky-lt);position:relative;overflow:hidden}
-.gummies::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,184,240,.18) 0%,transparent 70%);border-radius:50%;pointer-events:none}
-.gummies .st{color:var(--sky)}
-.gummies .st::before{background:var(--sky)}
+/* ── GUMMIES ───────────────────────────────────────── */
 .gm-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:72px;align-items:center}
 .gm-cards{display:flex;flex-direction:column;gap:14px}
 .gmc{
-  background:#fff;border:2px solid rgba(0,184,240,.15);border-radius:20px;
-  padding:20px;display:flex;align-items:center;gap:18px;
-  transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;
-  cursor:pointer;
+  background:var(--white);border:2.5px solid var(--bdr);border-radius:18px;
+  padding:18px;display:flex;align-items:center;gap:16px;
+  box-shadow:4px 4px 0 var(--sky2);
+  transition:transform .25s var(--ease),box-shadow .25s;cursor:pointer;
 }
-.gmc:hover{transform:translateX(8px);box-shadow:0 14px 40px rgba(0,184,240,.15);border-color:var(--sky)}
-.gmc img{width:80px;height:80px;object-fit:cover;border-radius:14px;flex-shrink:0;filter:brightness(1.06) contrast(1.1) saturate(1.3)}
-.gmc h4{font-family:var(--font-d);font-size:18px;color:var(--dark);margin-bottom:4px}
-.gmc p{font-size:13px;color:var(--gray);margin-bottom:8px}
-.gmc-price{font-family:var(--font-d);font-size:22px;color:var(--sky)}
+.gmc:hover{transform:translate(-3px,-3px);box-shadow:7px 7px 0 var(--sky2)}
+.gmc-img{
+  width:78px;height:78px;border-radius:14px;flex-shrink:0;
+  border:2px solid var(--bdr);overflow:hidden;background:var(--ylw-l);
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+}
+.gmc-img img{width:100%;height:100%;object-fit:cover;filter:brightness(1.06) saturate(1.3)}
+.gmc h4{font-family:var(--font-d);font-size:17px;color:var(--dark);margin-bottom:3px}
+.gmc p{font-size:12px;color:var(--gray);margin-bottom:7px}
+.gmc-price{font-family:var(--font-d);font-size:20px;color:var(--sky2)}
 .gmc-price small{font-family:var(--font-b);font-size:12px;color:var(--gray);font-weight:400}
 
-/* ══ PREMIUM ════════════════════════════════════════ */
-.premium{background:var(--white)}
-.premium .st{color:var(--orange)}
-.premium .st::before{background:var(--orange)}
-.prem-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px}
+/* ── PREMIUM ───────────────────────────────────────── */
+.prem-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
 .premc{
-  background:var(--cream);border:2px solid #f0ece0;border-radius:22px;
-  padding:30px;display:flex;align-items:center;gap:22px;
-  position:relative;overflow:hidden;
-  transition:transform .35s var(--ease),box-shadow .35s,border-color .35s;
-  cursor:pointer;
+  background:var(--white);border:2.5px solid var(--bdr);border-radius:22px;
+  padding:28px;display:flex;align-items:center;gap:20px;
+  box-shadow:5px 5px 0 var(--org2);
+  transition:transform .3s var(--ease),box-shadow .3s;cursor:pointer;
 }
-.premc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--orange),var(--red));transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease2)}
-.premc:hover::before{transform:scaleX(1)}
-.premc:hover{transform:translateY(-5px);box-shadow:0 20px 56px rgba(255,122,26,.12);border-color:rgba(255,122,26,.3)}
-.premc img{width:90px;height:90px;object-fit:cover;border-radius:14px;flex-shrink:0;filter:brightness(1.05) contrast(1.08) saturate(1.2)}
-.premc-sku{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--orange);text-transform:uppercase;margin-bottom:5px}
-.premc-name{font-family:var(--font-d);font-size:19px;color:var(--dark);margin-bottom:6px}
-.premc-detail{font-size:13px;color:var(--gray);margin-bottom:10px;line-height:1.55}
-.premc-price{font-family:var(--font-d);font-size:26px;color:var(--orange)}
+.premc:hover{transform:translate(-3px,-4px);box-shadow:8px 8px 0 var(--org2)}
+.premc-img{
+  width:88px;height:88px;border-radius:14px;flex-shrink:0;
+  border:2px solid var(--bdr);overflow:hidden;background:var(--org-l);
+  display:flex;align-items:center;justify-content:center;font-size:34px;
+}
+.premc-img img{width:100%;height:100%;object-fit:cover;filter:brightness(1.05) saturate(1.2)}
+.premc-sku{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--org2);text-transform:uppercase;margin-bottom:4px}
+.premc-name{font-family:var(--font-d);font-size:18px;color:var(--dark);margin-bottom:5px}
+.premc-detail{font-size:13px;color:var(--gray);margin-bottom:10px;line-height:1.5}
+.premc-price{font-family:var(--font-d);font-size:24px;color:var(--org2)}
 
-/* ══ DISPLAY TABLE (green band) ═════════════════════ */
-.display-band{
-  background:linear-gradient(135deg,var(--lime) 0%,var(--teal) 100%);
-  padding:90px 5%;position:relative;overflow:hidden;
+/* ── DISPLAY TABLE BAND ────────────────────────────── */
+.disp-band .inner{padding:80px 5%}
+.disp-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:center}
+.disp-img-wrap{
+  border-radius:24px;border:2.5px solid rgba(255,255,255,.4);
+  box-shadow:6px 6px 0 rgba(0,0,0,.2);overflow:hidden;
+  height:400px;
 }
-.display-band::before{content:'🍭';position:absolute;top:-20px;right:5%;font-size:120px;opacity:.15;transform:rotate(20deg)}
-.display-band::after{content:'🍬';position:absolute;bottom:-20px;left:8%;font-size:100px;opacity:.15;transform:rotate(-15deg)}
-.dband-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:center}
-.dband-inner img{border-radius:24px;width:100%;max-height:420px;object-fit:cover;box-shadow:0 32px 80px rgba(0,0,0,.2);filter:brightness(1.05) contrast(1.07) saturate(1.15)}
-.dc .st{color:rgba(255,255,255,.8)}
-.dc .st::before{background:rgba(255,255,255,.6)}
+.disp-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(1.06) saturate(1.15)}
+.disp-img-wrap .ph-fallback{
+  width:100%;height:100%;background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:80px;
+}
+.dc .stag{color:rgba(255,255,255,.8)}
+.dc .stag::before{background:rgba(255,255,255,.5)}
 .dc .h2{color:#fff}
-.dc .sub{color:rgba(255,255,255,.85);max-width:100%}
-.dband-price{font-family:var(--font-d);font-size:54px;color:#fff;margin:14px 0 6px}
-.dband-detail{font-size:15px;color:rgba(255,255,255,.85);line-height:1.7;margin-bottom:28px}
-.btn-white{font-family:var(--font-d);font-size:16px;background:#fff;color:var(--lime);padding:15px 34px;border-radius:50px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(0,0,0,.15);transition:transform .25s var(--ease),box-shadow .25s;text-decoration:none}
-.btn-white:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 36px rgba(0,0,0,.2)}
-
-/* ══ CTA ════════════════════════════════════════════ */
-.cta{
-  text-align:center;padding:100px 5%;
-  background:var(--cream);
-  position:relative;overflow:hidden;
+.dc .sub{color:rgba(255,255,255,.85)}
+.dc .sub{max-width:100%}
+.disp-price{font-family:var(--font-d);font-size:52px;color:#fff;margin:14px 0 6px}
+.disp-detail{font-size:15px;color:rgba(255,255,255,.85);line-height:1.7;margin-bottom:28px}
+.btn-wh{
+  font-family:var(--font-d);font-size:15px;
+  background:#fff;color:var(--lime2);
+  padding:14px 32px;border-radius:50px;
+  border:2.5px solid rgba(255,255,255,.5);
+  box-shadow:3px 3px 0 rgba(0,0,0,.2);
+  display:inline-flex;align-items:center;gap:10px;
+  transition:transform .2s var(--ease),box-shadow .2s;
+  text-decoration:none;cursor:pointer;
 }
-.cta::before{content:'🍬🍭🍫🍡';position:absolute;top:20px;left:10px;font-size:40px;opacity:.15;letter-spacing:16px;white-space:nowrap}
-.cta::after{content:'🍬🍭🍫🍡';position:absolute;bottom:20px;right:10px;font-size:40px;opacity:.15;letter-spacing:16px;white-space:nowrap}
-.cta h2{font-family:var(--font-d);font-size:clamp(36px,5vw,68px);line-height:1.05;color:var(--dark);margin-bottom:16px}
-.cta h2 .g{color:var(--lime)}
-.cta h2 .p{color:var(--pink)}
-.cta p{font-size:18px;color:var(--gray);max-width:480px;margin:0 auto 36px;line-height:1.7}
+.btn-wh:hover{transform:translate(-2px,-3px);box-shadow:5px 5px 0 rgba(0,0,0,.25)}
 
-/* ══ 360° MODAL ══════════════════════════════════════ */
-.mbg{display:none;position:fixed;inset:0;background:rgba(28,28,46,.6);backdrop-filter:blur(16px);z-index:9990;align-items:center;justify-content:center;padding:20px}
-.mbg.open{display:flex;animation:mf .25s ease}
-@keyframes mf{from{opacity:0}to{opacity:1}}
-.mbox{background:#fff;border-radius:28px;width:100%;max-width:640px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.25);animation:ms .3s var(--ease)}
-@keyframes ms{from{transform:translateY(28px) scale(.96);opacity:0}to{transform:none;opacity:1}}
-.mhdr{display:flex;align-items:center;justify-content:space-between;padding:20px 26px;border-bottom:2px solid #f0f0f0}
-.mttl{font-family:var(--font-d);font-size:20px;color:var(--dark)}
-.mcl{width:38px;height:38px;border-radius:50%;border:2px solid #e5e7eb;background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
-.mcl:hover{background:var(--pink-lt);border-color:var(--pink)}
+/* ── CTA ───────────────────────────────────────────── */
+.cta-inner{text-align:center;padding:88px 5%}
+.cta-inner h2{font-family:var(--font-d);font-size:clamp(36px,5vw,66px);line-height:1.05;color:var(--dark);margin-bottom:14px}
+.cta-inner p{font-size:17px;color:var(--gray);max-width:460px;margin:0 auto 32px;line-height:1.7}
 
+/* ── 360° MODAL ────────────────────────────────────── */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(14px);z-index:9990;align-items:center;justify-content:center;padding:20px}
+.mbg.open{display:flex;animation:mfin .25s ease}
+@keyframes mfin{from{opacity:0}to{opacity:1}}
+.mbox{
+  background:#fff;border-radius:24px;width:100%;max-width:620px;
+  border:2.5px solid var(--bdr);
+  box-shadow:8px 8px 0 var(--bdr);
+  animation:msin .3s var(--ease);overflow:hidden;
+}
+@keyframes msin{from{transform:translateY(24px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.mhdr{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:2.5px solid var(--bdr)}
+.mttl{font-family:var(--font-d);font-size:19px}
+.mcl{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid var(--bdr);background:#fff;
+  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:2px 2px 0 var(--bdr);
+  transition:transform .2s var(--ease),background .15s;
+}
+.mcl:hover{background:var(--pink-l);transform:rotate(90deg)}
 .mstage{
-  height:370px;
-  background:linear-gradient(135deg,var(--lime-lt) 0%,var(--sky-lt) 100%);
+  height:360px;background:var(--cream);
   display:flex;align-items:center;justify-content:center;
   cursor:ew-resize;user-select:none;overflow:hidden;position:relative;
+  border-bottom:2.5px solid var(--bdr);
 }
 .mstage::after{
-  content:'↔  Drag to Spin';position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-  font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(0,0,0,.35);pointer-events:none;
-  background:rgba(255,255,255,.6);padding:5px 14px;border-radius:50px;backdrop-filter:blur(4px);
+  content:'↔  Drag to Spin';position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gray);pointer-events:none;
+  background:#fff;padding:4px 12px;border-radius:50px;border:1.5px solid var(--bdr);
 }
-/* floor shadow */
-.mstage::before{content:'';position:absolute;bottom:40px;left:25%;right:25%;height:16px;background:radial-gradient(ellipse,rgba(0,0,0,.12) 0%,transparent 70%);border-radius:50%;pointer-events:none}
-
 .mwrap{width:280px;height:280px;display:flex;align-items:center;justify-content:center}
-.mwrap img{max-width:260px;max-height:260px;object-fit:contain;pointer-events:none;filter:brightness(1.08) contrast(1.1) saturate(1.25) drop-shadow(0 18px 36px rgba(0,0,0,.18));border-radius:16px}
-
-.mring{display:flex;gap:4px;padding:16px 24px;border-top:2px solid #f0f0f0;background:#fff;justify-content:center}
+.mwrap img{max-width:260px;max-height:260px;object-fit:contain;pointer-events:none;filter:brightness(1.08) contrast(1.1) saturate(1.25) drop-shadow(0 12px 28px rgba(0,0,0,.14));border-radius:14px}
+.mring{display:flex;gap:4px;padding:14px 24px;background:#fff;justify-content:center}
 .mring span{flex:1;max-width:40px;height:4px;border-radius:2px;background:#f0f0f0;transition:background .15s}
-.mring span.a{background:linear-gradient(90deg,var(--lime),var(--teal))}
+.mring span.a{background:var(--lime)}
 
-/* ══ FOOTER ══════════════════════════════════════════ */
-footer{background:var(--dark);padding:64px 5% 28px}
-.fi2{max-width:1300px;margin:0 auto}
-.ftop{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-.fbl img{height:52px;margin-bottom:18px}
+/* ── FOOTER ────────────────────────────────────────── */
+.ft-inner{max-width:1300px;margin:0 auto;padding:60px 5% 28px}
+.ftop{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px}
+.fbl img{height:48px;margin-bottom:16px;filter:brightness(1.2)}
 .fbl p{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;max-width:240px}
-footer h5{font-family:var(--font-d);font-size:16px;color:#fff;margin-bottom:16px}
+footer h5{font-family:var(--font-d);font-size:15px;color:#fff;margin-bottom:14px}
 footer ul{list-style:none}
-footer li{margin-bottom:10px}
-footer a{font-size:14px;color:rgba(255,255,255,.5);transition:color .2s}
+footer li{margin-bottom:9px}
+footer a{font-size:13px;color:rgba(255,255,255,.5);transition:color .15s}
 footer a:hover{color:var(--lime)}
-.fbot{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.fbot p{font-size:13px;color:rgba(255,255,255,.28)}
+.fbot{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.fbot p{font-size:12px;color:rgba(255,255,255,.28)}
 
-/* ══ RESPONSIVE ══════════════════════════════════════ */
+/* ── RESPONSIVE ────────────────────────────────────── */
 @media(max-width:1100px){
-  .hero-inner,.what-grid,.gm-layout,.dband-inner{grid-template-columns:1fr}
-  .hero-visual{height:320px;margin-top:20px}
-  .hv-main{width:85%;height:100%;border-radius:24px}
-  .hv-sm{display:none}
-  .hv-b2{display:none}
+  .hero-inner,.what-grid,.gm-layout,.disp-grid{grid-template-columns:1fr}
+  .hero-right{height:320px;margin-top:20px}
+  .hero-img{width:82%;height:100%}
+  .hero-sm,.hb2{display:none}
   .what-right{height:320px}
   .cats-grid{grid-template-columns:1fr 1fr}
   .prem-grid{grid-template-columns:1fr}
-  .ftop{grid-template-columns:1fr 1fr;gap:32px}
+  .ftop{grid-template-columns:1fr 1fr;gap:28px}
 }
 @media(max-width:768px){
-  section{padding:64px 5%}
-  .hdr{height:62px}
+  .inner{padding:60px 5%}
+  .hdr{height:60px}
   nav{display:none}
-  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .s-inner{grid-template-columns:1fr 1fr}
   .si:nth-child(2){border-right:none}
   .ph{flex-direction:column;align-items:flex-start}
-  .pgrid{grid-template-columns:repeat(2,1fr)}
+  .pgrid{grid-template-columns:1fr 1fr}
   .hero-btns{flex-direction:column}
   .ftop{grid-template-columns:1fr}
+  .cut-down{clip-path:polygon(0 0,100% 0,100% 94%,0 100%);padding-bottom:60px}
+  .cut-up{clip-path:polygon(0 3%,100% 0,100% 100%,0 100%);padding-top:60px}
+  .cut-both{clip-path:polygon(0 3%,100% 0,100% 94%,0 100%);padding-top:60px;padding-bottom:60px}
 }
 @media(max-width:480px){
   .cats-grid,.pgrid{grid-template-columns:1fr}
@@ -572,72 +601,67 @@ footer a:hover{color:var(--lime)}
 </head>
 <body>
 
-<!-- Floating candy bg -->
-<div class="candy-floats" id="floats"></div>
-
-<!-- Progress -->
+<!-- Floating candy elements -->
+<div class="floats" id="floats"></div>
 <div id="bar"></div>
 
 <!-- ══ HEADER ══════════════════════════════════════ -->
 <header id="hdr">
   <div class="hdr">
     <a href="/">
-      <img src="https://candyeraus.com/wp-content/uploads/2024/11/file-4.png" alt="Candy Era" style="height:52px;object-fit:contain"
-           onerror="this.outerHTML='<span style=\'font-family:var(--font-d);font-size:26px;background:linear-gradient(135deg,var(--lime),var(--pink),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent\'>🍬 Candy Era</span>'">
+      <img src="https://candyeraus.com/wp-content/uploads/2024/11/file-4.png" alt="Candy Era"
+           style="height:50px;object-fit:contain"
+           onerror="this.outerHTML='<span style=\'font-family:Fredoka One,cursive;font-size:26px;color:#6DBF2A\'>🍬 Candy Era</span>'">
     </a>
     <nav>
       <a href="#what" class="nl">What We Do</a>
       <a href="#cats" class="nl">Categories</a>
       <a href="#products" class="nl">Shop</a>
     </nav>
-    <a href="https://candyeraus.com/shop/" class="hdr-cart">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      Order Now
+    <a href="https://candyeraus.com/shop/" class="hbtn">
+      🛒 Order Now
     </a>
   </div>
 </header>
 
 <!-- ══ HERO ════════════════════════════════════════ -->
-<section class="hero" id="home">
-  <div class="hero-inner">
-    <div class="rv">
-      <div class="hero-pill">🍬 Sweet Treats for Everyone!</div>
-      <h1>Australia's<br><span class="w1">Sweetest</span><br><span class="w2">Candy</span> <span class="w3">Shop!</span></h1>
-      <p>From bulk gummies to novelty toys — everything your store needs at wholesale prices. Shipped Australia-wide.</p>
-      <div class="hero-btns">
-        <a href="#products" class="btn-main">Browse Catalogue 🍭</a>
-        <a href="#what" class="btn-out">What We Do →</a>
+<div class="sec sec-cream cut-down" id="home">
+  <div class="inner sm">
+    <div class="hero-inner">
+      <div class="rv">
+        <div class="hero-tag">🍬 Sweet Treats for Everyone!</div>
+        <h1>Australia's<br><span class="c1">Sweetest</span> <span class="c2">Candy</span><br><span class="c3">Store!</span></h1>
+        <p>Bulk candy, novelty toys and branded products at wholesale prices. Everything your store needs — shipped Australia-wide.</p>
+        <div class="hero-btns">
+          <a href="#products" class="btn btn-lime">Browse Catalogue 🍭</a>
+          <a href="#what" class="btn btn-ghost">What We Do →</a>
+        </div>
       </div>
-    </div>
-    <div class="hero-visual rv d2">
-      <img class="hv-main"
-           src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Featured product"
-           onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-      <img class="hv-sm"
-           src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy candy">
-      <div class="hv-badge hv-b1">
-        <span>📦</span>
-        <div><strong>30+</strong><span>Products</span></div>
-      </div>
-      <div class="hv-badge hv-b2">
-        <span>🚚</span>
-        <div><strong>AUS-wide</strong><span>Shipping</span></div>
+      <div class="hero-right rv d2">
+        <div class="hero-img">
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="ERAB46 Toy"
+               onerror="this.parentElement.innerHTML='<div class=img-ph style=\'background:linear-gradient(135deg,#c8f07a,#90d930);width:100%;height:100%\'>🚗<span>ERAB46</span></div>'">
+        </div>
+        <div class="hero-sm">
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy"
+               onerror="this.parentElement.innerHTML='<div class=img-ph style=\'background:linear-gradient(135deg,#fff176,#ffd600);width:100%;height:100%\'>🍬<span>Gummies</span></div>'">
+        </div>
+        <div class="hbadge hb1">
+          <div class="icon">📦</div>
+          <div class="txt"><strong>30+</strong><span>Products</span></div>
+        </div>
+        <div class="hbadge hb2">
+          <div class="icon">🚚</div>
+          <div class="txt"><strong>AUS</strong><span>Nationwide</span></div>
+        </div>
       </div>
     </div>
   </div>
-</section>
-
-<!-- wave down to stats -->
-<div class="wave">
-  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style="height:60px">
-    <path d="M0,0 C360,70 1080,70 1440,0 L1440,70 L0,70 Z" fill="#7BC42A" opacity=".15"/>
-    <path d="M0,20 C480,80 960,0 1440,40 L1440,70 L0,70 Z" fill="#7BC42A"/>
-  </svg>
 </div>
 
 <!-- ══ STATS ════════════════════════════════════════ -->
-<div class="stats-band">
-  <div class="stats-inner">
+<div class="stats" id="stats">
+  <div class="s-inner">
     <div class="si"><span class="sn" data-t="30">0</span><div class="sl">Products</div></div>
     <div class="si"><span class="sn" data-t="4">0</span><div class="sl">Categories</div></div>
     <div class="si"><span class="sn" data-t="22">0</span><div class="sl">Lbs/Gummy Box</div></div>
@@ -645,86 +669,89 @@ footer a:hover{color:var(--lime)}
   </div>
 </div>
 
-<div class="wave" style="transform:rotate(180deg);margin-bottom:-2px">
-  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style="height:60px">
-    <path d="M0,20 C480,80 960,0 1440,40 L1440,70 L0,70 Z" fill="#7BC42A"/>
-  </svg>
-</div>
-
 <!-- ══ WHAT WE DO ═══════════════════════════════════ -->
-<section class="what" id="what">
-  <div class="inner what-grid">
-    <div class="rv">
-      <div class="st">What We Do</div>
-      <h2 class="h2">Wholesale Candy &amp;<br>Novelty Toys 🍬</h2>
-      <p class="sub">We supply candy stores, convenience shops and retailers across Australia with bulk candy, novelty toys and branded products at competitive wholesale prices.</p>
-      <div class="feat-grid">
-        <div class="feat rv d1"><div class="fi">🍬</div><h4>Bulk Candy</h4><p>Premium gummies in 22-lb boxes. Multiple flavours, sold by weight.</p></div>
-        <div class="feat rv d2"><div class="fi">🚗</div><h4>Novelty Toys</h4><p>ERAB series — display (12 pcs) or full case (144 pcs).</p></div>
-        <div class="feat rv d3"><div class="fi">🏪</div><h4>Display Solutions</h4><p>Lollipop display tables to maximise your shop floor sales.</p></div>
-        <div class="feat rv d4"><div class="fi">⭐</div><h4>Branded Products</h4><p>Kinder Joy, Ferrero, Hello Kitty — brands customers love.</p></div>
+<div class="sec sec-ylw cut-up" id="what">
+  <div class="inner">
+    <div class="what-grid">
+      <div class="rv">
+        <div class="stag" style="color:var(--lime2)"><span style="background:var(--lime2)"></span>What We Do</div>
+        <h2 class="h2">Wholesale Candy &amp;<br>Novelty Toys 🍬</h2>
+        <p class="sub">We supply candy stores, convenience shops and retailers across Australia with bulk candy, novelty toys and branded products at competitive wholesale prices.</p>
+        <div class="feat-grid">
+          <div class="feat rv d1"><div class="fi">🍬</div><h4>Bulk Candy</h4><p>Premium gummies in 22-lb boxes. Multiple flavours.</p></div>
+          <div class="feat rv d2"><div class="fi">🚗</div><h4>Novelty Toys</h4><p>ERAB series — display (12 pcs) or case (144 pcs).</p></div>
+          <div class="feat rv d3"><div class="fi">🏪</div><h4>Display Solutions</h4><p>Lollipop display tables to maximise shop floor sales.</p></div>
+          <div class="feat rv d4"><div class="fi">⭐</div><h4>Branded Products</h4><p>Kinder Joy, Ferrero, Hello Kitty — brands that sell.</p></div>
+        </div>
+      </div>
+      <div class="what-right rv d2">
+        <div class="wa">
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Products"
+               onerror="this.parentElement.innerHTML='<div class=img-ph style=\'background:linear-gradient(135deg,#c8f07a,#90d930);width:100%;height:100%\'>🚗<span>ERAB Toys</span></div>'">
+        </div>
+        <div class="wb">
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy"
+               onerror="this.parentElement.innerHTML='<div class=img-ph style=\'background:linear-gradient(135deg,#fff176,#ffd600);width:100%;height:100%\'>🍬<span>Gummies</span></div>'">
+        </div>
+        <div class="wpill"><b>30+</b>SKUs in Stock</div>
       </div>
     </div>
-    <div class="what-right rv d2">
-      <img class="wr-a" src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Products"
-           onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-      <img class="wr-b" src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummy">
-      <div class="wr-pill"><b>30+</b>SKUs in Stock</div>
-    </div>
   </div>
-</section>
-
-<!-- wave to categories -->
-<div class="wave">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="height:70px">
-    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#FFFDF7"/>
-  </svg>
 </div>
 
-<!-- ══ CATEGORIES ═══════════════════════════════════ -->
-<section class="cats" id="cats">
+<!-- ══ CATEGORIES ════════════════════════════════════ -->
+<div class="sec sec-pink cut-both" id="cats">
   <div class="inner">
-    <div class="st rv" style="color:var(--pink)"><span style="width:18px;height:3px;background:var(--pink);border-radius:2px;display:inline-block"></span>Our Categories</div>
+    <div class="stag rv" style="color:var(--pink2)"><span style="background:var(--pink2);width:16px;height:3px;border-radius:2px;display:inline-block"></span>Our Categories</div>
     <h2 class="h2 rv">Everything Sweet,<br>All in One Place 🍭</h2>
     <div class="cats-grid">
+
       <a href="https://candyeraus.com/product-category/erab/" class="cc rv d1">
-        <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="ERAB Toys"
-             onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
-        <div class="cov"><div class="ctag">Novelty Toys</div><div class="cn">ERAB Series</div><div class="cnt">10+ items</div></div>
-        <div class="carrow">↗</div>
+        <div class="cc-inner">
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="ERAB Toys"
+               onerror="this.parentElement.innerHTML=`<div class='img-ph' style='background:linear-gradient(135deg,#c8f07a,#90d930);width:100%;height:100%'>🚗<span>ERAB Toys</span></div>`">
+          <div class="cov"><div class="ctag">Novelty Toys</div><div class="cn">ERAB Series</div><div class="cnt">10+ items</div></div>
+          <div class="cc-arrow">↗</div>
+        </div>
       </a>
+
       <a href="https://candyeraus.com/shop/" class="cc rv d2">
-        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummies">
-        <div class="cov"><div class="ctag">Bulk Gummy</div><div class="cn">ERAA Gummies</div><div class="cnt">3 varieties · 22 lbs/box</div></div>
-        <div class="carrow">↗</div>
+        <div class="cc-inner">
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gummies"
+               onerror="this.parentElement.innerHTML=`<div class='img-ph' style='background:linear-gradient(135deg,#ffb3d9,#ff6abb);width:100%;height:100%'>🍬<span>ERAA Gummies</span></div>`">
+          <div class="cov"><div class="ctag">Bulk Gummy</div><div class="cn">ERAA Gummies</div><div class="cnt">3 varieties · 22 lbs/box</div></div>
+          <div class="cc-arrow">↗</div>
+        </div>
       </a>
+
       <a href="https://candyeraus.com/shop/" class="cc rv d3">
-        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty">
-        <div class="cov"><div class="ctag">Licensed</div><div class="cn">Hello Kitty</div><div class="cnt">Lollipops &amp; candy sets</div></div>
-        <div class="carrow">↗</div>
+        <div class="cc-inner">
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty"
+               onerror="this.parentElement.innerHTML=`<div class='img-ph' style='background:linear-gradient(135deg,#fff176,#ffd600);width:100%;height:100%'>🎀<span>Hello Kitty</span></div>`">
+          <div class="cov"><div class="ctag">Licensed</div><div class="cn">Hello Kitty</div><div class="cnt">Lollipops &amp; candy sets</div></div>
+          <div class="cc-arrow">↗</div>
+        </div>
       </a>
+
       <a href="https://candyeraus.com/shop/" class="cc rv d4">
-        <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Premium">
-        <div class="cov"><div class="ctag">Premium</div><div class="cn">Kinder &amp; Ferrero</div><div class="cnt">Top-shelf brands</div></div>
-        <div class="carrow">↗</div>
+        <div class="cc-inner">
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Premium Brands"
+               onerror="this.parentElement.innerHTML=`<div class='img-ph' style='background:linear-gradient(135deg,#a0e4ff,#40c4ff);width:100%;height:100%'>⭐<span>Premium Brands</span></div>`">
+          <div class="cov"><div class="ctag">Premium</div><div class="cn">Kinder &amp; Ferrero</div><div class="cnt">Top-shelf brands</div></div>
+          <div class="cc-arrow">↗</div>
+        </div>
       </a>
+
     </div>
   </div>
-</section>
-
-<!-- wave to products -->
-<div class="wave">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="height:70px">
-    <path d="M0,0 C360,80 1080,0 1440,60 L1440,80 L0,80 Z" fill="#ffffff"/>
-  </svg>
 </div>
 
-<!-- ══ PRODUCTS ═════════════════════════════════════ -->
-<section class="products" id="products">
+<!-- ══ PRODUCTS ══════════════════════════════════════ -->
+<div class="sec sec-white cut-up" id="products">
   <div class="inner">
     <div class="ph">
       <div>
-        <div class="st rv" style="color:var(--purple)"><span style="width:18px;height:3px;background:var(--purple);border-radius:2px;display:inline-block"></span>Full Catalogue</div>
+        <div class="stag rv" style="color:var(--pur2)"><span style="background:var(--pur2);width:16px;height:3px;border-radius:2px;display:inline-block"></span>Full Catalogue</div>
         <h2 class="h2 rv">Shop by Product 🛍️</h2>
       </div>
       <div class="ftabs rv">
@@ -735,17 +762,19 @@ footer a:hover{color:var(--lime)}
         <button class="ft" data-f="PREM">⭐ Premium</button>
       </div>
     </div>
+
     <div class="pgrid" id="grid">
 
-      <!-- ERAB -->
+      <!-- ERAB PRODUCTS -->
       <div class="pc rv" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" data-name="Off Road Racing Tiger Cars">360°</button>
-          <span class="sku">ERAB46</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Off Road Racing Tiger Cars" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB46</span>
+          <div class="ph-wrap"><div class="ph-icon">🚗</div><div class="ph-sku">ERAB46</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Off Road Racing Tiger Cars" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Off Road Racing Tiger Cars</div><div class="pc-price">$20.00 <span>Display · $240 Case</span></div><div class="pc-tags"><span class="pc-tag">12 pc display</span><span class="pc-tag">144 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Off Road Racing Tiger Cars</div><div class="pc-price">$20.00 <span>Display · $240 Case</span></div><div class="pc-specs"><span class="pc-spec">12 pc display</span><span class="pc-spec">144 pc case</span></div></div>
           <a href="https://candyeraus.com/product/off-road-racing-tiger-cars/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -753,11 +782,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d1" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" data-name="Dino Projector">360°</button>
-          <span class="sku">ERAB37</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Dino Projector" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB37</span>
+          <div class="ph-wrap"><div class="ph-icon">🦕</div><div class="ph-sku">ERAB37</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Dino Projector" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Dino Projector</div><div class="pc-price">$30.00 <span>Display · $360 Case</span></div><div class="pc-tags"><span class="pc-tag">12 pc display</span><span class="pc-tag">144 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Dino Projector</div><div class="pc-price">$30.00 <span>Display · $360 Case</span></div><div class="pc-specs"><span class="pc-spec">12 pc display</span><span class="pc-spec">144 pc case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -765,11 +795,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d2" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" data-name="Drum Bear">360°</button>
-          <span class="sku">ERAB47</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Drum Bear" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB47</span>
+          <div class="ph-wrap"><div class="ph-icon">🐻</div><div class="ph-sku">ERAB47</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Drum Bear" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Drum Bear</div><div class="pc-price">$22.50 <span>Display · $270 Case</span></div><div class="pc-tags"><span class="pc-tag">12 pc display</span><span class="pc-tag">144 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Drum Bear</div><div class="pc-price">$22.50 <span>Display · $270 Case</span></div><div class="pc-specs"><span class="pc-spec">12 pc display</span><span class="pc-spec">144 pc case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -777,11 +808,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d3" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab26.png" data-name="Dino Fan Tall">360°</button>
-          <span class="sku">ERAB26</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab26.png" alt="Dino Fan Tall" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB26</span>
+          <div class="ph-wrap"><div class="ph-icon">🦖</div><div class="ph-sku">ERAB26</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab26.png" alt="Dino Fan Tall" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Dino Fan Tall</div><div class="pc-price">$30.00 <span>Display · $180 Case</span></div><div class="pc-tags"><span class="pc-tag">6 pc display</span><span class="pc-tag">72 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Dino Fan Tall</div><div class="pc-price">$30.00 <span>Display · $180 Case</span></div><div class="pc-specs"><span class="pc-spec">6 pc display</span><span class="pc-spec">72 pc case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -789,11 +821,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" data-name="Lightning Football">360°</button>
-          <span class="sku">ERAB38</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Lightning Football" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB38</span>
+          <div class="ph-wrap"><div class="ph-icon">⚡</div><div class="ph-sku">ERAB38</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-15-1.png" alt="Lightning Football" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Lightning Football</div><div class="pc-price">$30.00 <span>Display · $360 Case</span></div><div class="pc-tags"><span class="pc-tag">12 pc display</span><span class="pc-tag">144 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Lightning Football</div><div class="pc-price">$30.00 <span>Display · $360 Case</span></div><div class="pc-specs"><span class="pc-spec">12 pc display</span><span class="pc-spec">144 pc case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -801,11 +834,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d1" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" data-name="Truck Toy">360°</button>
-          <span class="sku">ERAB39</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Truck Toy" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB39</span>
+          <div class="ph-wrap"><div class="ph-icon">🚛</div><div class="ph-sku">ERAB39</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Truck Toy" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Truck Toy</div><div class="pc-price">$40.00 <span>Display · $480 Case</span></div><div class="pc-tags"><span class="pc-tag">12 pc display</span><span class="pc-tag">144 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Truck Toy</div><div class="pc-price">$40.00 <span>Display · $480 Case</span></div><div class="pc-specs"><span class="pc-spec">12 pc display</span><span class="pc-spec">144 pc case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -813,11 +847,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d2" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" data-name="Candy Car">360°</button>
-          <span class="sku">ERAB44</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Candy Car" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB44</span>
+          <div class="ph-wrap"><div class="ph-icon">🏎️</div><div class="ph-sku">ERAB44</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/06/erab46.png" alt="Candy Car" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Candy Car</div><div class="pc-price">$20.00 <span>Display · $240 Case</span></div><div class="pc-tags"><span class="pc-tag">12 pc display</span><span class="pc-tag">144 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Candy Car</div><div class="pc-price">$20.00 <span>Display · $240 Case</span></div><div class="pc-specs"><span class="pc-spec">12 pc display</span><span class="pc-spec">144 pc case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -825,11 +860,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d3" data-c="ERAB">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" data-name="Tumbling Car">360°</button>
-          <span class="sku">ERAB42</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Tumbling Car" onerror="this.src='https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png'">
+          <span class="sku-tag">ERAB42</span>
+          <div class="ph-wrap"><div class="ph-icon">🔄</div><div class="ph-sku">ERAB42</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2025/04/Adobe-Express-file-8-1.png" alt="Tumbling Car" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Tumbling Car</div><div class="pc-price">$20.00 <span>Display · $240 Case</span></div><div class="pc-tags"><span class="pc-tag">12 pc display</span><span class="pc-tag">144 pc case</span></div></div>
+          <div><div class="pc-cat">ERAB Toys</div><div class="pc-name">Tumbling Car</div><div class="pc-price">$20.00 <span>Display · $240 Case</span></div><div class="pc-specs"><span class="pc-spec">12 pc display</span><span class="pc-spec">144 pc case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -838,11 +874,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv" data-c="ERAA">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Earth Gummy">360°</button>
-          <span class="sku">ERAA19</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Earth Gummy">
+          <span class="sku-tag">ERAA19</span>
+          <div class="ph-wrap"><div class="ph-icon">🌍</div><div class="ph-sku">ERAA19 · Grape/Blue</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Earth Gummy" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">Bulk Gummy</div><div class="pc-name">Earth Gummy (Grape/Blue)</div><div class="pc-price">$99.00 <span>/ 22 lbs box</span></div><div class="pc-tags"><span class="pc-tag">$4.50/lb</span><span class="pc-tag">22 lbs/box</span></div></div>
+          <div><div class="pc-cat">Bulk Gummy</div><div class="pc-name">Earth Gummy (Grape/Blue)</div><div class="pc-price">$99.00 <span>/ 22 lbs box</span></div><div class="pc-specs"><span class="pc-spec">$4.50/lb</span><span class="pc-spec">22 lbs/box</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -850,11 +887,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d1" data-c="ERAA">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Gyro Gummy">360°</button>
-          <span class="sku">ERAA13</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gyro Gummy">
+          <span class="sku-tag">ERAA13</span>
+          <div class="ph-wrap"><div class="ph-icon">🌀</div><div class="ph-sku">ERAA13</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gyro Gummy" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">Bulk Gummy</div><div class="pc-name">Gyro Gummy</div><div class="pc-price">$99.00 <span>/ 22 lbs box</span></div><div class="pc-tags"><span class="pc-tag">$4.50/lb</span><span class="pc-tag">22 lbs/box</span></div></div>
+          <div><div class="pc-cat">Bulk Gummy</div><div class="pc-name">Gyro Gummy</div><div class="pc-price">$99.00 <span>/ 22 lbs box</span></div><div class="pc-specs"><span class="pc-spec">$4.50/lb</span><span class="pc-spec">22 lbs/box</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -862,11 +900,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d2" data-c="ERAA">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Football Gummy">360°</button>
-          <span class="sku">ERAA09</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Football Gummy">
+          <span class="sku-tag">ERAA09</span>
+          <div class="ph-wrap"><div class="ph-icon">⚽</div><div class="ph-sku">ERAA09 · Cheese/Yellow</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Football Gummy" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">Bulk Gummy</div><div class="pc-name">Football Gummy (Cheese/Yellow)</div><div class="pc-price">$99.00 <span>/ 22 lbs box</span></div><div class="pc-tags"><span class="pc-tag">$4.50/lb</span><span class="pc-tag">22 lbs/box</span></div></div>
+          <div><div class="pc-cat">Bulk Gummy</div><div class="pc-name">Football Gummy (Cheese/Yellow)</div><div class="pc-price">$99.00 <span>/ 22 lbs box</span></div><div class="pc-specs"><span class="pc-spec">$4.50/lb</span><span class="pc-spec">22 lbs/box</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -875,11 +914,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv" data-c="HK">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Hello Kitty Candy Set">360°</button>
-          <span class="sku">HKS1</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Candy Set">
+          <span class="sku-tag">HKS1</span>
+          <div class="ph-wrap"><div class="ph-icon">🎀</div><div class="ph-sku">HKS1</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Candy Set" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">Hello Kitty</div><div class="pc-name">Hello Kitty Candy Set</div><div class="pc-price">$60.00 <span>/ 24 pcs case</span></div><div class="pc-tags"><span class="pc-tag">$2.50/unit</span><span class="pc-tag">24 pcs/case</span></div></div>
+          <div><div class="pc-cat">Hello Kitty</div><div class="pc-name">Hello Kitty Candy Set</div><div class="pc-price">$60.00 <span>/ 24 pcs case</span></div><div class="pc-specs"><span class="pc-spec">$2.50/unit</span><span class="pc-spec">24 pcs/case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -887,11 +927,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d1" data-c="HK">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Hello Kitty Lollipop">360°</button>
-          <span class="sku">LOL16HK</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Lollipop">
+          <span class="sku-tag">LOL16HK</span>
+          <div class="ph-wrap"><div class="ph-icon">🍭</div><div class="ph-sku">LOL16HK</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Hello Kitty Lollipop" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">Hello Kitty</div><div class="pc-name">Hello Kitty Lollipop</div><div class="pc-price">$45.00 <span>/ 100 pcs case</span></div><div class="pc-tags"><span class="pc-tag">$0.45/unit</span><span class="pc-tag">100 pcs/case</span></div></div>
+          <div><div class="pc-cat">Hello Kitty</div><div class="pc-name">Hello Kitty Lollipop</div><div class="pc-price">$45.00 <span>/ 100 pcs case</span></div><div class="pc-specs"><span class="pc-spec">$0.45/unit</span><span class="pc-spec">100 pcs/case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -900,11 +941,12 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv" data-c="PREM">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Kinder Joy Holiday Display">360°</button>
-          <span class="sku">KYJ120</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Kinder Joy">
+          <span class="sku-tag">KYJ120</span>
+          <div class="ph-wrap"><div class="ph-icon">🥚</div><div class="ph-sku">KYJ120</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Kinder Joy" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">Premium Brand</div><div class="pc-name">Kinder Joy Holiday Mixed Display</div><div class="pc-price">$180.00 <span>/ 120 pcs</span></div><div class="pc-tags"><span class="pc-tag">$1.50/unit</span><span class="pc-tag">120 pcs</span></div></div>
+          <div><div class="pc-cat">Premium Brand</div><div class="pc-name">Kinder Joy Holiday Mixed Display</div><div class="pc-price">$180.00 <span>/ 120 pcs</span></div><div class="pc-specs"><span class="pc-spec">$1.50/unit</span><span class="pc-spec">120 pcs</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
@@ -912,106 +954,100 @@ footer a:hover{color:var(--lime)}
       <div class="pc rv d1" data-c="PREM">
         <div class="pc-img">
           <button class="b360" data-img="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" data-name="Ferrero Nutella & Go">360°</button>
-          <span class="sku">NUTBS</span>
-          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Ferrero Nutella">
+          <span class="sku-tag">NUTBS</span>
+          <div class="ph-wrap"><div class="ph-icon">🍫</div><div class="ph-sku">NUTBS</div></div>
+          <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Ferrero Nutella" style="position:relative;z-index:1" onerror="this.style.display='none'">
         </div>
         <div class="pc-body">
-          <div><div class="pc-cat">Premium Brand</div><div class="pc-name">Ferrero Nutella &amp; Go</div><div class="pc-price">$192.00 <span>/ 96 pcs case</span></div><div class="pc-tags"><span class="pc-tag">$2.00/unit</span><span class="pc-tag">96 pcs/case</span></div></div>
+          <div><div class="pc-cat">Premium Brand</div><div class="pc-name">Ferrero Nutella &amp; Go</div><div class="pc-price">$192.00 <span>/ 96 pcs case</span></div><div class="pc-specs"><span class="pc-spec">$2.00/unit</span><span class="pc-spec">96 pcs/case</span></div></div>
           <a href="https://candyeraus.com/shop/" class="pc-btn">Order Now 🛒</a>
         </div>
       </div>
 
     </div>
   </div>
-</section>
-
-<!-- wave to gummies -->
-<div class="wave">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="height:70px">
-    <path d="M0,60 C360,0 1080,80 1440,20 L1440,80 L0,80 Z" fill="#E0F7FF"/>
-  </svg>
 </div>
 
-<!-- ══ GUMMIES ═══════════════════════════════════════ -->
-<section class="gummies" id="gummies">
-  <div class="inner gm-layout">
-    <div class="rv">
-      <div class="st" style="color:var(--sky)"><span style="width:18px;height:3px;background:var(--sky);border-radius:2px;display:inline-block"></span>Bulk Candy</div>
-      <h2 class="h2">ERAA Gummy<br>Collection 🍬</h2>
-      <p class="sub">Premium bulk gummy candy in 22-lb boxes at $4.50 per pound. Perfect for candy dispensers, pick-and-mix stations, and retail displays.</p>
-      <a href="https://candyeraus.com/shop/" class="btn-main" style="margin-top:28px;display:inline-flex;background:linear-gradient(135deg,var(--sky),var(--purple))">View All Gummies →</a>
-    </div>
-    <div class="gm-cards rv d2">
-      <div class="gmc"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Earth Gummy"><div class="gum-info"><h4>Earth Gummy</h4><p>ERAA19 · Grape/Blue · 22 lbs/box</p><div class="gmc-price">$99.00 <small>/box</small></div></div></div>
-      <div class="gmc"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Gyro Gummy"><div class="gum-info"><h4>Gyro Gummy</h4><p>ERAA13 · 22 lbs/box</p><div class="gmc-price">$99.00 <small>/box</small></div></div></div>
-      <div class="gmc"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Football Gummy"><div class="gum-info"><h4>Football Gummy</h4><p>ERAA09 · Cheese/Yellow · 22 lbs/box</p><div class="gmc-price">$99.00 <small>/box</small></div></div></div>
+<!-- ══ GUMMIES ════════════════════════════════════ -->
+<div class="sec" style="background:var(--sky-l)" id="gummies">
+  <div class="inner" style="clip-path:polygon(0 4%,100% 0,100% 96%,0 100%);padding-top:80px;padding-bottom:80px;margin-top:-1px;margin-bottom:-1px">
+    <div class="gm-layout">
+      <div class="rv">
+        <div class="stag" style="color:var(--sky2)"><span style="background:var(--sky2);width:16px;height:3px;border-radius:2px;display:inline-block"></span>Bulk Candy</div>
+        <h2 class="h2">ERAA Gummy<br>Collection 🍬</h2>
+        <p class="sub">Premium bulk gummy candy in 22-lb boxes at $4.50 per pound. Perfect for candy dispensers, pick-and-mix stations, and retail displays.</p>
+        <a href="https://candyeraus.com/shop/" class="btn" style="background:var(--sky);color:#fff;border-color:var(--bdr);margin-top:28px;display:inline-flex">View All Gummies →</a>
+      </div>
+      <div class="gm-cards rv d2">
+        <div class="gmc">
+          <div class="gmc-img"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="" onerror="this.style.display='none'">🌍</div>
+          <div><h4>Earth Gummy</h4><p>ERAA19 · Grape/Blue · 22 lbs/box</p><div class="gmc-price">$99.00 <small>/box</small></div></div>
+        </div>
+        <div class="gmc">
+          <div class="gmc-img"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="" onerror="this.style.display='none'">🌀</div>
+          <div><h4>Gyro Gummy</h4><p>ERAA13 · 22 lbs/box</p><div class="gmc-price">$99.00 <small>/box</small></div></div>
+        </div>
+        <div class="gmc">
+          <div class="gmc-img"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="" onerror="this.style.display='none'">⚽</div>
+          <div><h4>Football Gummy</h4><p>ERAA09 · Cheese/Yellow · 22 lbs/box</p><div class="gmc-price">$99.00 <small>/box</small></div></div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
-
-<!-- wave to premium -->
-<div class="wave" style="transform:rotate(180deg);margin-bottom:-2px">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="height:70px">
-    <path d="M0,60 C360,0 1080,80 1440,20 L1440,80 L0,80 Z" fill="#E0F7FF"/>
-  </svg>
 </div>
 
-<!-- ══ PREMIUM ═══════════════════════════════════════ -->
-<section class="premium">
+<!-- ══ PREMIUM ════════════════════════════════════ -->
+<div class="sec sec-org cut-both" id="premium">
   <div class="inner">
-    <div class="st rv" style="color:var(--orange)"><span style="width:18px;height:3px;background:var(--orange);border-radius:2px;display:inline-block"></span>Premium Brands</div>
+    <div class="stag rv" style="color:var(--org2)"><span style="background:var(--org2);width:16px;height:3px;border-radius:2px;display:inline-block"></span>Premium Brands</div>
     <h2 class="h2 rv">Brands Your Customers Love ⭐</h2>
     <div class="prem-grid">
-      <div class="premc rv d1"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Kinder Joy"><div><div class="premc-sku">KYJ120</div><div class="premc-name">Kinder Joy Holiday Mixed Display</div><div class="premc-detail">120 pieces · $1.50 per unit · Ready to display</div><div class="premc-price">$180.00</div></div></div>
-      <div class="premc rv d2"><img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Ferrero"><div><div class="premc-sku">NUTBS</div><div class="premc-name">Ferrero Nutella &amp; Go</div><div class="premc-detail">96 pieces · $2.00 per unit · Case packed</div><div class="premc-price">$192.00</div></div></div>
+      <div class="premc rv d1">
+        <div class="premc-img">🥚</div>
+        <div><div class="premc-sku">KYJ120</div><div class="premc-name">Kinder Joy Holiday Mixed Display</div><div class="premc-detail">120 pieces · $1.50 per unit · Ready to display</div><div class="premc-price">$180.00</div></div>
+      </div>
+      <div class="premc rv d2">
+        <div class="premc-img">🍫</div>
+        <div><div class="premc-sku">NUTBS</div><div class="premc-name">Ferrero Nutella &amp; Go</div><div class="premc-detail">96 pieces · $2.00 per unit · Case packed</div><div class="premc-price">$192.00</div></div>
+      </div>
     </div>
   </div>
-</section>
-
-<!-- wave to display -->
-<div class="wave">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="height:70px">
-    <path d="M0,20 C480,80 960,0 1440,50 L1440,80 L0,80 Z" fill="#7BC42A"/>
-  </svg>
 </div>
 
-<!-- ══ DISPLAY TABLE ════════════════════════════════ -->
-<section class="display-band">
-  <div class="dband-inner">
-    <img src="https://candyeraus.com/wp-content/uploads/2024/12/18g-Orange-Gummy.png" alt="Lollipop Display Table" class="rv">
-    <div class="dc rv d2">
-      <div class="st">Display Solutions</div>
-      <h2 class="h2">Lollipop Round<br>Display Table 🍭</h2>
-      <div class="dband-price">$600.00</div>
-      <p class="dband-detail">Item #CD 01. A fully-stocked lollipop display table — ready for the shop floor. Maximise impulse purchases with a stunning visual centrepiece that sells itself.</p>
-      <a href="https://candyeraus.com/shop/" class="btn-white">Enquire Now →</a>
+<!-- ══ DISPLAY TABLE ══════════════════════════════ -->
+<div class="sec sec-lime disp-band cut-up">
+  <div class="inner sm">
+    <div class="disp-grid">
+      <div class="disp-img-wrap rv">
+        <div class="ph-fallback">🍭</div>
+      </div>
+      <div class="dc rv d2">
+        <div class="stag">Display Solutions</div>
+        <h2 class="h2">Lollipop Round<br>Display Table 🍭</h2>
+        <div class="disp-price">$600.00</div>
+        <p class="disp-detail">Item #CD 01. A fully-stocked lollipop display table — ready for the shop floor. Maximise impulse purchases with a stunning visual centrepiece.</p>
+        <a href="https://candyeraus.com/shop/" class="btn-wh">Enquire Now →</a>
+      </div>
     </div>
   </div>
-</section>
-
-<!-- wave to cta -->
-<div class="wave" style="transform:rotate(180deg);margin-bottom:-2px">
-  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="height:70px">
-    <path d="M0,20 C480,80 960,0 1440,50 L1440,80 L0,80 Z" fill="#7BC42A"/>
-  </svg>
 </div>
 
-<!-- ══ CTA ══════════════════════════════════════════ -->
-<section class="cta">
-  <div class="inner rv">
-    <h2>Ready to <span class="g">Stock</span><br>Your <span class="p">Store?</span> 🛍️</h2>
+<!-- ══ CTA ════════════════════════════════════════ -->
+<div class="sec sec-pur cut-up">
+  <div class="cta-inner rv">
+    <h2>Ready to <span class="c1">Stock</span><br>Your <span class="c2">Store?</span> 🛍️</h2>
     <p>Browse the full catalogue and place your wholesale order today. We ship Australia-wide.</p>
-    <a href="https://candyeraus.com/shop/" class="btn-main" style="display:inline-flex">Shop the Full Catalogue 🍬</a>
+    <a href="https://candyeraus.com/shop/" class="btn btn-lime">Shop the Full Catalogue 🍬</a>
   </div>
-</section>
+</div>
 
-<!-- ══ FOOTER ═══════════════════════════════════════ -->
-<footer>
-  <div class="fi2">
+<!-- ══ FOOTER ══════════════════════════════════════ -->
+<footer class="sec sec-dark">
+  <div class="ft-inner">
     <div class="ftop">
       <div class="fbl">
         <img src="https://candyeraus.com/wp-content/uploads/2024/11/file-4.png" alt="Candy Era"
-             onerror="this.outerHTML='<div style=\'font-family:var(--font-d);font-size:24px;color:#9dcc54;margin-bottom:18px\'>🍬 Candy Era</div>'">
+             onerror="this.outerHTML='<div style=\'font-family:Fredoka One,cursive;font-size:22px;color:#9dcc54;margin-bottom:16px\'>🍬 Candy Era</div>'">
         <p>Sweet treats for everyone. Australia's wholesale candy &amp; novelty toy supplier.</p>
       </div>
       <div><h5>Catalogue</h5><ul>
@@ -1042,7 +1078,7 @@ footer a:hover{color:var(--lime)}
   </div>
 </footer>
 
-<!-- ══ 360° MODAL ═══════════════════════════════════ -->
+<!-- ══ 360° MODAL ══════════════════════════════════ -->
 <div class="mbg" id="modal">
   <div class="mbox">
     <div class="mhdr"><span class="mttl" id="mttl">360° View</span><button class="mcl" id="mcl">✕</button></div>
@@ -1058,82 +1094,77 @@ footer a:hover{color:var(--lime)}
 
 <script>
 (function(){
-  /* Floating candy emojis */
-  const emojis = ['🍬','🍭','🍫','🍡','🍧','🍦','🎉','⭐','🌈','🍒'];
-  const cont = document.getElementById('floats');
-  for(let i = 0; i < 18; i++){
-    const el = document.createElement('div');
-    el.className = 'candy-float';
-    el.textContent = emojis[i % emojis.length];
-    el.style.cssText = `
-      left:${Math.random()*100}%;
-      animation-duration:${10 + Math.random()*18}s;
-      animation-delay:${-Math.random()*20}s;
-      font-size:${20 + Math.random()*24}px;
-      transform:translateY(${Math.random()*100}vh);
-    `;
-    cont.appendChild(el);
+  /* ── Floating candy ── */
+  const emojis=['🍬','🍭','🍫','🍡','🍧','⭐','🌈','🍒','🎉','🌟'];
+  const cont=document.getElementById('floats');
+  for(let i=0;i<16;i++){
+    const e=document.createElement('div');
+    e.className='fc';
+    e.textContent=emojis[i%emojis.length];
+    e.style.cssText=`left:${Math.random()*100}%;animation-duration:${12+Math.random()*16}s;animation-delay:${-Math.random()*22}s;font-size:${18+Math.random()*20}px`;
+    cont.appendChild(e);
   }
 
-  /* Progress + header */
-  const bar = document.getElementById('bar');
-  const hdr = document.getElementById('hdr');
+  /* ── Progress + header ── */
+  const bar=document.getElementById('bar');
+  const hdr=document.getElementById('hdr');
   window.addEventListener('scroll',()=>{
-    const s = window.scrollY, h = document.documentElement.scrollHeight - innerHeight;
-    bar.style.width = (s/h*100)+'%';
-    hdr.classList.toggle('s', s > 50);
+    const s=scrollY, h=document.documentElement.scrollHeight-innerHeight;
+    bar.style.width=(s/h*100)+'%';
   },{passive:true});
 
-  /* Reveal */
-  const io = new IntersectionObserver(es=>{
+  /* ── Reveal with IntersectionObserver ── */
+  const io=new IntersectionObserver(es=>{
     es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);} });
-  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  },{threshold:.08,rootMargin:'0px 0px -30px 0px'});
   document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
-  /* Stats counter */
-  const sio = new IntersectionObserver(es=>{
+  /* ── Stats counter ── */
+  const sio=new IntersectionObserver(es=>{
     es.forEach(e=>{
       if(!e.isIntersecting)return;
       e.target.querySelectorAll('.sn').forEach(n=>{
-        const t=+n.dataset.t; let c=0;
-        const step=Math.max(t/60,1);
-        const tm=setInterval(()=>{ c=Math.min(c+step,t); n.textContent=Math.floor(c)+(t>=22?'+':''); if(c>=t)clearInterval(tm); },24);
+        const t=+n.dataset.t;let c=0;
+        const step=Math.max(t/55,1);
+        const tm=setInterval(()=>{c=Math.min(c+step,t);n.textContent=Math.floor(c)+(t>=22?'+':'');if(c>=t)clearInterval(tm);},22);
       });
       sio.unobserve(e.target);
     });
-  },{threshold:.5});
-  document.querySelectorAll('.stats-inner').forEach(el=>sio.observe(el));
+  },{threshold:.6});
+  document.querySelectorAll('.s-inner').forEach(el=>sio.observe(el));
 
-  /* Product filter */
-  const filts = document.querySelectorAll('.ft');
-  const cards = document.querySelectorAll('.pc');
+  /* ── Filter tabs ── */
+  const filts=document.querySelectorAll('.ft');
+  const cards=document.querySelectorAll('.pc');
   filts.forEach(f=>f.addEventListener('click',()=>{
     filts.forEach(x=>x.classList.remove('on'));
     f.classList.add('on');
-    const v = f.dataset.f;
-    cards.forEach((c,i)=>{
-      const show = v==='all' || c.dataset.c===v;
-      c.style.display = show?'':'none';
+    const v=f.dataset.f;
+    let idx=0;
+    cards.forEach(c=>{
+      const show=v==='all'||c.dataset.c===v;
+      c.style.display=show?'':'none';
       if(show){
-        c.style.opacity=0; c.style.transform='translateY(20px) scale(.97)';
+        c.style.opacity=0;c.style.transform='translateY(18px) scale(.97)';
+        const i=idx++;
         setTimeout(()=>{
-          c.style.transition='opacity .4s ease,transform .4s ease';
-          c.style.opacity=1; c.style.transform='none';
-        }, i*50);
+          c.style.transition='opacity .35s ease,transform .35s ease';
+          c.style.opacity=1;c.style.transform='none';
+        },i*55);
       }
     });
   }));
 
-  /* Smooth anchors */
+  /* ── Smooth anchors ── */
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click',e=>{
       const t=document.querySelector(a.getAttribute('href'));
-      if(!t)return; e.preventDefault();
-      window.scrollTo({top:t.getBoundingClientRect().top+scrollY-76,behavior:'smooth'});
+      if(!t)return;e.preventDefault();
+      window.scrollTo({top:t.getBoundingClientRect().top+scrollY-74,behavior:'smooth'});
     });
   });
 
-  /* 360° viewer */
+  /* ── 360° viewer ── */
   const modal=document.getElementById('modal');
   const mimg=document.getElementById('mimg');
   const mttl=document.getElementById('mttl');
@@ -1142,34 +1173,22 @@ footer a:hover{color:var(--lime)}
   const dots=document.querySelectorAll('#mring span');
   let drag=false,sx=0,rotY=0,anim=null;
 
-  function open(img,name){
-    mimg.src=img; mttl.textContent=name+' — 360° View';
-    modal.classList.add('open'); document.body.style.overflow='hidden';
-    rotY=0; spin();
-  }
-  function close(){
-    modal.classList.remove('open'); document.body.style.overflow=''; clearInterval(anim);
-  }
-  function setR(d){
-    mwrap.style.transform=`perspective(700px) rotateY(${d}deg)`;
-    const idx=Math.floor(((d%360+360)%360)/360*dots.length);
-    dots.forEach((x,i)=>x.classList.toggle('a',i===idx));
-  }
-  function spin(){ clearInterval(anim); let d=rotY; anim=setInterval(()=>{ if(!drag){d+=0.9;rotY=d;setR(d);} },16); }
+  function openM(img,name){mimg.src=img;mttl.textContent=name+' — 360°';modal.classList.add('open');document.body.style.overflow='hidden';rotY=0;spin();}
+  function closeM(){modal.classList.remove('open');document.body.style.overflow='';clearInterval(anim);}
+  function setR(d){mwrap.style.transform=`perspective(700px) rotateY(${d}deg)`;const idx=Math.floor(((d%360+360)%360)/360*dots.length);dots.forEach((x,i)=>x.classList.toggle('a',i===idx));}
+  function spin(){clearInterval(anim);let d=rotY;anim=setInterval(()=>{if(!drag){d+=0.8;rotY=d;setR(d);}},16);}
 
-  mstage.addEventListener('mousedown',e=>{drag=true;sx=e.clientX;clearInterval(anim)});
-  mstage.addEventListener('touchstart',e=>{drag=true;sx=e.touches[0].clientX;clearInterval(anim)},{passive:true});
-  window.addEventListener('mousemove',e=>{if(!drag)return;rotY+=(e.clientX-sx)*.7;sx=e.clientX;setR(rotY)});
-  window.addEventListener('touchmove',e=>{if(!drag)return;rotY+=(e.touches[0].clientX-sx)*.7;sx=e.touches[0].clientX;setR(rotY)},{passive:true});
-  window.addEventListener('mouseup',()=>{if(drag){drag=false;spin()}});
-  window.addEventListener('touchend',()=>{if(drag){drag=false;spin()}});
+  mstage.addEventListener('mousedown',e=>{drag=true;sx=e.clientX;clearInterval(anim);});
+  mstage.addEventListener('touchstart',e=>{drag=true;sx=e.touches[0].clientX;clearInterval(anim);},{passive:true});
+  window.addEventListener('mousemove',e=>{if(!drag)return;rotY+=(e.clientX-sx)*.7;sx=e.clientX;setR(rotY);});
+  window.addEventListener('touchmove',e=>{if(!drag)return;rotY+=(e.touches[0].clientX-sx)*.7;sx=e.touches[0].clientX;setR(rotY);},{passive:true});
+  window.addEventListener('mouseup',()=>{if(drag){drag=false;spin();}});
+  window.addEventListener('touchend',()=>{if(drag){drag=false;spin();}});
 
-  document.querySelectorAll('.b360').forEach(b=>{
-    b.addEventListener('click',e=>{e.stopPropagation();open(b.dataset.img,b.dataset.name)});
-  });
-  document.getElementById('mcl').addEventListener('click',close);
-  modal.addEventListener('click',e=>{if(e.target===modal)close()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+  document.querySelectorAll('.b360').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openM(b.dataset.img,b.dataset.name);}));
+  document.getElementById('mcl').addEventListener('click',closeM);
+  modal.addEventListener('click',e=>{if(e.target===modal)closeM();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
 })();
 </script>
 </body>
