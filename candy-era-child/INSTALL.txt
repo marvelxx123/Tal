@@ -1,0 +1,65 @@
+CANDY ERA CHILD THEME — INSTALLATION GUIDE
+==========================================
+
+REQUIREMENTS
+------------
+- WordPress 6.x+
+- Hello Elementor theme (parent) — must be installed
+- Elementor (free) — active
+- Elementor Pro — optional but recommended
+- WooCommerce — active
+- WooCommerce Stripe Gateway — for payments
+
+INSTALLATION (5 minutes, no disruption)
+----------------------------------------
+1. Zip the entire "candy-era-child" folder
+   (right-click > Compress / zip it)
+
+2. In WordPress admin go to:
+   Appearance > Themes > Add New > Upload Theme
+
+3. Upload the zip file and click "Install Now"
+
+4. Click "Activate" — your site switches to the child theme.
+   All your Elementor layouts, pages, and content are UNTOUCHED.
+
+5. Done. The modern design is now live.
+
+WHAT CHANGES (vs the old theme)
+---------------------------------
+- Sticky glass-effect header on scroll
+- Animated scroll progress bar at the top
+- Sections fade+slide in as you scroll down
+- Product cards have hover lift effect
+- All buttons are pill-shaped with smooth hover
+- Navigation links have underline-on-hover animation
+- WooCommerce product grid is modernized
+- Cart icon has bounce animation when items added
+- Checkout form fields have focus glow effect
+- Footer is dark/clean
+- Stripe payment section styled consistently
+
+STRIPE CHECK
+-------------
+The theme automatically checks if the WooCommerce Stripe Gateway
+plugin is active. If it's not, you'll see an admin-only notice
+with a link to install it. Your customers never see this notice.
+
+CUSTOMIZATION
+-------------
+All colours are CSS variables at the top of style.css:
+  --ce-green       Main brand green    #78a938
+  --ce-pink        Candy accent pink
+  --ce-yellow      Candy accent yellow
+  etc.
+
+Change one variable to re-skin the whole site instantly.
+
+You can also add your own CSS in:
+  WordPress Admin > Appearance > Customize > Additional CSS
+  OR in Elementor's Site Settings > Custom CSS
+
+REVERTING
+----------
+To go back to the old look: Appearance > Themes > Activate "Hello Elementor"
+Your content and Elementor layouts are never modified by this theme.
