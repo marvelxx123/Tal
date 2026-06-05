@@ -169,6 +169,19 @@ app.delete('/api/photos/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+app.post('/api/photos/:id/remove-watermark', async (req, res) => {
+  const photo = db.prepare('SELECT * FROM listing_photos WHERE id = ?').get(req.params.id);
+  if (!photo) return res.status(404).json({ error: 'not found' });
+  const filepath = path.join(UPLOADS_DIR, photo.filename);
+  try {
+    const { removeWatermark } = require('./removeWatermark');
+    const result = await removeWatermark(filepath);
+    res.json({ ok: true, ...result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── Settings ──────────────────────────────────────────────────────────────────
 
 app.get('/api/settings', (req, res) => {

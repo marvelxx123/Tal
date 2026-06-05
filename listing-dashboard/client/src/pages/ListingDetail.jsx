@@ -1,10 +1,53 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getListing, generatePhoto, uploadPhotos, deletePhoto, updateListing, getBusinesses, photoUrl, getActivity, logActivity, deleteActivity } from '../api';
-import { ArrowLeft, Sparkles, Upload, Trash2, RefreshCw, Pencil, X, Save, Plus, Mail, Phone, MessageSquare } from 'lucide-react';
+import { getListing, generatePhoto, uploadPhotos, deletePhoto, updateListing, getBusinesses, photoUrl, getActivity, logActivity, deleteActivity, removeWatermark } from '../api';
+import { ArrowLeft, Sparkles, Upload, Trash2, RefreshCw, Pencil, X, Save, Plus, Mail, Phone, MessageSquare, Eraser } from 'lucide-react';
 
 const ACTION_TYPES = ['Email Sent — Free Sample','Email Sent — Follow Up','Email Sent — Proposal','Phone Call','Meeting Scheduled','Meeting Completed','Contract Sent','Contract Signed','Declined','No Response','Note'];
 const ACTION_COLORS = {'Email Sent — Free Sample':'#2563eb','Email Sent — Follow Up':'#2563eb','Email Sent — Proposal':'#7c3aed','Phone Call':'#16a34a','Meeting Scheduled':'#d97706','Meeting Completed':'#16a34a','Contract Sent':'#7c3aed','Contract Signed':'#16a34a','Declined':'#dc2626','No Response':'#6b7280','Note':'#6b7280'};
+
+function PhotoCard({ photo, onDelete, onRefresh }) {
+  const [cleaning, setCleaning] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const clean = async () => {
+    setCleaning(true);
+    try {
+      await removeWatermark(photo.id);
+      setDone(true);
+      // Force browser to reload the image by busting cache
+      setTimeout(() => { onRefresh(); setDone(false); }, 800);
+    } catch (e) {
+      alert('Watermark removal failed: ' + (e.response?.data?.error || e.message));
+    } finally { setCleaning(false); }
+  };
+
+  return (
+    <div className="photo-card">
+      <img
+        src={photoUrl(photo.filename) + `?t=${Date.now()}`}
+        alt={photo.caption || 'listing photo'}
+        loading="lazy"
+        key={done ? 'refreshed' : 'original'}
+      />
+      <div className="photo-overlay">
+        <button
+          className="btn btn-sm"
+          style={{background:'#1e293b', color:'#e2e8f0'}}
+          onClick={clean}
+          disabled={cleaning}
+          title="Remove watermark from bottom-right corner"
+        >
+          {cleaning ? <RefreshCw size={12} className="spin"/> : done ? '✓' : <><Eraser size={12}/> WM</>}
+        </button>
+        <button className="btn btn-sm btn-danger" onClick={() => onDelete(photo.id)}><Trash2 size={13}/></button>
+      </div>
+      <span className={`photo-source badge ${photo.source === 'ai-generated' ? 'badge-ai' : 'badge-sold'}`}>
+        {photo.source === 'ai-generated' ? 'AI' : 'Upload'}
+      </span>
+    </div>
+  );
+}
 
 export default function ListingDetail() {
   const { id } = useParams();
@@ -234,15 +277,7 @@ export default function ListingDetail() {
           ) : (
             <div className="photo-grid">
               {listing.photos.map(p => (
-                <div key={p.id} className="photo-card">
-                  <img src={photoUrl(p.filename)} alt={p.caption || 'listing photo'} loading="lazy" />
-                  <div className="photo-overlay">
-                    <button className="btn btn-sm btn-danger" onClick={() => removePhoto(p.id)}><Trash2 size={13}/></button>
-                  </div>
-                  <span className={`photo-source badge ${p.source === 'ai-generated' ? 'badge-ai' : 'badge-sold'}`}>
-                    {p.source === 'ai-generated' ? 'AI' : 'Upload'}
-                  </span>
-                </div>
+                <PhotoCard key={p.id} photo={p} onDelete={removePhoto} onRefresh={load} />
               ))}
             </div>
           )}

@@ -25,6 +25,7 @@ export const generatePhoto = (listingId, prompt = '') =>
   api.post(`/listings/${listingId}/photos/generate`, { prompt }).then(r => r.data);
 
 export const deletePhoto = (id) => api.delete(`/photos/${id}`).then(r => r.data);
+export const removeWatermark = (id) => api.post(`/photos/${id}/remove-watermark`).then(r => r.data);
 
 export const photoUrl = (filename) => `http://localhost:3001/uploads/${filename}`;
 
