@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getListing, generatePhoto, uploadPhotos, deletePhoto, updateListing, getBusinesses, photoUrl } from '../api';
-import { ArrowLeft, Sparkles, Upload, Trash2, RefreshCw, Pencil, X, Save } from 'lucide-react';
+import { getListing, generatePhoto, uploadPhotos, deletePhoto, updateListing, getBusinesses, photoUrl, getActivity, logActivity, deleteActivity } from '../api';
+import { ArrowLeft, Sparkles, Upload, Trash2, RefreshCw, Pencil, X, Save, Plus, Mail, Phone, MessageSquare } from 'lucide-react';
+
+const ACTION_TYPES = ['Email Sent — Free Sample','Email Sent — Follow Up','Email Sent — Proposal','Phone Call','Meeting Scheduled','Meeting Completed','Contract Sent','Contract Signed','Declined','No Response','Note'];
+const ACTION_COLORS = {'Email Sent — Free Sample':'#2563eb','Email Sent — Follow Up':'#2563eb','Email Sent — Proposal':'#7c3aed','Phone Call':'#16a34a','Meeting Scheduled':'#d97706','Meeting Completed':'#16a34a','Contract Sent':'#7c3aed','Contract Signed':'#16a34a','Declined':'#dc2626','No Response':'#6b7280','Note':'#6b7280'};
 
 export default function ListingDetail() {
   const { id } = useParams();
@@ -14,12 +17,30 @@ export default function ListingDetail() {
   const [editForm, setEditForm] = useState({});
   const [businesses, setBusinesses] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [activityLog, setActivityLog] = useState([]);
+  const [actModal, setActModal] = useState(false);
+  const [actForm, setActForm] = useState({ action_type: 'Email Sent — Free Sample', contact_name: '', contact_email: '', contact_phone: '', notes: '' });
+  const [actSaving, setActSaving] = useState(false);
   const fileRef = useRef();
 
   const PROP_TYPES = ['Office', 'Retail', 'Industrial', 'Warehouse', 'Mixed Use', 'Restaurant', 'Medical', 'Land', 'Other'];
 
   const load = () => getListing(id).then(d => { setListing(d); setLoading(false); });
-  useEffect(() => { load(); getBusinesses().then(setBusinesses); }, [id]);
+  const loadActivity = () => getActivity({ listing_id: id }).then(setActivityLog);
+  useEffect(() => { load(); loadActivity(); getBusinesses().then(setBusinesses); }, [id]);
+
+  const saveActivity = async () => {
+    setActSaving(true);
+    await logActivity({ ...actForm, listing_id: id, business_id: listing?.business_id });
+    await loadActivity();
+    setActModal(false);
+    setActSaving(false);
+  };
+
+  const removeActivity = async (aid) => {
+    if (!confirm('Delete this log entry?')) return;
+    await deleteActivity(aid); loadActivity();
+  };
 
   const generate = async () => {
     setGenerating(true); setGenError('');
@@ -227,6 +248,84 @@ export default function ListingDetail() {
           )}
         </div>
       </div>
+
+      {/* Activity Log */}
+      <div className="card" style={{marginTop:20}}>
+        <div className="card-header">
+          <span>Activity Log ({activityLog.length})</span>
+          <button className="btn btn-sm btn-primary" onClick={() => { setActForm({ action_type: 'Email Sent — Free Sample', contact_name: '', contact_email: '', contact_phone: '', notes: '' }); setActModal(true); }}>
+            <Plus size={13}/> Log Activity
+          </button>
+        </div>
+        {activityLog.length === 0 ? (
+          <div className="empty" style={{padding:28}}>No activity logged yet for this listing.</div>
+        ) : (
+          <div style={{padding:'4px 0'}}>
+            {activityLog.map((entry, i) => (
+              <div key={entry.id} style={{display:'flex', gap:12, padding:'12px 20px', borderBottom: i < activityLog.length-1 ? '1px solid var(--border)' : 'none'}}>
+                <div style={{width:8, height:8, borderRadius:'50%', background: ACTION_COLORS[entry.action_type] || '#6b7280', marginTop:6, flexShrink:0}}/>
+                <div style={{flex:1}}>
+                  <div style={{display:'flex', alignItems:'center', gap:8}}>
+                    <span style={{fontWeight:600, fontSize:13, color:'var(--text-h)'}}>{entry.action_type}</span>
+                    <span style={{fontSize:11, color:'#9ca3af'}}>{new Date(entry.created_at).toLocaleString()}</span>
+                  </div>
+                  {(entry.contact_name || entry.contact_email || entry.contact_phone) && (
+                    <div style={{fontSize:12, color:'#6b7280', marginTop:2}}>
+                      {entry.contact_name && <span style={{marginRight:10}}>👤 {entry.contact_name}</span>}
+                      {entry.contact_email && <a href={`mailto:${entry.contact_email}`} style={{color:'var(--accent)', marginRight:10}}>{entry.contact_email}</a>}
+                      {entry.contact_phone && <span>📞 {entry.contact_phone}</span>}
+                    </div>
+                  )}
+                  {entry.notes && <div style={{fontSize:12, color:'#374151', marginTop:4, fontStyle:'italic'}}>{entry.notes}</div>}
+                </div>
+                <button className="btn btn-sm btn-danger" style={{alignSelf:'flex-start'}} onClick={() => removeActivity(entry.id)}><Trash2 size={11}/></button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Log Activity Modal */}
+      {actModal && (
+        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setActModal(false)}>
+          <div className="modal">
+            <div className="modal-header">
+              Log Activity
+              <button className="btn btn-sm btn-ghost" onClick={() => setActModal(false)}><X size={16}/></button>
+            </div>
+            <div className="modal-body">
+              <div className="form-grid">
+                <div className="form-group span-2">
+                  <label>Action Type</label>
+                  <select value={actForm.action_type} onChange={e => setActForm({...actForm, action_type: e.target.value})}>
+                    {ACTION_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Contact Name</label>
+                  <input value={actForm.contact_name} onChange={e => setActForm({...actForm, contact_name: e.target.value})} placeholder="Who did you contact?" />
+                </div>
+                <div className="form-group">
+                  <label>Contact Phone</label>
+                  <input value={actForm.contact_phone} onChange={e => setActForm({...actForm, contact_phone: e.target.value})} />
+                </div>
+                <div className="form-group span-2">
+                  <label>Contact Email</label>
+                  <input type="email" value={actForm.contact_email} onChange={e => setActForm({...actForm, contact_email: e.target.value})} />
+                </div>
+                <div className="form-group span-2">
+                  <label>Notes</label>
+                  <textarea rows={3} value={actForm.notes} onChange={e => setActForm({...actForm, notes: e.target.value})} placeholder="What was sent? What was discussed? Any follow-up?" />
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={() => setActModal(false)}>Cancel</button>
+              <button className="btn btn-primary" onClick={saveActivity} disabled={actSaving}>{actSaving ? 'Saving...' : 'Log It'}</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`.spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>

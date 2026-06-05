@@ -27,3 +27,10 @@ export const generatePhoto = (listingId, prompt = '') =>
 export const deletePhoto = (id) => api.delete(`/photos/${id}`).then(r => r.data);
 
 export const photoUrl = (filename) => `http://localhost:3001/uploads/${filename}`;
+
+export const getActivity = (params = {}) => {
+  const q = new URLSearchParams(params).toString();
+  return api.get(`/activity${q ? '?' + q : ''}`).then(r => r.data);
+};
+export const logActivity = (data) => api.post('/activity', data).then(r => r.data);
+export const deleteActivity = (id) => api.delete(`/activity/${id}`).then(r => r.data);

@@ -169,6 +169,39 @@ app.delete('/api/photos/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+// ── Activity Log ──────────────────────────────────────────────────────────────
+
+app.get('/api/activity', (req, res) => {
+  const { listing_id, business_id } = req.query;
+  let query = `
+    SELECT a.*, l.property_address, l.city, b.business_name
+    FROM activity_log a
+    LEFT JOIN listings l ON l.id = a.listing_id
+    LEFT JOIN businesses b ON b.id = a.business_id
+  `;
+  const params = [];
+  if (listing_id) { query += ' WHERE a.listing_id = ?'; params.push(listing_id); }
+  else if (business_id) { query += ' WHERE a.business_id = ?'; params.push(business_id); }
+  query += ' ORDER BY a.created_at DESC LIMIT 200';
+  res.json(db.prepare(query).all(...params));
+});
+
+app.post('/api/activity', (req, res) => {
+  const { listing_id, business_id, action_type, contact_name, contact_email, contact_phone, notes } = req.body;
+  if (!action_type) return res.status(400).json({ error: 'action_type required' });
+  const id = uuidv4();
+  db.prepare(`
+    INSERT INTO activity_log (id, listing_id, business_id, action_type, contact_name, contact_email, contact_phone, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(id, listing_id || null, business_id || null, action_type, contact_name || '', contact_email || '', contact_phone || '', notes || '');
+  res.json(db.prepare('SELECT * FROM activity_log WHERE id = ?').get(id));
+});
+
+app.delete('/api/activity/:id', (req, res) => {
+  db.prepare('DELETE FROM activity_log WHERE id = ?').run(req.params.id);
+  res.json({ ok: true });
+});
+
 // ── Stats ─────────────────────────────────────────────────────────────────────
 
 app.get('/api/stats', (req, res) => {
