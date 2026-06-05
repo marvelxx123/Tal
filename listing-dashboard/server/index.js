@@ -202,6 +202,124 @@ app.delete('/api/activity/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+// ── URL Import (parse LoopNet / Crexi URL) ────────────────────────────────────
+
+app.post('/api/parse-url', (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: 'url required' });
+
+  try {
+    const u = new URL(url);
+    const hostname = u.hostname.toLowerCase();
+    let result = { source_url: url, property_address: '', city: '', state: '', property_type: '', source: '' };
+
+    if (hostname.includes('loopnet.com')) {
+      result.source = 'LoopNet';
+      // URL format: /Listing/4924-E-First-Coast-Hwy-Fernandina-Beach-FL/31467834/
+      const match = u.pathname.match(/\/Listing\/([^/]+)\/(\d+)/i);
+      if (match) {
+        result.loopnet_id = match[2];
+        const slug = match[1]; // e.g. "4924-E-First-Coast-Hwy-Fernandina-Beach-FL"
+        const parsed = parseAddressSlug(slug);
+        Object.assign(result, parsed);
+      }
+    } else if (hostname.includes('crexi.com')) {
+      result.source = 'Crexi';
+      // URL format: /properties/123456/property-name-city-state
+      const match = u.pathname.match(/\/properties\/(\d+)\/([^/]+)/i);
+      if (match) {
+        result.crexi_id = match[1];
+        const slug = match[2];
+        const parsed = parseAddressSlug(slug);
+        Object.assign(result, parsed);
+      }
+    } else {
+      // Generic — try to parse anything from the path
+      result.source = 'Other';
+      const slug = u.pathname.split('/').filter(Boolean).join('-');
+      const parsed = parseAddressSlug(slug);
+      Object.assign(result, parsed);
+    }
+
+    res.json(result);
+  } catch (e) {
+    res.status(400).json({ error: 'Invalid URL' });
+  }
+});
+
+function parseAddressSlug(slug) {
+  // Slug like "4924-E-First-Coast-Hwy-Fernandina-Beach-FL"
+  // or "123-Main-St-Los-Angeles-CA"
+  const US_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+  const parts = slug.replace(/-+/g, ' ').split(' ');
+
+  // Find state (2-letter uppercase match at end)
+  let stateIdx = -1;
+  for (let i = parts.length - 1; i >= 0; i--) {
+    if (US_STATES.includes(parts[i].toUpperCase())) { stateIdx = i; break; }
+  }
+
+  const state = stateIdx >= 0 ? parts[stateIdx].toUpperCase() : '';
+
+  // City is 1-3 words before state
+  let cityStart = Math.max(0, stateIdx - 3);
+  // Find where the city starts: look for word that starts with uppercase after address ends
+  // Simple heuristic: address ends with common suffixes
+  const SUFFIXES = ['ST','AVE','BLVD','HWY','RD','DR','LN','CT','PL','WAY','PKWY','SQ','TER','CIR','LOOP'];
+  let addrEnd = 0;
+  for (let i = 0; i < (stateIdx > 0 ? stateIdx : parts.length); i++) {
+    if (SUFFIXES.includes(parts[i].toUpperCase())) addrEnd = i;
+  }
+
+  const addressParts = parts.slice(0, addrEnd + 1);
+  const cityParts = stateIdx > 0 ? parts.slice(addrEnd + 1, stateIdx) : [];
+
+  return {
+    property_address: addressParts.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '),
+    city: cityParts.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '),
+    state,
+  };
+}
+
+// ── Export / Backup ───────────────────────────────────────────────────────────
+
+app.get('/api/export/csv', (req, res) => {
+  const listings = db.prepare(`
+    SELECT l.*, b.business_name, b.contact_name, b.contact_email, b.contact_phone,
+      CAST((julianday('now') - julianday(l.listed_date)) AS INTEGER) AS days_on_market,
+      COUNT(p.id) AS photo_count
+    FROM listings l
+    LEFT JOIN businesses b ON b.id = l.business_id
+    LEFT JOIN listing_photos p ON p.listing_id = l.id
+    GROUP BY l.id
+    ORDER BY l.listed_date ASC
+  `).all();
+
+  const cols = ['property_address','city','state','zip','property_type','square_feet','asking_price','listed_date','days_on_market','status','business_name','contact_name','contact_email','contact_phone','photo_count','description','created_at'];
+  const header = cols.join(',');
+  const rows = listings.map(l => cols.map(c => {
+    const v = l[c] ?? '';
+    return `"${String(v).replace(/"/g, '""')}"`;
+  }).join(','));
+
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', `attachment; filename="cre-listings-${new Date().toISOString().slice(0,10)}.csv"`);
+  res.send([header, ...rows].join('\n'));
+});
+
+app.get('/api/export/json', (req, res) => {
+  const data = {
+    exported_at: new Date().toISOString(),
+    businesses: db.prepare('SELECT * FROM businesses ORDER BY created_at DESC').all(),
+    listings: db.prepare(`SELECT l.*, CAST((julianday('now') - julianday(l.listed_date)) AS INTEGER) AS days_on_market FROM listings l ORDER BY l.listed_date ASC`).all(),
+    photos: db.prepare('SELECT * FROM listing_photos ORDER BY created_at DESC').all(),
+    activity: db.prepare('SELECT * FROM activity_log ORDER BY created_at DESC').all(),
+  };
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Disposition', `attachment; filename="cre-backup-${new Date().toISOString().slice(0,10)}.json"`);
+  res.json(data);
+});
+
 // ── Stats ─────────────────────────────────────────────────────────────────────
 
 app.get('/api/stats', (req, res) => {

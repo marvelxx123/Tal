@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getStats, getListings } from '../api';
-import { AlertTriangle, Building2, Camera, Users } from 'lucide-react';
+import { AlertTriangle, Building2, Camera, Users, Download } from 'lucide-react';
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -19,9 +19,17 @@ export default function Dashboard() {
           <div className="page-title">Dashboard</div>
           <div className="page-sub">Commercial Real Estate Listings Overview</div>
         </div>
-        <Link to="/listings" className="btn btn-primary">
-          <Building2 size={15} /> View All Listings
-        </Link>
+        <div style={{display:'flex', gap:8}}>
+          <a href="http://localhost:3001/api/export/csv" className="btn btn-secondary" download>
+            <Download size={14}/> Export CSV
+          </a>
+          <a href="http://localhost:3001/api/export/json" className="btn btn-secondary" download>
+            <Download size={14}/> Backup JSON
+          </a>
+          <Link to="/listings" className="btn btn-primary">
+            <Building2 size={15} /> View All Listings
+          </Link>
+        </div>
       </div>
 
       <div className="stats-grid">

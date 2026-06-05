@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getListings, getBusinesses, createListing, deleteListing } from '../api';
-import { Plus, X, Camera, Trash2 } from 'lucide-react';
+import { Plus, X, Camera, Trash2, Link2 } from 'lucide-react';
+import UrlImport from '../components/UrlImport';
 
 const PROP_TYPES = ['Office', 'Retail', 'Industrial', 'Warehouse', 'Mixed Use', 'Restaurant', 'Medical', 'Land', 'Other'];
 const EMPTY = { business_id: '', property_address: '', city: '', state: '', zip: '', property_type: '', square_feet: '', asking_price: '', description: '', listed_date: new Date().toISOString().slice(0, 10), status: 'active' };
@@ -14,8 +15,9 @@ export default function Listings() {
   const [form, setForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState('all'); // all | stale | active | sold
+  const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [showImport, setShowImport] = useState(false);
 
   const load = () => Promise.all([getListings(), getBusinesses()]).then(([l, b]) => {
     setListings(l); setBusinesses(b); setLoading(false);
@@ -61,10 +63,21 @@ export default function Listings() {
           <div className="page-title">Listings</div>
           <div className="page-sub">{listings.length} total listings</div>
         </div>
-        <button className="btn btn-primary" onClick={() => { setForm({...EMPTY, listed_date: new Date().toISOString().slice(0,10)}); setModal(true); setError(''); }}>
-          <Plus size={15}/> Add Listing
-        </button>
+        <div style={{display:'flex', gap:8}}>
+          <button className="btn btn-primary" style={{background:'#7c3aed'}} onClick={() => setShowImport(v => !v)}>
+            <Link2 size={15}/> {showImport ? 'Hide' : 'Import from URL'}
+          </button>
+          <button className="btn btn-primary" onClick={() => { setForm({...EMPTY, listed_date: new Date().toISOString().slice(0,10)}); setModal(true); setError(''); }}>
+            <Plus size={15}/> Add Manually
+          </button>
+        </div>
       </div>
+
+      {showImport && (
+        <div style={{marginBottom:24}}>
+          <UrlImport onComplete={() => { setShowImport(false); load(); }} />
+        </div>
+      )}
 
       <div className="filters-bar">
         <input placeholder="Search address, city, business..." value={search} onChange={e => setSearch(e.target.value)} style={{maxWidth:280}} />
