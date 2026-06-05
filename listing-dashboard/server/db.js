@@ -57,6 +57,22 @@ db.exec(`
     notes TEXT,
     created_at TEXT DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TEXT DEFAULT (datetime('now'))
+  );
+
+  CREATE TABLE IF NOT EXISTS email_imports (
+    id TEXT PRIMARY KEY,
+    gmail_message_id TEXT UNIQUE,
+    subject TEXT,
+    imported_at TEXT DEFAULT (datetime('now')),
+    listings_found INTEGER DEFAULT 0,
+    listings_created INTEGER DEFAULT 0,
+    raw_snippet TEXT
+  );
 `);
 
 module.exports = db;

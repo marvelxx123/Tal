@@ -169,6 +169,69 @@ app.delete('/api/photos/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+// ── Settings ──────────────────────────────────────────────────────────────────
+
+app.get('/api/settings', (req, res) => {
+  const rows = db.prepare('SELECT key, value FROM settings').all();
+  const out = {};
+  rows.forEach(r => { out[r.key] = r.value; });
+  // Never expose password to frontend
+  if (out.gmail_app_password) out.gmail_app_password = '••••••••••••••••';
+  res.json(out);
+});
+
+app.post('/api/settings', (req, res) => {
+  const allowed = ['gmail_user', 'gmail_app_password', 'scan_interval_hours', 'email_signature', 'your_name', 'your_phone'];
+  for (const [k, v] of Object.entries(req.body)) {
+    if (!allowed.includes(k)) continue;
+    // Don't overwrite password with masked value
+    if (k === 'gmail_app_password' && v.includes('•')) continue;
+    db.prepare('INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES (?, ?, datetime("now"))').run(k, v);
+  }
+  res.json({ ok: true });
+});
+
+// ── Email Scanner ─────────────────────────────────────────────────────────────
+
+const { scanInbox } = require('./emailScanner');
+
+app.post('/api/email/scan', async (req, res) => {
+  const gmailUser = db.prepare('SELECT value FROM settings WHERE key = "gmail_user"').get()?.value;
+  const gmailPass = db.prepare('SELECT value FROM settings WHERE key = "gmail_app_password"').get()?.value;
+  if (!gmailUser || !gmailPass) return res.status(400).json({ error: 'Gmail credentials not configured. Go to Settings first.' });
+  try {
+    const result = await scanInbox({ gmail_user: gmailUser, gmail_app_password: gmailPass });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/email/imports', (req, res) => {
+  const rows = db.prepare('SELECT * FROM email_imports ORDER BY imported_at DESC LIMIT 50').all();
+  res.json(rows);
+});
+
+// Auto-scan scheduler
+function startAutoScan() {
+  const run = async () => {
+    const gmailUser = db.prepare('SELECT value FROM settings WHERE key = "gmail_user"').get()?.value;
+    const gmailPass = db.prepare('SELECT value FROM settings WHERE key = "gmail_app_password"').get()?.value;
+    const hours = parseFloat(db.prepare('SELECT value FROM settings WHERE key = "scan_interval_hours"').get()?.value || '6');
+    if (gmailUser && gmailPass) {
+      console.log(`[AutoScan] Scanning inbox for listing alerts...`);
+      try {
+        const r = await scanInbox({ gmail_user: gmailUser, gmail_app_password: gmailPass });
+        console.log(`[AutoScan] Done — ${r.scanned} emails, ${r.new_listings} new listings`);
+      } catch (e) { console.error('[AutoScan] Error:', e.message); }
+    }
+    setTimeout(run, hours * 60 * 60 * 1000);
+  };
+  // First scan 30 seconds after startup
+  setTimeout(run, 30000);
+}
+startAutoScan();
+
 // ── Activity Log ──────────────────────────────────────────────────────────────
 
 app.get('/api/activity', (req, res) => {

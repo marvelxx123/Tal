@@ -4,7 +4,8 @@ import Businesses from './pages/Businesses';
 import Listings from './pages/Listings';
 import ListingDetail from './pages/ListingDetail';
 import ActivityLog from './pages/ActivityLog';
-import { Building2, LayoutDashboard, Users, ClipboardList } from 'lucide-react';
+import Settings from './pages/Settings';
+import { Building2, LayoutDashboard, Users, ClipboardList, Settings2 } from 'lucide-react';
 import './App.css';
 
 export default function App() {
@@ -28,6 +29,9 @@ export default function App() {
           <NavLink to="/activity" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
             <ClipboardList size={18} /> Activity Log
           </NavLink>
+          <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'} style={{marginTop:'auto'}}>
+            <Settings2 size={18} /> Settings
+          </NavLink>
         </nav>
         <main className="main-content">
           <Routes>
@@ -36,6 +40,7 @@ export default function App() {
             <Route path="/listings" element={<Listings />} />
             <Route path="/listings/:id" element={<ListingDetail />} />
             <Route path="/activity" element={<ActivityLog />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
       </div>
