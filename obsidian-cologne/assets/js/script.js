@@ -44,6 +44,51 @@ for (let i = 0; i < PARTICLE_COUNT; i++) {
   particleField.appendChild(p);
 }
 
+// Carousel arrow controls
+const track = document.getElementById('productCarousel');
+const prevBtn = document.getElementById('carouselPrev');
+const nextBtn = document.getElementById('carouselNext');
+if (track && prevBtn && nextBtn) {
+  const scrollAmount = () => track.clientWidth * 0.7;
+  prevBtn.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+  nextBtn.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+}
+
+// Hero mouse-parallax on glows
+const glows = document.querySelectorAll('.glow-parallax');
+const heroEl = document.getElementById('hero');
+if (heroEl && glows.length) {
+  heroEl.addEventListener('mousemove', e => {
+    const { innerWidth, innerHeight } = window;
+    const x = (e.clientX / innerWidth - 0.5) * 2;
+    const y = (e.clientY / innerHeight - 0.5) * 2;
+    glows.forEach((glow, i) => {
+      const strength = i === 0 ? 18 : -22;
+      glow.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+    });
+  });
+}
+
+// Scroll-spy active nav link
+const navLinks = document.querySelectorAll('.primary-nav a');
+const sections = Array.from(navLinks)
+  .map(link => document.querySelector(link.getAttribute('href')))
+  .filter(Boolean);
+const spyObserver = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = `#${entry.target.id}`;
+        navLinks.forEach(link =>
+          link.classList.toggle('active', link.getAttribute('href') === id)
+        );
+      }
+    });
+  },
+  { rootMargin: '-40% 0px -55% 0px' }
+);
+sections.forEach(section => spyObserver.observe(section));
+
 // Play button mock interaction
 const playButton = document.querySelector('.play-button');
 if (playButton) {
